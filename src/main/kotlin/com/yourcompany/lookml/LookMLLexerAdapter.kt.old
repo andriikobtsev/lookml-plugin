@@ -1,0 +1,3 @@
+package com.yourcompany.lookml
+
+class LookMLLexerAdapter : SimpleLookMLLexer()

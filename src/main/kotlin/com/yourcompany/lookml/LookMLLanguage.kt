@@ -1,0 +1,30 @@
+/*
+ * LookML Plugin for IntelliJ Platform
+ * Copyright (C) 2025 Andrii Kobtsev
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * For commercial licensing options, please contact: andrii.kobtsev.reneo@gmail.com
+ */
+
+package com.yourcompany.lookml
+
+import com.intellij.lang.Language
+
+object LookMLLanguage : Language("LookML") {
+    override fun getDisplayName(): String = "LookML"
+    
+    @Suppress("unused")
+    private fun readResolve(): Any = LookMLLanguage
+}

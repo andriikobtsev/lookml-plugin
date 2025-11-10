@@ -1,0 +1,14 @@
+# Example local.properties file
+# Uncomment and adjust the path to your JDK installation
+
+# For Homebrew OpenJDK on Mac:
+# org.gradle.java.home=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+
+# For Oracle/AdoptOpenJDK on Mac:
+# org.gradle.java.home=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
+
+# For Microsoft OpenJDK (fix the path):
+# org.gradle.java.home=/Users/andriikobtsevreneo/Library/Java/JavaVirtualMachines/ms-21.0.7/Contents/Home
+
+# Or use system default:
+# org.gradle.java.home=/usr/libexec/java_home -v 21

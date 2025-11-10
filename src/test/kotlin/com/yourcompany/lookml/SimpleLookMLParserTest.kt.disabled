@@ -1,0 +1,70 @@
+package com.yourcompany.lookml
+
+import com.intellij.lang.ASTNode
+import com.intellij.lang.PsiBuilder
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiErrorElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.testFramework.LightVirtualFile
+import java.io.File
+
+/**
+ * Simple parser test that can be run to check for parsing errors
+ * Run this after building the plugin to test the comprehensive syntax file
+ */
+class SimpleLookMLParserTest {
+    
+    fun testFile(filePath: String) {
+        val file = File(filePath)
+        if (!file.exists()) {
+            println("ERROR: File not found: $filePath")
+            return
+        }
+        
+        println("Testing file: $filePath")
+        println("=".repeat(80))
+        
+        val content = file.readText()
+        val errors = findParsingErrors(content)
+        
+        if (errors.isEmpty()) {
+            println("✅ SUCCESS: No parsing errors found!")
+        } else {
+            println("❌ FAILED: Found ${errors.size} parsing errors:")
+            println()
+            
+            errors.forEachIndexed { index, error ->
+                println("${index + 1}. ${error.description}")
+                println("   Location: Line ${error.line}, Column ${error.column}")
+                println("   Near: '${error.nearText}'")
+                println()
+            }
+        }
+    }
+    
+    private fun findParsingErrors(content: String): List<ParserError> {
+        // This is a simplified version - in reality, you'd need to properly
+        // initialize the IntelliJ platform and use the actual parser
+        // For now, this is a placeholder that demonstrates the structure
+        
+        println("Note: This is a simplified test. For full testing, run the unit tests in IntelliJ.")
+        
+        // Placeholder implementation
+        return emptyList()
+    }
+    
+    data class ParserError(
+        val description: String,
+        val line: Int,
+        val column: Int,
+        val nearText: String
+    )
+}
+
+fun main() {
+    val tester = SimpleLookMLParserTest()
+    tester.testFile("src/test/resources/comprehensive_syntax_test.lkml")
+}

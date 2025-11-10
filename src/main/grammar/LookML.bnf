@@ -1,0 +1,1197 @@
+{
+  generateVisitor=true
+  visitorClass="com.yourcompany.lookml.psi.LookMLVisitor"
+  parserClass="com.yourcompany.lookml.parser.LookMLParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  
+  psiClassPrefix="LookML"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.yourcompany.lookml.psi"
+  psiImplPackage="com.yourcompany.lookml.psi.impl"
+  
+  elementTypeHolderClass="com.yourcompany.lookml.psi.LookMLTypes"
+  elementTypeClass="com.yourcompany.lookml.psi.LookMLElementType"
+  tokenTypeClass="com.yourcompany.lookml.psi.LookMLTokenType"
+  
+  psiImplUtilClass="com.yourcompany.lookml.psi.impl.LookMLPsiImplUtil"
+  
+  tokens=[
+    LBRACE='{'
+    RBRACE='}'
+    LBRACKET='['
+    RBRACKET=']'
+    COLON=':'
+    SEMICOLON=';'
+    COMMA=','
+    DOLLAR='$'
+    DOT='.'
+    EQ='='
+    NE='!='
+    LT='<'
+    GT='>'
+    LE='<='
+    GE='>='
+    PLUS='+'
+    MINUS='-'
+    STAR='*'
+    SLASH='/'
+    PERCENT='%'
+    LPAREN='('
+    RPAREN=')'
+    AND='AND'
+    OR='OR'
+    PIPE='|'
+    DESC='desc'
+    ASC='asc'
+    
+    // YAML-specific tokens
+    YAML_DOCUMENT_START='---'
+    YAML_LIST_ITEM='-'
+    YAML_BLOCK_SCALAR_INDICATOR='regexp:[|>][-+]?[0-9]?'
+    YAML_TAG_INDICATOR='!'
+    
+    // Additional dashboard properties as tokens
+    ROW_PROPERTY='row'
+    COL_PROPERTY='col'
+    WIDTH_PROPERTY='width'
+    HEIGHT_PROPERTY='height'
+    FILL_FIELDS='fill_fields'
+    TRUE_VALUE='true'
+    FALSE_VALUE='false'
+    
+    // Missing dashboard visualization tokens
+    X_AXIS_LABEL='x_axis_label'
+    X_AXIS_ZOOM='x_axis_zoom'
+    Y_AXIS_ZOOM='y_axis_zoom'
+    DEFAULTS_VERSION='defaults_version'
+    SHOW_TOTALS='show_totals'
+    SHOW_ROW_TOTALS='show_row_totals'
+    SERIES_CELL_VISUALIZATIONS='series_cell_visualizations'
+    HIDE_LEGEND='hide_legend'
+    SWAP_AXES='swap_axes'
+    SHOW_SQL_QUERY_MENU_OPTIONS='show_sql_query_menu_options'
+    FIELD_FILTER='field_filter'
+    LABEL_VALUE_FORMAT='label_value_format'
+    IS_ACTIVE='is_active'
+    
+    // Keywords
+    VIEW='view'
+    EXPLORE='explore'
+    DASHBOARD='dashboard'
+    LOOKML_DASHBOARD='lookml_dashboard'
+    DIMENSION='dimension'
+    DIMENSION_GROUP='dimension_group'
+    MEASURE='measure'
+    FILTER='filter'
+    PARAMETER='parameter'
+    JOIN='join'
+    FROM='from'
+    CONNECTION='connection'
+    INCLUDE='include'
+    PERSIST_WITH='persist_with'
+    WEEK_START_DAY='week_start_day'
+    CASE_SENSITIVE='case_sensitive'
+    DATAGROUP='datagroup'
+    ACCESS_GRANT='access_grant'
+    NAMED_VALUE_FORMAT='named_value_format'
+    TEST='test'
+    
+    // SQL keywords
+    SQL='sql'
+    SQL_TABLE_NAME='sql_table_name'
+    SQL_ON='sql_on'
+    SQL_WHERE='sql_where'
+    SQL_ALWAYS_WHERE='sql_always_where'
+    SQL_ALWAYS_FILTER='sql_always_filter'
+    SQL_ALWAYS_HAVING='sql_always_having'
+    SQL_CASE='sql_case'
+    SQL_TRIGGER='sql_trigger'
+    SQL_LATITUDE='sql_latitude'
+    SQL_LONGITUDE='sql_longitude'
+    
+    // Property keywords
+    NAME='name'
+    TYPE='type'
+    LABEL='label'
+    VIEW_LABEL='view_label'
+    GROUP_LABEL='group_label'
+    DESCRIPTION='description'
+    HIDDEN='hidden'
+    PRIMARY_KEY='primary_key'
+    ALIAS='alias'
+    REQUIRED_ACCESS_GRANTS='required_access_grants'
+    SUGGESTIONS='suggestions'
+    RELATIONSHIP='relationship'
+    MAX_CACHE_AGE='max_cache_age'
+    ALLOWED_VALUE='allowed_value'
+    ALLOWED_VALUES='allowed_values'
+    USER_ATTRIBUTE='user_attribute'
+    VALUE_FORMAT='value_format'
+    STRICT_VALUE_FORMAT='strict_value_format'
+    VIEW_NAME='view_name'
+    ALWAYS_FILTER='always_filter'
+    CONDITIONALLY_FILTER='conditionally_filter'
+    FILTERS='filters'
+    UNLESS='unless'
+    ACCESS_FILTER='access_filter'
+    FIELD='field'
+    FIELDS='fields'
+    REQUIRED_JOINS='required_joins'
+    AGGREGATE_TABLE='aggregate_table'
+    QUERY='query'
+    DIMENSIONS='dimensions'
+    MEASURES='measures'
+    TIMEZONE='timezone'
+    MATERIALIZATION='materialization'
+    DATAGROUP_TRIGGER='datagroup_trigger'
+    PARTITION_KEYS='partition_keys'
+    CLUSTER_KEYS='cluster_keys'
+    INCREMENT_KEY='increment_key'
+    INCREMENT_OFFSET='increment_offset'
+    DERIVED_TABLE='derived_table'
+    EXPLORE_SOURCE='explore_source'
+    COLUMN='column'
+    ASSERT='assert'
+    EXPRESSION='expression'
+    PERSIST_FOR='persist_for'
+    INDEXES='indexes'
+    FIELDS_HIDDEN_BY_DEFAULT='fields_hidden_by_default'
+    LINK='link'
+    ACTION='action'
+    URL='url'
+    ICON_URL='icon_url'
+    FORM_URL='form_url'
+    PARAM='param'
+    FORM_PARAM='form_param'
+    USER_ATTRIBUTE_PARAM='user_attribute_param'
+    VALUE='value'
+    DEFAULT='default'
+    REQUIRED='required'
+    HTML='html'
+    CASE='case'
+    WHEN='when'
+    ELSE='else'
+    SET='set'
+    TAGS='tags'
+    CAN_FILTER='can_filter'
+    ALPHA_SORT='alpha_sort'
+    TIERS='tiers'
+    STYLE='style'
+    CONVERT_TZ='convert_tz'
+    DATATYPE='datatype'
+    VALUE_FORMAT_NAME='value_format_name'
+    PRECISION='precision'
+    GROUP_ITEM_LABEL='group_item_label'
+    TIMEFRAMES='timeframes'
+    ALLOW_FILL='allow_fill'
+    LIST_FIELD='list_field'  
+    SUGGEST_DIMENSION='suggest_dimension'
+    LISTENS_TO_FILTERS='listens_to_filters'
+    APPROXIMATE='approximate'
+    APPROXIMATE_THRESHOLD='approximate_threshold'
+    REQUIRED_FIELDS='required_fields'
+    DRILL_FIELDS='drill_fields'
+    ELEMENTS='elements'
+    ELEMENT='element'
+    TITLE='title'
+    MODEL='model'
+    SORTS='sorts'
+    LIMIT='limit'
+    SHOW_SINGLE_VALUE_TITLE='show_single_value_title'
+    SINGLE_VALUE_TITLE='single_value_title'
+    CONDITIONAL_FORMATTING='conditional_formatting'
+    BACKGROUND_COLOR='background_color'
+    FONT_COLOR='font_color'
+    BOLD='bold'
+    LAYOUT='layout'
+    PREFERRED_VIEWER='preferred_viewer'
+    REFRESH='refresh'
+    UI_CONFIG='ui_config'
+    DISPLAY='display'
+    OPTIONS='options'
+    ALLOW_MULTIPLE_VALUES='allow_multiple_values'
+    DEFAULT_VALUE='default_value'
+    GREATER_THAN='greater_than'
+    LESS_THAN='less_than'
+    BETWEEN='between'
+    EQUAL_TO='equal_to'
+    WHITE='white'
+    
+    // Dashboard visualization properties
+    PREFERRED_SLUG='preferred_slug'
+    COLUMN_LIMIT='column_limit'
+    STACKING='stacking'
+    LEGEND_POSITION='legend_position'
+    X_AXIS_GRIDLINES='x_axis_gridlines'
+    Y_AXIS_GRIDLINES='y_axis_gridlines'
+    INTERPOLATION='interpolation'
+    SERIES_TYPES='series_types'
+    SERIES_COLORS='series_colors'
+    COLOR_APPLICATION='color_application'
+    INNER_RADIUS='inner_radius'
+    TRELLIS='trellis'
+    ORDERING='ordering'
+    SHOW_DROPOFF='show_dropoff'
+    TABLE_THEME='table_theme'
+    HEADER_TEXT_ALIGNMENT='header_text_alignment'
+    COMPARISON='comparison'
+    COMPARISON_TYPE='comparison_type'
+    COMPARISON_REVERSE_COLORS='comparison_reverse_colors'
+    SHOW_COMPARISON='show_comparison'
+    SHOW_COMPARISON_LABEL='show_comparison_label'
+    COMPARISON_LABEL='comparison_label'
+    ENABLE_CONDITIONAL_FORMATTING='enable_conditional_formatting'
+    CONDITIONAL_FORMATTING_INCLUDE_TOTALS='conditional_formatting_include_totals'
+    CONDITIONAL_FORMATTING_INCLUDE_NULLS='conditional_formatting_include_nulls'
+    VIS_CONFIG='vis_config'
+    HIDDEN_FIELDS='hidden_fields'
+    SERIES_LABELS='series_labels'
+    PIVOTS='pivots'
+    DYNAMIC_FIELDS='dynamic_fields'
+    QUERY_TIMEZONE='query_timezone'
+    LISTEN='listen'
+    SHOW_VALUE_LABELS='show_value_labels'
+    LABEL_DENSITY='label_density'
+    SHOW_VIEW_NAMES='show_view_names'
+    Y_AXIS_COMBINED='y_axis_combined'
+    SHOW_Y_AXIS_LABELS='show_y_axis_labels'
+    SHOW_Y_AXIS_TICKS='show_y_axis_ticks'
+    Y_AXIS_TICK_DENSITY='y_axis_tick_density'
+    Y_AXIS_TICK_DENSITY_CUSTOM='y_axis_tick_density_custom'
+    SHOW_X_AXIS_LABEL='show_x_axis_label'
+    SHOW_X_AXIS_TICKS='show_x_axis_ticks'
+    X_AXIS_SCALE='x_axis_scale'
+    Y_AXIS_SCALE_MODE='y_axis_scale_mode'
+    X_AXIS_REVERSED='x_axis_reversed'
+    Y_AXIS_REVERSED='y_axis_reversed'
+    PLOT_SIZE_BY_FIELD='plot_size_by_field'
+    SHOW_NULL_POINTS='show_null_points'
+    VALUE_LABELS='value_labels'
+    LABEL_TYPE='label_type'
+    START_ANGLE='start_angle'
+    END_ANGLE='end_angle'
+    COLLECTION_ID='collection_id'
+    PALETTE_ID='palette_id'
+    STEPS='steps'
+    LIMIT_DISPLAYED_ROWS='limit_displayed_rows'
+    LIMIT_DISPLAYED_ROWS_VALUES='limit_displayed_rows_values'
+    POINT_STYLE='point_style'
+    SHOW_NULL_LABELS='show_null_labels'
+    SHOW_TOTALS_LABELS='show_totals_labels'
+    SHOW_SILHOUETTE='show_silhouette'
+    TOTALS_COLOR='totals_color'
+    SHOW_ROW_NUMBERS='show_row_numbers'
+    TRANSPOSE='transpose'
+    TRUNCATE_TEXT='truncate_text'
+    HIDE_TOTALS='hide_totals'
+    HIDE_ROW_TOTALS='hide_row_totals'
+    SIZE_TO_FIT='size_to_fit'
+    HEADER_FONT_SIZE='header_font_size'
+    ROWS_FONT_SIZE='rows_font_size'
+    MAP_PLOT_MODE='map_plot_mode'
+    HEATMAP_GRIDLINES='heatmap_gridlines'
+    HEATMAP_GRIDLINES_EMPTY='heatmap_gridlines_empty'
+    HEATMAP_OPACITY='heatmap_opacity'
+    SHOW_REGION_FIELD='show_region_field'
+    DRAW_MAP_LABELS_ABOVE_DATA='draw_map_labels_above_data'
+    MAP_TILE_PROVIDER='map_tile_provider'
+    MAP_POSITION='map_position'
+    MAP_SCALE_INDICATOR='map_scale_indicator'
+    MAP_PANNABLE='map_pannable'
+    MAP_ZOOMABLE='map_zoomable'
+    MAP_MARKER_TYPE='map_marker_type'
+    MAP_MARKER_ICON_NAME='map_marker_icon_name'
+    MAP_MARKER_RADIUS_MODE='map_marker_radius_mode'
+    MAP_MARKER_UNITS='map_marker_units'
+    MAP_MARKER_PROPORTIONAL_SCALE_TYPE='map_marker_proportional_scale_type'
+    MAP_MARKER_COLOR_MODE='map_marker_color_mode'
+    SHOW_LEGEND='show_legend'
+    QUANTIZE_MAP_VALUE_COLORS='quantize_map_value_colors'
+    REVERSE_MAP_VALUE_COLORS='reverse_map_value_colors'
+    TITLE_TEXT='title_text'
+    SUBTITLE_TEXT='subtitle_text'
+    BODY_TEXT='body_text'
+    CUSTOM_COLOR_ENABLED='custom_color_enabled'
+    CUSTOM_COLOR='custom_color'
+    FONT_SIZE='font_size'
+    TEXT_COLOR='text_color'
+    VALUE_FORMAT_NAME_PROPERTY='value_format_name'
+    HIDDEN_POINTS_IF_NO='hidden_points_if_no'
+    TRUNCATE_COLUMN_NAMES='truncate_column_names'
+    ROW_TOTAL='row_total'
+    CATEGORY='category'
+    SHOW_HIDE='show_hide'
+    FIRST_LAST='first_last'
+    NUM_ROWS='num_rows'
+    JS_LIBRARY_URL='js_library_url'
+    DEPENDENCIES='dependencies'
+    SHOW_LEGEND_PROP='showLegend'
+    LEGEND_POSITION_PROP='legendPosition'
+    COLOR_SCHEME='colorScheme'
+    ANIMATION_DURATION='animationDuration'
+    STRIKETHROUGH='strikethrough'
+    ITALIC='italic'
+    CONSTRAINTS='constraints'
+    MIN='min'
+    MID='mid'
+    MAX='max'
+    FILTER_EXPRESSION='filter_expression'
+    EXPRESSION='expression'
+    CATEGORY='category'
+    TABLE_CALCULATION='table_calculation'
+    KIND_HINT='kind_hint'
+    TYPE_HINT='type_hint'
+    
+    // Values
+    YES='yes'
+    NO='no'
+    
+    // Days of week
+    MONDAY='monday'
+    TUESDAY='tuesday'
+    WEDNESDAY='wednesday'
+    THURSDAY='thursday'
+    FRIDAY='friday'
+    SATURDAY='saturday'
+    SUNDAY='sunday'
+    
+    // Special tokens for SQL blocks
+    SQL_BLOCK_START='regexp:(sql|sql_on|sql_where|sql_table_name|sql_trigger)\\s*:\\s*'
+    SQL_ALWAYS_WHERE_START='regexp:sql_always_where\\s*:\\s*'
+    SQL_ALWAYS_FILTER_START='regexp:sql_always_filter\\s*:\\s*'
+    SQL_ALWAYS_HAVING_START='regexp:sql_always_having\\s*:\\s*'
+    HTML_BLOCK_START='regexp:html\\s*:\\s*'
+    SQL_BLOCK_END=';;'
+    
+    // Basic tokens
+    IDENTIFIER='regexp:[a-zA-Z_][a-zA-Z0-9_]*'
+    STRING='regexp:"([^\\\\\"]|\\\\.)*"'
+    NUMBER='regexp:\\d+(\\.\\d+)?'
+    COMMENT='regexp:#[^\\n]*'
+    
+    // SQL content - consumed in SQL block mode
+    SQL_CONTENT_TOKEN='regexp:[^;${"\\']+'
+
+    INLINE_CHAR='regexp:.'
+  ]
+}
+
+lookmlFile ::= file_item*
+
+private file_item ::= !<<eof>> item_ {
+  pin=1
+  recoverWhile=file_item_recover
+}
+
+private file_item_recover ::= !(VIEW | EXPLORE | DASHBOARD | LOOKML_DASHBOARD | TEST | DATAGROUP | ACCESS_GRANT | NAMED_VALUE_FORMAT | CONNECTION | PERSIST_WITH | WEEK_START_DAY | CASE_SENSITIVE | LABEL | INCLUDE | COMMENT | YAML_LIST_ITEM | YAML_DOCUMENT_START | <<eof>>)
+
+
+private item_ ::= (
+    connection_statement 
+  | persist_with_statement
+  | week_start_day_statement
+  | case_sensitive_statement
+  | label_statement
+  | datagroup_definition
+  | access_grant_definition
+  | named_value_format_definition
+  | view_definition 
+  | explore_definition 
+  | dashboard_definition 
+  | yaml_dashboard_document
+  | test_definition
+  | include_statement 
+  | COMMENT
+)
+
+// Model-level statements
+connection_statement ::= CONNECTION COLON STRING SEMICOLON?
+
+persist_with_statement ::= PERSIST_WITH COLON IDENTIFIER SEMICOLON?
+
+week_start_day_statement ::= WEEK_START_DAY COLON day_of_week SEMICOLON?
+
+day_of_week ::= MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY | SATURDAY | SUNDAY
+
+case_sensitive_statement ::= CASE_SENSITIVE COLON boolean_value SEMICOLON?
+
+label_statement ::= LABEL COLON STRING SEMICOLON?
+
+// Include statements
+include_statement ::= INCLUDE COLON STRING SEMICOLON?
+
+// Datagroup definition
+datagroup_definition ::= DATAGROUP COLON IDENTIFIER LBRACE datagroup_body RBRACE {
+  methods=[getName]
+}
+
+datagroup_body ::= datagroup_item*
+
+private datagroup_item ::= (property | sql_trigger_property | COMMENT)
+
+sql_trigger_property ::= SQL_BLOCK_START sql_block_content
+
+// Access grant definition
+access_grant_definition ::= ACCESS_GRANT COLON IDENTIFIER LBRACE access_grant_body RBRACE {
+  methods=[getName]
+}
+
+access_grant_body ::= access_grant_item*
+
+private access_grant_item ::= (property | COMMENT)
+
+// Named value format definition
+named_value_format_definition ::= NAMED_VALUE_FORMAT COLON IDENTIFIER LBRACE named_value_format_body RBRACE {
+  methods=[getName]
+}
+
+named_value_format_body ::= named_value_format_item*
+
+private named_value_format_item ::= (property | COMMENT)
+
+// View definition
+view_definition ::= VIEW COLON IDENTIFIER LBRACE view_body RBRACE {
+  methods=[getName]
+}
+
+view_body ::= view_item*
+
+private view_item ::= (
+    dimension_definition 
+  | dimension_group_definition
+  | measure_definition 
+  | filter_definition
+  | parameter_definition
+  | set_definition
+  | test_definition
+  | drill_fields_property
+  | sql_property
+  | sql_table_name_property
+  | sql_always_where_property
+  | sql_always_filter_property
+  | derived_table_property
+  | html_property
+  | property
+  | COMMENT
+)
+
+// Dimension definition
+dimension_definition ::= DIMENSION COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
+  methods=[getName getType getSql]
+}
+
+// Dimension group definition
+dimension_group_definition ::= DIMENSION_GROUP COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
+  methods=[getName getTimeframes]
+}
+
+// Measure definition
+measure_definition ::= MEASURE COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
+  methods=[getName getType getSql]
+}
+
+// Filter definition
+filter_definition ::= FILTER COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
+  methods=[getName]
+}
+
+// Parameter definition
+parameter_definition ::= PARAMETER COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
+  methods=[getName getType]
+}
+
+// Set definition
+set_definition ::= SET COLON IDENTIFIER LBRACE set_body RBRACE {
+  methods=[getName]
+}
+
+set_body ::= set_item*
+
+private set_item ::= (fields_property | property | COMMENT)
+
+// Derived table property
+derived_table_property ::= DERIVED_TABLE COLON LBRACE derived_table_body RBRACE
+
+derived_table_body ::= derived_table_item*
+
+private derived_table_item ::= (explore_source_property | sql_property | persist_for_property | indexes_property | property | COMMENT)
+
+// Explore source property
+explore_source_property ::= EXPLORE_SOURCE COLON IDENTIFIER LBRACE explore_source_body RBRACE
+
+explore_source_body ::= explore_source_item*
+
+private explore_source_item ::= (column_property | filters_property | property | COMMENT)
+
+// Column property in explore_source
+column_property ::= COLUMN COLON IDENTIFIER LBRACE column_body RBRACE
+
+column_body ::= column_item*
+
+private column_item ::= (field_property | property | COMMENT)
+
+// Persist for property
+persist_for_property ::= PERSIST_FOR COLON STRING SEMICOLON?
+
+// Indexes property
+indexes_property ::= INDEXES COLON array_value SEMICOLON?
+
+// Explore definition
+explore_definition ::= EXPLORE COLON IDENTIFIER LBRACE explore_body RBRACE {
+  methods=[getName]
+}
+
+explore_body ::= explore_item*
+
+private explore_item ::= (
+    from_property
+  | view_name_property
+  | join_definition
+  | sql_table_name_property
+  | sql_always_where_property
+  | sql_always_filter_property
+  | sql_always_having_property
+  | always_filter_property
+  | conditionally_filter_property
+  | access_filter_property
+  | required_access_grants_property
+  | aggregate_table_definition
+  | property
+  | COMMENT
+)
+
+// View name property
+view_name_property ::= VIEW_NAME COLON IDENTIFIER SEMICOLON?
+
+// Always filter property
+always_filter_property ::= ALWAYS_FILTER COLON LBRACE filter_body RBRACE
+
+filter_body ::= filter_item*
+
+private filter_item ::= (filters_property | COMMENT)
+
+// Filters property (can be array or block syntax)
+filters_property ::= FILTERS COLON (filters_array | filters_block) SEMICOLON?
+
+filters_array ::= LBRACKET filter_list RBRACKET
+
+filters_block ::= LBRACE filters_block_body RBRACE
+
+filters_block_body ::= filters_block_item*
+
+private filters_block_item ::= (field_property | value_property | COMMENT)
+
+filter_list ::= filter_spec (COMMA filter_spec)*
+
+filter_spec ::= (qualified_identifier | IDENTIFIER) COLON STRING
+
+// Conditionally filter property
+conditionally_filter_property ::= CONDITIONALLY_FILTER COLON LBRACE conditionally_filter_body RBRACE
+
+conditionally_filter_body ::= conditionally_filter_item*
+
+private conditionally_filter_item ::= (filters_property | unless_property | COMMENT)
+
+unless_property ::= UNLESS COLON LBRACKET identifier_list RBRACKET
+
+identifier_list ::= qualified_identifier (COMMA qualified_identifier)*
+
+qualified_identifier ::= identifier_part (DOT identifier_part)*
+
+identifier_part ::= (IDENTIFIER | keyword | YES | NO | TRUE_VALUE | FALSE_VALUE)
+
+hyphenated_identifier ::= IDENTIFIER (MINUS IDENTIFIER)+
+
+// Access filter property
+access_filter_property ::= ACCESS_FILTER COLON LBRACE access_filter_body RBRACE
+
+access_filter_body ::= access_filter_item*
+
+private access_filter_item ::= (field_property | user_attribute_property | COMMENT)
+
+field_property ::= FIELD COLON qualified_identifier SEMICOLON?
+
+user_attribute_property ::= USER_ATTRIBUTE COLON IDENTIFIER SEMICOLON?
+
+// Aggregate table definition
+aggregate_table_definition ::= AGGREGATE_TABLE COLON IDENTIFIER LBRACE aggregate_table_body RBRACE {
+  methods=[getName]
+}
+
+aggregate_table_body ::= aggregate_table_item*
+
+private aggregate_table_item ::= (query_property | materialization_property | property | COMMENT)
+
+// Query property in aggregate table
+query_property ::= QUERY COLON LBRACE query_body RBRACE
+
+query_body ::= query_item*
+
+private query_item ::= (dimensions_property | measures_property | timezone_property | property | COMMENT)
+
+dimensions_property ::= DIMENSIONS COLON array_value SEMICOLON?
+
+measures_property ::= MEASURES COLON array_value SEMICOLON?
+
+timezone_property ::= TIMEZONE COLON STRING SEMICOLON?
+
+// Materialization property
+materialization_property ::= MATERIALIZATION COLON LBRACE materialization_body RBRACE
+
+materialization_body ::= materialization_item*
+
+private materialization_item ::= (
+    datagroup_trigger_property
+  | partition_keys_property
+  | cluster_keys_property
+  | increment_key_property
+  | increment_offset_property
+  | property
+  | COMMENT
+)
+
+datagroup_trigger_property ::= DATAGROUP_TRIGGER COLON IDENTIFIER SEMICOLON?
+
+partition_keys_property ::= PARTITION_KEYS COLON array_value SEMICOLON?
+
+cluster_keys_property ::= CLUSTER_KEYS COLON array_value SEMICOLON?
+
+increment_key_property ::= INCREMENT_KEY COLON STRING SEMICOLON?
+
+increment_offset_property ::= INCREMENT_OFFSET COLON NUMBER SEMICOLON?
+
+// From property (in explore)
+from_property ::= FROM COLON IDENTIFIER SEMICOLON?
+
+// Join definition
+join_definition ::= JOIN COLON IDENTIFIER LBRACE join_body RBRACE {
+  methods=[getName getType getSqlOn]
+}
+
+join_body ::= join_item*
+
+private join_item ::= (
+    from_property
+    | sql_on_property 
+    | sql_always_where_property
+    | fields_property
+    | required_joins_property
+    | property
+    | COMMENT
+)
+
+// Fields property in join
+fields_property ::= FIELDS COLON array_value SEMICOLON?
+
+// Required joins property
+required_joins_property ::= REQUIRED_JOINS COLON array_value SEMICOLON?
+
+// Dashboard definition (brace style)
+dashboard_definition ::= (DASHBOARD | LOOKML_DASHBOARD) COLON IDENTIFIER LBRACE dashboard_body RBRACE {
+  methods=[getName]
+}
+
+// YAML Dashboard document support
+yaml_dashboard_document ::= YAML_DOCUMENT_START yaml_content { pin=1 }
+
+// YAML dashboard starting with list
+yaml_list_line ::= YAML_LIST_ITEM yaml_dashboard_def {
+  pin=1
+}
+
+private yaml_dashboard_recover ::= !(YAML_DOCUMENT_START | <<eof>>)
+
+yaml_dashboard_def ::= DASHBOARD COLON IDENTIFIER yaml_content
+
+// YAML content - everything after the header
+yaml_content ::= yaml_item*
+
+private yaml_item ::= (
+    yaml_property
+  | yaml_list_entry
+  | COMMENT
+  | yaml_text_line
+)
+
+// YAML list item
+yaml_list_entry ::= YAML_LIST_ITEM yaml_item_content
+
+yaml_item_content ::= yaml_property | yaml_flow_value | yaml_simple_value
+
+// YAML propertyyaml_dashboard_recover
+yaml_property ::= yaml_property_name COLON (yaml_value)?
+
+// YAML property names: allow any number of segments separated by '.' or '|'
+yaml_property_name ::= yaml_property_name_part ((DOT | PIPE) yaml_property_name_part)*
+
+yaml_property_name_part ::= (
+    IDENTIFIER
+  | keyword
+  | YES | NO | TRUE_VALUE | FALSE_VALUE  // Add boolean tokens
+  | STAR IDENTIFIER STAR IDENTIFIER
+  | STAR IDENTIFIER
+  | IDENTIFIER STAR
+)
+
+// YAML values
+yaml_value ::= (
+    yaml_simple_value
+  | yaml_flow_value
+  | yaml_multiline_value
+  | yaml_text_line
+  | // empty for properties with nested content
+)
+
+yaml_simple_value ::= (
+    STRING | NUMBER | IDENTIFIER | keyword | boolean_value
+  | TRUE_VALUE | FALSE_VALUE | YES | NO
+  | template_expression | field_pattern | wildcard_identifier | qualified_identifier
+  | yaml_value_tokens
+  | yaml_expression_value
+  | yaml_text_line
+)
+
+yaml_expression_value ::= yaml_expression_part+
+
+private yaml_expression_part ::= (
+    IDENTIFIER | keyword | NUMBER | template_expression
+  | LPAREN | RPAREN | DOT | COMMA
+  | PLUS | MINUS | STAR | SLASH | PERCENT
+)
+
+yaml_value_tokens ::= yaml_unquoted_string
+
+yaml_unquoted_string ::= yaml_string_part+
+
+private yaml_string_part ::= (
+    IDENTIFIER | keyword | NUMBER | hyphenated_identifier
+)
+
+// Flow values (arrays and objects)
+yaml_flow_value ::= yaml_flow_array | yaml_flow_object
+
+yaml_flow_array ::= LBRACKET yaml_array_content RBRACKET
+
+yaml_array_content ::= yaml_array_item (COMMA yaml_array_item)*
+
+yaml_array_item ::= (
+    field_pattern | wildcard_identifier | sort_specification | yaml_simple_value | yaml_flow_object
+)
+
+yaml_flow_object ::= LBRACE yaml_object_content RBRACE
+
+yaml_object_content ::= yaml_object_property (COMMA yaml_object_property)*
+
+yaml_object_property ::= yaml_property_name COLON yaml_simple_value
+
+// Multi-line values
+yaml_multiline_value ::= yaml_text_line+
+
+yaml_text_line ::= yaml_text_token+
+
+private yaml_text_token ::= (
+    IDENTIFIER | keyword | NUMBER | STRING | DOT | COMMA | LBRACE | RBRACE | COLON | LPAREN | RPAREN | LBRACKET | RBRACKET | MINUS | PLUS | STAR
+    | YAML_BLOCK_SCALAR_INDICATOR | DESC | ASC | SLASH | PERCENT | DOLLAR | LT | GT | LE | GE | NE | EQ | PIPE | YAML_TAG_INDICATOR | INLINE_CHAR | qualified_identifier
+    | YES | NO | TRUE_VALUE | FALSE_VALUE  // Add boolean tokens
+)
+
+private not_eof ::= !<<eof>>
+
+dashboard_body ::= dashboard_item*
+
+private dashboard_item ::= (elements_property | dashboard_filters_property | property | COMMENT)
+
+// Default value property
+default_value_property ::= DEFAULT_VALUE COLON (STRING | IDENTIFIER) SEMICOLON?
+
+// Allow multiple values property
+allow_multiple_values_property ::= ALLOW_MULTIPLE_VALUES COLON boolean_value SEMICOLON?
+
+// Required access grants property  
+required_access_grants_property ::= REQUIRED_ACCESS_GRANTS COLON array_value SEMICOLON?
+
+// Suggestions property
+suggestions_property ::= SUGGESTIONS COLON array_value SEMICOLON?
+
+// Tags property
+tags_property ::= TAGS COLON array_value SEMICOLON?
+
+// Timeframes property (for dimension_group)
+timeframes_property ::= TIMEFRAMES COLON array_value SEMICOLON?
+
+// Tiers property (for tier dimensions)  
+tiers_property ::= TIERS COLON array_value SEMICOLON?
+
+// Dashboard filters property
+dashboard_filters_property ::= FILTERS COLON LBRACKET dashboard_filter_list? RBRACKET
+
+dashboard_filter_list ::= dashboard_filter_object (COMMA dashboard_filter_object)*
+
+dashboard_filter_object ::= LBRACE dashboard_filter_body RBRACE
+
+dashboard_filter_body ::= dashboard_filter_item*
+
+private dashboard_filter_item ::= (name_property | title_property | type_property | default_value_property | allow_multiple_values_property | required_property | ui_config_property | property | COMMENT)
+
+// Type property
+type_property ::= TYPE COLON (IDENTIFIER | STRING | keyword) SEMICOLON?
+
+// Title property  
+title_property ::= TITLE COLON STRING SEMICOLON?
+
+// UI config property
+ui_config_property ::= UI_CONFIG COLON LBRACE ui_config_body RBRACE
+
+ui_config_body ::= ui_config_item*
+
+private ui_config_item ::= (type_property | display_property | options_property | property | COMMENT)
+
+// Display property
+display_property ::= DISPLAY COLON IDENTIFIER SEMICOLON?
+
+// Options property
+options_property ::= OPTIONS COLON array_value SEMICOLON?
+
+// Elements property for dashboards
+elements_property ::= ELEMENTS COLON LBRACKET element_list? RBRACKET
+
+element_list ::= element_object (COMMA element_object)*
+
+element_object ::= LBRACE element_body RBRACE
+
+element_body ::= element_item*
+
+private element_item ::= (conditional_formatting_property | property | COMMENT)
+
+// Conditional formatting property
+conditional_formatting_property ::= CONDITIONAL_FORMATTING COLON LBRACKET conditional_format_list? RBRACKET
+
+conditional_format_list ::= conditional_format_object (COMMA conditional_format_object)*
+
+conditional_format_object ::= LBRACE conditional_format_body RBRACE
+
+conditional_format_body ::= conditional_format_item*
+
+private conditional_format_item ::= (type_property | value_property | background_color_property | font_color_property | bold_property | property | COMMENT)
+
+// Background color property
+background_color_property ::= BACKGROUND_COLOR COLON STRING SEMICOLON?
+
+// Font color property
+font_color_property ::= FONT_COLOR COLON (STRING | IDENTIFIER | keyword) SEMICOLON?
+
+// Bold property
+bold_property ::= BOLD COLON boolean_value SEMICOLON?
+
+// Test definition
+test_definition ::= TEST COLON IDENTIFIER LBRACE test_body RBRACE {
+  methods=[getName]
+}
+
+test_body ::= test_item*
+
+private test_item ::= (explore_source_property | assert_property | property | COMMENT)
+
+// Explore source property
+explore_source_property ::= EXPLORE_SOURCE COLON IDENTIFIER LBRACE explore_source_body RBRACE
+
+explore_source_body ::= explore_source_item*
+
+private explore_source_item ::= (column_property | filters_property | property | COMMENT)
+
+// Column property
+column_property ::= COLUMN COLON IDENTIFIER LBRACE column_body RBRACE
+
+column_body ::= column_item*
+
+private column_item ::= (field_property | property | COMMENT)
+
+// Field property
+field_property ::= FIELD COLON qualified_identifier SEMICOLON?
+
+// Assert property
+assert_property ::= ASSERT COLON IDENTIFIER LBRACE assert_body RBRACE
+
+assert_body ::= assert_item*
+
+private assert_item ::= (expression_property | property | COMMENT)
+
+// Expression property - simplified to handle any content until ;;
+expression_property ::= EXPRESSION COLON expression_content SEMICOLON SEMICOLON
+
+// Expression content - anything that can appear in an expression
+expression_content ::= expression_element+
+
+private expression_element ::= 
+    template_expression
+  | IDENTIFIER
+  | STRING
+  | NUMBER
+  | DOT
+  | COMMA
+  | EQ | NE | LT | GT | LE | GE
+  | PLUS | MINUS | STAR | SLASH | PERCENT
+  | AND | OR
+  | LPAREN | RPAREN
+
+// Drill fields property
+drill_fields_property ::= DRILL_FIELDS COLON array_value SEMICOLON?
+
+// Properties
+property_list ::= property_item*
+
+private property_item ::= (link_property | action_property | case_property | filters_property | allowed_value_property | drill_fields_property | required_access_grants_property | suggestions_property | tags_property | timeframes_property | tiers_property | sql_property | sql_latitude_property | sql_longitude_property | sql_on_property | sql_always_where_property | html_property | property | COMMENT)
+
+property ::= property_name COLON property_value (SEMICOLON | SEMICOLON SEMICOLON)?
+
+property_name ::= (IDENTIFIER | keyword) (PIPE (IDENTIFIER | keyword) (DOT (IDENTIFIER | keyword))*)?
+
+// Allowed value property (for parameters)
+allowed_value_property ::= ALLOWED_VALUE COLON LBRACE allowed_value_body RBRACE
+
+allowed_value_body ::= allowed_value_item*
+
+private allowed_value_item ::= (label_property | value_property | property | COMMENT)
+
+// Link property
+link_property ::= LINK COLON LBRACE link_body RBRACE
+
+link_body ::= link_item*
+
+private link_item ::= (url_property | icon_url_property | property | COMMENT)
+
+url_property ::= URL COLON STRING SEMICOLON?
+
+icon_url_property ::= ICON_URL COLON STRING SEMICOLON?
+
+// Action property
+action_property ::= ACTION COLON LBRACE action_body RBRACE
+
+action_body ::= action_item*
+
+private action_item ::= (
+    url_property
+  | icon_url_property
+  | form_url_property
+  | param_property
+  | form_param_property
+  | user_attribute_param_property
+  | property
+  | COMMENT
+)
+
+form_url_property ::= FORM_URL COLON STRING SEMICOLON?
+
+// Param property
+param_property ::= PARAM COLON LBRACE param_body RBRACE
+
+param_body ::= param_item*
+
+private param_item ::= (name_property | value_property | property | COMMENT)
+
+value_property ::= VALUE COLON STRING SEMICOLON?
+
+// Form param property
+form_param_property ::= FORM_PARAM COLON LBRACE form_param_body RBRACE
+
+form_param_body ::= form_param_item*
+
+private form_param_item ::= (
+    name_property
+  | type_property
+  | label_property
+  | required_property
+  | default_property
+  | property
+  | COMMENT
+)
+
+required_property ::= REQUIRED COLON boolean_value SEMICOLON?
+
+default_property ::= DEFAULT COLON STRING SEMICOLON?
+
+// User attribute param property
+user_attribute_param_property ::= USER_ATTRIBUTE_PARAM COLON LBRACE user_attribute_param_body RBRACE
+
+user_attribute_param_body ::= user_attribute_param_item*
+
+private user_attribute_param_item ::= (name_property | user_attribute_property | property | COMMENT)
+
+// Case property
+case_property ::= CASE COLON LBRACE case_body RBRACE
+
+case_body ::= case_item*
+
+private case_item ::= (when_clause | else_clause | COMMENT)
+
+// When clause in case
+when_clause ::= WHEN COLON LBRACE when_body RBRACE
+
+when_body ::= when_item*
+
+private when_item ::= (sql_property | label_property | property | COMMENT)
+
+label_property ::= LABEL COLON STRING SEMICOLON?
+
+// Name property
+name_property ::= NAME COLON (STRING | IDENTIFIER) SEMICOLON?
+
+// Else clause in case
+else_clause ::= ELSE COLON STRING SEMICOLON?
+
+// Property values - simplified to match actual LookML syntax
+property_value ::= 
+    STRING 
+  | NUMBER 
+  | IDENTIFIER 
+  | keyword                    // Add keyword support
+  | hyphenated_identifier
+  | boolean_value
+  | TRUE_VALUE
+  | FALSE_VALUE
+  | array_value 
+  | template_expression DOT IDENTIFIER
+  | template_expression
+  | property_value_expression
+  | LBRACE property_list RBRACE
+
+// Boolean values
+boolean_value ::= YES | NO | TRUE_VALUE | FALSE_VALUE
+
+// Array values
+array_value ::= LBRACKET array_elements? RBRACKET
+
+array_elements ::= array_element (COMMA array_element)*
+
+array_element ::= field_pattern | wildcard_identifier | sort_specification | template_expression | qualified_identifier | STRING | NUMBER | IDENTIFIER
+
+// Sort specification for sorts arrays
+sort_specification ::= qualified_identifier (DESC | ASC | (COLON (IDENTIFIER | DESC | ASC)))?  // Allow DESC/ASC keywords after colon
+
+// Field pattern for things like users.basic* 
+field_pattern ::= qualified_identifier STAR
+
+// Wildcard identifier for simple patterns like detail*
+wildcard_identifier ::= IDENTIFIER STAR
+
+// SQL properties - these use special block syntax with ;;
+sql_property ::= SQL_BLOCK_START sql_block_content
+
+sql_table_name_property ::= SQL_TABLE_NAME COLON (STRING | template_expression | IDENTIFIER) SEMICOLON?
+
+sql_on_property ::= SQL_BLOCK_START sql_block_content
+
+sql_always_where_property ::= SQL_ALWAYS_WHERE_START sql_block_content
+
+sql_always_filter_property ::= SQL_ALWAYS_FILTER_START sql_block_content
+
+sql_always_having_property ::= SQL_ALWAYS_HAVING_START sql_block_content
+
+// SQL latitude property (inline)
+sql_latitude_property ::= SQL_LATITUDE COLON property_value (SEMICOLON | SEMICOLON SEMICOLON)?
+
+// SQL longitude property (inline)  
+sql_longitude_property ::= SQL_LONGITUDE COLON property_value (SEMICOLON | SEMICOLON SEMICOLON)?
+
+// HTML property
+html_property ::= HTML_BLOCK_START html_block_content
+
+// HTML block content - everything between html: and ;;
+html_block_content ::= html_block_element* SQL_BLOCK_END
+
+// HTML block elements can include comments and expressions
+private html_block_element ::= COMMENT | html_expression
+
+// HTML expressions can include liquid template syntax
+html_expression ::= 
+    template_expression
+  | STRING
+  | NUMBER
+  | IDENTIFIER
+  | sql_operator
+  | DOT
+  | LPAREN html_expression* RPAREN
+  | LBRACE html_expression* RBRACE
+  | SQL_CONTENT_TOKEN
+
+// SQL block content - everything between sql: and ;;
+sql_block_content ::= sql_block_element* SQL_BLOCK_END
+
+// SQL block elements can include comments and expressions
+private sql_block_element ::= COMMENT | sql_expression
+
+// SQL expressions that can appear in blocks or inline
+sql_expression ::= 
+    sql_field_reference
+  | template_expression
+  | STRING
+  | NUMBER
+  | IDENTIFIER
+  | sql_operator
+  | DOT
+  | COMMA
+  | LPAREN sql_expression* RPAREN
+  | SQL_CONTENT_TOKEN
+
+// SQL field reference patterns like ${TABLE}.column or identifier.column
+sql_field_reference ::= (template_expression | IDENTIFIER) DOT IDENTIFIER
+
+// Simple property value expressions (like field references)
+property_value_expression ::= IDENTIFIER (DOT IDENTIFIER)*
+
+// SQL operators
+private sql_operator ::= (EQ | NE | LT | GT | LE | GE | PLUS | MINUS | STAR | SLASH | PERCENT | AND | OR)
+
+// Template expressions like ${view.field} or ${TABLE}.column
+template_expression ::= DOLLAR LBRACE template_reference RBRACE
+
+template_reference ::= IDENTIFIER (DOT IDENTIFIER)*
+
+// Keywords that can be used as property names
+private keyword ::= (
+    NAME | TYPE | LABEL | VIEW_LABEL | GROUP_LABEL | DESCRIPTION | HIDDEN | PRIMARY_KEY | ALIAS
+  | REQUIRED_ACCESS_GRANTS | SUGGESTIONS | RELATIONSHIP
+  | SQL | SQL_TABLE_NAME | SQL_ON | SQL_WHERE | SQL_ALWAYS_WHERE | SQL_ALWAYS_FILTER | SQL_ALWAYS_HAVING | SQL_TRIGGER | SQL_LATITUDE | SQL_LONGITUDE
+  | VIEW | EXPLORE | DASHBOARD | LOOKML_DASHBOARD 
+  | DIMENSION | DIMENSION_GROUP | MEASURE | FILTER | PARAMETER | JOIN
+  | FROM | CONNECTION | INCLUDE | PERSIST_WITH | WEEK_START_DAY | CASE_SENSITIVE
+  | DATAGROUP | ACCESS_GRANT | NAMED_VALUE_FORMAT
+  | MAX_CACHE_AGE | ALLOWED_VALUE | ALLOWED_VALUES | USER_ATTRIBUTE | VALUE_FORMAT | STRICT_VALUE_FORMAT
+  | VIEW_NAME | ALWAYS_FILTER | CONDITIONALLY_FILTER | FILTERS | UNLESS | ACCESS_FILTER | FIELD | FIELDS | REQUIRED_JOINS
+  | AGGREGATE_TABLE | QUERY | DIMENSIONS | MEASURES | TIMEZONE | MATERIALIZATION
+  | DATAGROUP_TRIGGER | PARTITION_KEYS | CLUSTER_KEYS | INCREMENT_KEY | INCREMENT_OFFSET
+  | DERIVED_TABLE | EXPLORE_SOURCE | COLUMN | PERSIST_FOR | INDEXES | FIELDS_HIDDEN_BY_DEFAULT
+  | LINK | ACTION | URL | ICON_URL | FORM_URL | PARAM | FORM_PARAM | USER_ATTRIBUTE_PARAM
+  | VALUE | DEFAULT | REQUIRED | HTML | CASE | WHEN | ELSE | SET | DRILL_FIELDS
+  | TAGS | CAN_FILTER | ALPHA_SORT | TIERS | STYLE | CONVERT_TZ | DATATYPE | VALUE_FORMAT_NAME | PRECISION
+  | GROUP_ITEM_LABEL | TIMEFRAMES | ALLOW_FILL | LIST_FIELD | SUGGEST_DIMENSION | APPROXIMATE | LISTENS_TO_FILTERS
+  | APPROXIMATE_THRESHOLD | REQUIRED_FIELDS | ELEMENTS | ELEMENT | TITLE | MODEL | SORTS | LIMIT
+  | SHOW_SINGLE_VALUE_TITLE | SINGLE_VALUE_TITLE | CONDITIONAL_FORMATTING | BACKGROUND_COLOR
+  | FONT_COLOR | BOLD | LAYOUT | PREFERRED_VIEWER | REFRESH | UI_CONFIG | DISPLAY | OPTIONS
+  | ALLOW_MULTIPLE_VALUES | DEFAULT_VALUE | GREATER_THAN | LESS_THAN | BETWEEN | EQUAL_TO | WHITE
+  | PREFERRED_SLUG | COLUMN_LIMIT | STACKING | LEGEND_POSITION | X_AXIS_GRIDLINES | Y_AXIS_GRIDLINES
+  | INTERPOLATION | SERIES_TYPES | SERIES_COLORS | COLOR_APPLICATION | INNER_RADIUS | TRELLIS | ORDERING
+  | SHOW_DROPOFF | TABLE_THEME | HEADER_TEXT_ALIGNMENT | COMPARISON | COMPARISON_TYPE | COMPARISON_REVERSE_COLORS
+  | SHOW_COMPARISON | SHOW_COMPARISON_LABEL | COMPARISON_LABEL | ENABLE_CONDITIONAL_FORMATTING
+  | CONDITIONAL_FORMATTING_INCLUDE_TOTALS | CONDITIONAL_FORMATTING_INCLUDE_NULLS | VIS_CONFIG | HIDDEN_FIELDS
+  | SERIES_LABELS | PIVOTS | DYNAMIC_FIELDS | QUERY_TIMEZONE | LISTEN | SHOW_VALUE_LABELS | LABEL_DENSITY
+  | SHOW_VIEW_NAMES | Y_AXIS_COMBINED | SHOW_Y_AXIS_LABELS | SHOW_Y_AXIS_TICKS | Y_AXIS_TICK_DENSITY
+  | Y_AXIS_TICK_DENSITY_CUSTOM | SHOW_X_AXIS_LABEL | SHOW_X_AXIS_TICKS | X_AXIS_SCALE | Y_AXIS_SCALE_MODE
+  | X_AXIS_REVERSED | Y_AXIS_REVERSED | PLOT_SIZE_BY_FIELD | SHOW_NULL_POINTS | VALUE_LABELS | LABEL_TYPE
+  | START_ANGLE | END_ANGLE | COLLECTION_ID | PALETTE_ID | STEPS | LIMIT_DISPLAYED_ROWS | LIMIT_DISPLAYED_ROWS_VALUES
+  | POINT_STYLE | SHOW_NULL_LABELS | SHOW_TOTALS_LABELS | SHOW_SILHOUETTE | TOTALS_COLOR | SHOW_ROW_NUMBERS
+  | TRANSPOSE | TRUNCATE_TEXT | HIDE_TOTALS | HIDE_ROW_TOTALS | SIZE_TO_FIT | HEADER_FONT_SIZE | ROWS_FONT_SIZE
+  | MAP_PLOT_MODE | HEATMAP_GRIDLINES | HEATMAP_GRIDLINES_EMPTY | HEATMAP_OPACITY | SHOW_REGION_FIELD
+  | DRAW_MAP_LABELS_ABOVE_DATA | MAP_TILE_PROVIDER | MAP_POSITION | MAP_SCALE_INDICATOR | MAP_PANNABLE
+  | MAP_ZOOMABLE | MAP_MARKER_TYPE | MAP_MARKER_ICON_NAME | MAP_MARKER_RADIUS_MODE | MAP_MARKER_UNITS
+  | MAP_MARKER_PROPORTIONAL_SCALE_TYPE | MAP_MARKER_COLOR_MODE | SHOW_LEGEND | QUANTIZE_MAP_VALUE_COLORS
+  | REVERSE_MAP_VALUE_COLORS | TITLE_TEXT | SUBTITLE_TEXT | BODY_TEXT | CUSTOM_COLOR_ENABLED | CUSTOM_COLOR
+  | FONT_SIZE | TEXT_COLOR | VALUE_FORMAT_NAME_PROPERTY | HIDDEN_POINTS_IF_NO | TRUNCATE_COLUMN_NAMES
+  | ROW_TOTAL | CATEGORY | SHOW_HIDE | FIRST_LAST | NUM_ROWS | JS_LIBRARY_URL | DEPENDENCIES
+  | SHOW_LEGEND_PROP | LEGEND_POSITION_PROP | COLOR_SCHEME | ANIMATION_DURATION | STRIKETHROUGH | ITALIC
+  | CONSTRAINTS | MIN | MID | MAX | FILTER_EXPRESSION
+  | ROW_PROPERTY | COL_PROPERTY | WIDTH_PROPERTY | HEIGHT_PROPERTY | FILL_FIELDS | TRUE_VALUE | FALSE_VALUE
+  | X_AXIS_LABEL | X_AXIS_ZOOM | Y_AXIS_ZOOM | DEFAULTS_VERSION | SHOW_TOTALS | SHOW_ROW_TOTALS
+  | SERIES_CELL_VISUALIZATIONS | HIDE_LEGEND | SWAP_AXES | SHOW_SQL_QUERY_MENU_OPTIONS
+  | FIELD_FILTER | LABEL_VALUE_FORMAT | IS_ACTIVE | EXPRESSION | TABLE_CALCULATION | KIND_HINT | TYPE_HINT
+)

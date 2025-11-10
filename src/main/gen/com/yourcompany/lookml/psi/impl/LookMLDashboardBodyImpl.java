@@ -1,0 +1,48 @@
+// This is a generated file. Not intended for manual editing.
+package com.yourcompany.lookml.psi.impl;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static com.yourcompany.lookml.psi.LookMLTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.yourcompany.lookml.psi.*;
+
+public class LookMLDashboardBodyImpl extends ASTWrapperPsiElement implements LookMLDashboardBody {
+
+  public LookMLDashboardBodyImpl(@NotNull ASTNode node) {
+    super(node);
+  }
+
+  public void accept(@NotNull LookMLVisitor visitor) {
+    visitor.visitDashboardBody(this);
+  }
+
+  @Override
+  public void accept(@NotNull PsiElementVisitor visitor) {
+    if (visitor instanceof LookMLVisitor) accept((LookMLVisitor)visitor);
+    else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<LookMLDashboardFiltersProperty> getDashboardFiltersPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LookMLDashboardFiltersProperty.class);
+  }
+
+  @Override
+  @NotNull
+  public List<LookMLElementsProperty> getElementsPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LookMLElementsProperty.class);
+  }
+
+  @Override
+  @NotNull
+  public List<LookMLProperty> getPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LookMLProperty.class);
+  }
+
+}

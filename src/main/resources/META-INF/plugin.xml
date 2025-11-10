@@ -1,0 +1,67 @@
+<idea-plugin>
+    <id>com.andriidev.lookml</id>
+    <name>LookML Support</name>
+    <vendor email="andrii.kobtsev@gmail.com" url="https://github.com/andriikobtsev/lookml-plugin">Andrii Kobtsev</vendor>
+
+    <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- File Type -->
+        <fileType 
+            name="LookML" 
+            implementationClass="com.yourcompany.lookml.LookMLFileType"
+            language="LookML" 
+            extensions="lkml;lookml"/>
+        
+        <!-- Language -->
+        <lang.parserDefinition 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.LookMLParserDefinition"/>
+        
+        <!-- Syntax Highlighting -->
+        <lang.syntaxHighlighterFactory 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.highlighting.LookMLSyntaxHighlighterFactory"/>
+        
+        <!-- Color Settings Page -->
+        <colorSettingsPage 
+            implementation="com.yourcompany.lookml.highlighting.LookMLColorSettingsPage"/>
+        
+        <!-- Commenter -->
+        <lang.commenter 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.LookMLCommenter"/>
+        
+        <!-- Brace Matcher -->
+        <lang.braceMatcher 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.LookMLBraceMatcher"/>
+        
+        <!-- Quote Handler -->
+        <lang.quoteHandler 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.LookMLQuoteHandler"/>
+        
+        <!-- Completion -->
+        <completion.contributor 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.completion.LookMLCompletionContributor"/>
+        
+        <!-- Code Folding -->
+        <lang.foldingBuilder 
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.formatting.LookMLFoldingBuilder"/>
+    </extensions>
+    
+    <actions>
+        <action id="LookML.FormatCode"
+                class="com.yourcompany.lookml.formatting.LookMLFormatAction"
+                text="Format LookML Code"
+                description="Format LookML code with proper indentation">
+            <add-to-group group-id="CodeFormatGroup" anchor="after" relative-to-action="ReformatCode"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift L"/>
+        </action>
+    </actions>
+</idea-plugin>

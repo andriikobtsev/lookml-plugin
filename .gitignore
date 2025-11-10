@@ -1,0 +1,37 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.intellijPlatform/
+.kotlin/
+
+# Generated files
+src/main/kotlin/com/yourcompany/lookml/lexer/_LookMLLexer.java
+src/main/kotlin/com/yourcompany/lookml/lexer/LookMLLexer.java
+src/main/kotlin/com/yourcompany/lookml/parser/
+src/main/kotlin/com/yourcompany/lookml/psi/impl/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Plugin distribution
+*.jar
+*.zip
+!lib/*.jar
+
+# Downloaded dependencies
+lib/
+
+# Local configuration
+local.properties
+
+# Private notes/strategy docs
+.private/
