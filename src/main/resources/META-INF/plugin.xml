@@ -50,9 +50,14 @@
             implementationClass="com.yourcompany.lookml.completion.LookMLCompletionContributor"/>
         
         <!-- Code Folding -->
-        <lang.foldingBuilder 
+        <lang.foldingBuilder
             language="LookML"
             implementationClass="com.yourcompany.lookml.formatting.LookMLFoldingBuilder"/>
+
+        <!-- Code Formatting -->
+        <lang.formatter
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.formatting.LookMLFormattingModelBuilder"/>
     </extensions>
     
     <actions>
@@ -62,6 +67,8 @@
                 description="Format LookML code with proper indentation">
             <add-to-group group-id="CodeFormatGroup" anchor="after" relative-to-action="ReformatCode"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift L"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt shift L"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt shift L"/>
         </action>
     </actions>
 </idea-plugin>

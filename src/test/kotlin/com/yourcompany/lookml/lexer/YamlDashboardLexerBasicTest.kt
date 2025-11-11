@@ -3,8 +3,8 @@ package com.yourcompany.lookml.lexer
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 
 /**
  * Basic test for YamlDashboardLexer that doesn't depend on generated types.

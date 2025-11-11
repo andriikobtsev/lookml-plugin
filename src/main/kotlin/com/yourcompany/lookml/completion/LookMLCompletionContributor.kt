@@ -138,8 +138,12 @@ class LookMLCompletionContributor : CompletionContributor() {
                 CompletionContext.PROPERTY_VALUE -> {
                     addPropertyValueCompletions(position, caseInsensitiveResult)
                 }
+                CompletionContext.YAML_DASHBOARD -> {
+                    // Use YAML-specific completion provider
+                    YamlDashboardCompletionProvider().addCompletions(parameters, ProcessingContext(), caseInsensitiveResult)
+                }
                 CompletionContext.UNKNOWN -> {
-                    // No completions for YAML files
+                    // No completions
                 }
             }
         }
@@ -147,10 +151,10 @@ class LookMLCompletionContributor : CompletionContributor() {
         private fun detectContext(position: PsiElement): CompletionContext {
             val text = position.containingFile?.text ?: ""
             val caretOffset = position.textOffset
-            
-            // Check for YAML dashboard files - disable completion
+
+            // Check for YAML dashboard files - use special YAML completion
             if (text.trimStart().startsWith("---") || text.contains("- dashboard:")) {
-                return CompletionContext.UNKNOWN
+                return CompletionContext.YAML_DASHBOARD
             }
             
             // Check if we're in a property value position (after a colon)
@@ -540,6 +544,7 @@ class LookMLCompletionContributor : CompletionContributor() {
         JOIN_BODY,
         TEST_BODY,
         PROPERTY_VALUE,
+        YAML_DASHBOARD,
         UNKNOWN
     }
 }

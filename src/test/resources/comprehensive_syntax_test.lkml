@@ -13,8 +13,11 @@ include: "views/*.view"
 include: "/views/**/*.view"
 include: "*.dashboard.lookml"
 
+
 # Datagroup
 datagroup: orders_datagroup {
+
+
   sql_trigger: SELECT MAX(created_at) FROM orders ;;
   max_cache_age: "4 hours"
   label: "Orders Datagroup"
@@ -36,7 +39,7 @@ named_value_format: usd {
 # Explore
 explore: orders {
   from: order_items
-  view_name: orders
+                  view_name: orders
   label: "Orders Analysis"
   view_label: "Order Details"
   description: "Explore for analyzing orders"

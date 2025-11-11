@@ -5,7 +5,7 @@ import com.intellij.psi.tree.IElementType
 // Commented out until parser is generated
 // import com.yourcompany.lookml.psi.LookMLTypes
 import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.Assert.assertEquals
 
 /**
  * Full tests for YamlDashboardLexer.
@@ -160,13 +160,13 @@ class YamlDashboardLexerTest {
     }
     
     private fun assertTokensEqual(expected: List<TokenInfo>, actual: List<TokenInfo>) {
-        assertEquals(expected.size, actual.size, "Token count mismatch")
-        
+        assertEquals("Token count mismatch", expected.size, actual.size)
+
         for (i in expected.indices) {
-            assertEquals(expected[i].type, actual[i].type, 
-                "Token type mismatch at position $i. Expected: ${expected[i].type}, Actual: ${actual[i].type}")
-            assertEquals(expected[i].text, actual[i].text,
-                "Token text mismatch at position $i. Expected: '${expected[i].text}', Actual: '${actual[i].text}'")
+            assertEquals("Token type mismatch at position $i. Expected: ${expected[i].type}, Actual: ${actual[i].type}",
+                expected[i].type, actual[i].type)
+            assertEquals("Token text mismatch at position $i. Expected: '${expected[i].text}', Actual: '${actual[i].text}'",
+                expected[i].text, actual[i].text)
         }
     }
     

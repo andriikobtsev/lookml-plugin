@@ -4,21 +4,21 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ## ✨ Features
 
-### ✅ Working Features (v1.0)
+### ✅ Working Features (v1.1.0)
 
-- **Syntax Highlighting** - Keywords, strings, comments, SQL blocks, field references (traditional LookML)
+- **YAML Dashboard Autocomplete** 🆕 - 150+ properties for YAML dashboards
+- **Syntax Highlighting** - Keywords, strings, comments, SQL blocks, field references
 - **File Type Recognition** - `.lkml` and `.lookml` files
-- **Code Completion** - Basic keyword and property completion
+- **Code Completion** - Context-aware completion for traditional LookML and YAML dashboards
 - **Code Commenting** - Line and block comments (`Cmd/Ctrl + /`)
 - **Brace Matching** - Automatic matching of `{}`, `[]`, `()`
 - **Error Detection** - Syntax validation for traditional LookML
 - **Code Folding** - Collapse/expand views, explores, measures, dashboards
 - **Wildcard Field References** - Support for `users.basic*`, `detail*` syntax
 
-### ⚠️ Known Limitations (v1.0)
+### ⚠️ Known Limitations
 
-- **Code formatter** - Needs improvement
-- **YAML dashboard validation** - Partial support
+- **Code formatter** - Not yet implemented
 - **Advanced IDE features** - Planned for future releases (navigation, refactoring)
 - **Solo developer project** - Active development, bugs may exist
 
@@ -42,8 +42,52 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 Once installed, the plugin automatically activates when you open `.lkml` or `.lookml` files.
 
+### YAML Dashboard Autocomplete 🆕
+
+Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
+
+**How to use:**
+1. Open a YAML dashboard file (starts with `---` or `- dashboard:`)
+2. Start typing a property name (e.g., type `ti` for "title")
+3. Press **`Ctrl+Space`** to see suggestions
+4. Select from the list!
+
+**What you get:**
+- ✅ **Dashboard properties** - title, description, layout, filters, elements, etc.
+- ✅ **Element properties** - type, model, explore, fields, row, col, width, height, etc.
+- ✅ **Chart properties** - x_axis_gridlines, series_colors, stacking, legend_position, etc.
+- ✅ **Table properties** - show_row_numbers, truncate_text, conditional_formatting, etc.
+- ✅ **Filter properties** - name, type, ui_config, listens_to_filters, etc.
+- ✅ **Visualization types** - looker_line, looker_column, single_value, table, etc.
+- ✅ **150+ total properties** with descriptions!
+
+**Example:**
+```yaml
+---
+- dashboard: sales_dashboard
+  # Type "ti" and press Ctrl+Space → see "title"
+  title: "Sales Dashboard"
+
+  elements:
+  # Type "ty" and press Ctrl+Space → see "type"
+  - type: looker_column
+    # Type "show_" and press Ctrl+Space → see all "show_*" properties!
+    show_view_names: false
+```
+
+See [docs/YAML_AUTOCOMPLETE.md](docs/YAML_AUTOCOMPLETE.md) for complete property list.
+
+### Traditional LookML Completion
+
+Traditional LookML files also have autocomplete for:
+- **Top-level keywords**: `view:`, `explore:`, `dashboard:`, etc.
+- **View properties**: `dimension:`, `measure:`, `filter:`, etc.
+- **Field properties**: `type:`, `sql:`, `label:`, etc.
+- **Type values**: Dimension types, measure types, relationship types
+
 ### Keyboard Shortcuts
 
+- **Code Completion**: `Ctrl+Space` (shows available keywords and properties)
 - **Comment/Uncomment Line**: `Cmd/Ctrl + /`
 - **Comment/Uncomment Block**: `Cmd/Ctrl + Shift + /`
 - **Code Folding**: `Cmd/Ctrl + -/+` (collapse/expand)
@@ -141,9 +185,17 @@ This project is **dual-licensed**:
 
 ## 📊 Version History
 
-**Current Version**: 1.0.0
+**Current Version**: 1.1.0
 
-See [CHANGELOG.md](CHANGELOG.md) for version history and planned features.
+### What's New in v1.1.0
+- 🆕 **YAML Dashboard Autocomplete** - 150+ properties with descriptions
+- 🆕 **Dashboard Properties** - title, layout, filters, elements, and more
+- 🆕 **Element Properties** - type, fields, charts, tables, maps (80+ properties)
+- 🆕 **Filter Properties** - Comprehensive filter configuration options
+- 🆕 **Visualization Types** - All Looker chart types plus marketplace visualizations
+- ✨ **Context-Aware** - Shows relevant properties based on where you're typing
+
+See [CHANGELOG.md](CHANGELOG.md) for complete version history.
 
 ---
 

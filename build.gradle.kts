@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.andriidev"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
@@ -85,6 +85,17 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
+            <h3>Version 1.1.0 - YAML Dashboard Autocomplete</h3>
+            <ul>
+                <li><b>NEW:</b> YAML dashboard autocomplete with 150+ properties</li>
+                <li><b>NEW:</b> Dashboard-level properties (title, layout, filters, elements, etc.)</li>
+                <li><b>NEW:</b> Element properties (type, model, explore, fields, charts, tables, maps)</li>
+                <li><b>NEW:</b> Filter properties (name, type, ui_config, listens_to_filters, etc.)</li>
+                <li><b>NEW:</b> Visualization type suggestions (looker_line, looker_column, single_value, etc.)</li>
+                <li><b>NEW:</b> Context-aware property suggestions based on YAML structure</li>
+                <li>Type a few letters and press Ctrl+Space to see intelligent suggestions!</li>
+            </ul>
+
             <h3>Version 1.0.0 - Initial Release</h3>
             <ul>
                 <li>Full LookML syntax highlighting</li>

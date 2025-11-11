@@ -220,12 +220,147 @@ class LookMLFormattingModelBuilder : FormattingModelBuilder {
     }
     
     private fun normalizeSpaces(line: String): String {
-        // Replace multiple spaces with single space, but preserve spaces in strings
-        return line.replace(Regex("\\s+"), " ")
+        var normalized = line
+
+        // First, handle SQL blocks specially - preserve content between ;; markers
+        if (line.contains("sql:", ignoreCase = true) && line.contains(";;")) {
+            val parts = line.split(";;")
+            if (parts.size >= 2) {
+                val beforeSql = parts[0]
+                val sqlContent = parts.dropLast(1).drop(1).joinToString(";;")
+                val afterSql = if (parts.last().isNotBlank()) ";;" + parts.last() else ";;"
+
+                // Normalize only the property name part
+                val normalizedBefore = beforeSql.replace(Regex("\\s+"), " ")
+                    .replace(" :", ":")
+                    .replace(":  ", ": ")
+
+                // Capitalize SQL keywords in SQL content
+                val capitalizedSql = capitalizeSqlKeywords(sqlContent.trim())
+
+                return normalizedBefore + " " + capitalizedSql + " " + afterSql
+            }
+        }
+
+        // For non-SQL lines, do standard normalization
+        normalized = normalized.replace(Regex("\\s+"), " ")
             .replace(" :", ":")  // Remove space before colon
             .replace(":  ", ": ") // Single space after colon
             .replace("{ ", "{")   // Remove space after opening brace
             .replace(" }", "}")   // Remove space before closing brace
+
+        // Capitalize SQL keywords if this is an inline SQL property
+        if (normalized.contains("sql:", ignoreCase = true) ||
+            normalized.contains("sql_on:", ignoreCase = true) ||
+            normalized.contains("sql_where:", ignoreCase = true) ||
+            normalized.contains("sql_table_name:", ignoreCase = true) ||
+            normalized.contains("sql_always_where:", ignoreCase = true) ||
+            normalized.contains("sql_always_having:", ignoreCase = true) ||
+            normalized.contains("sql_trigger:", ignoreCase = true)) {
+            normalized = capitalizeSqlInProperty(normalized)
+        }
+
+        return normalized
+    }
+
+    private fun capitalizeSqlKeywords(sql: String): String {
+        if (sql.isBlank()) return sql
+
+        val sqlKeywords = setOf(
+            "SELECT", "FROM", "WHERE", "JOIN", "LEFT", "RIGHT", "INNER", "OUTER", "FULL",
+            "ON", "AND", "OR", "NOT", "IN", "EXISTS", "CASE", "WHEN", "THEN", "ELSE", "END",
+            "GROUP", "BY", "HAVING", "ORDER", "ASC", "DESC", "LIMIT", "OFFSET",
+            "UNION", "INTERSECT", "EXCEPT", "AS", "DISTINCT", "ALL", "COUNT", "SUM",
+            "AVG", "MIN", "MAX", "CAST", "COALESCE", "NULLIF", "IS", "NULL",
+            "BETWEEN", "LIKE", "ILIKE", "SIMILAR", "TO", "INSERT", "UPDATE", "DELETE",
+            "CREATE", "DROP", "ALTER", "TABLE", "VIEW", "INDEX", "WITH"
+        )
+
+        // Split by spaces but preserve ${...} template expressions and strings
+        val result = StringBuilder()
+        var i = 0
+        var currentWord = StringBuilder()
+        var inTemplate = false
+        var inString = false
+        var stringChar = '\u0000'
+
+        while (i < sql.length) {
+            val char = sql[i]
+
+            when {
+                // Handle template expressions ${...}
+                !inString && char == '$' && i + 1 < sql.length && sql[i + 1] == '{' -> {
+                    if (currentWord.isNotEmpty()) {
+                        result.append(capitalizeIfKeyword(currentWord.toString(), sqlKeywords))
+                        currentWord.clear()
+                    }
+                    inTemplate = true
+                    result.append(char)
+                }
+                inTemplate -> {
+                    result.append(char)
+                    if (char == '}') inTemplate = false
+                }
+                // Handle strings
+                !inTemplate && (char == '"' || char == '\'') -> {
+                    if (!inString) {
+                        if (currentWord.isNotEmpty()) {
+                            result.append(capitalizeIfKeyword(currentWord.toString(), sqlKeywords))
+                            currentWord.clear()
+                        }
+                        inString = true
+                        stringChar = char
+                        result.append(char)
+                    } else if (char == stringChar && (i == 0 || sql[i - 1] != '\\')) {
+                        inString = false
+                        result.append(char)
+                    } else {
+                        result.append(char)
+                    }
+                }
+                inString -> {
+                    result.append(char)
+                }
+                // Handle word boundaries
+                !inTemplate && !inString && (char.isWhitespace() || char in "(),;") -> {
+                    if (currentWord.isNotEmpty()) {
+                        result.append(capitalizeIfKeyword(currentWord.toString(), sqlKeywords))
+                        currentWord.clear()
+                    }
+                    result.append(char)
+                }
+                else -> {
+                    currentWord.append(char)
+                }
+            }
+            i++
+        }
+
+        // Don't forget the last word
+        if (currentWord.isNotEmpty()) {
+            result.append(capitalizeIfKeyword(currentWord.toString(), sqlKeywords))
+        }
+
+        return result.toString()
+    }
+
+    private fun capitalizeIfKeyword(word: String, keywords: Set<String>): String {
+        val upper = word.uppercase()
+        return if (upper in keywords) upper else word
+    }
+
+    private fun capitalizeSqlInProperty(line: String): String {
+        // Find the SQL part after the colon
+        val colonIndex = line.indexOf(':')
+        if (colonIndex == -1) return line
+
+        val propertyName = line.substring(0, colonIndex + 1)
+        val value = line.substring(colonIndex + 1).trim()
+
+        // Capitalize SQL keywords in the value
+        val capitalizedValue = capitalizeSqlKeywords(value)
+
+        return propertyName + " " + capitalizedValue
     }
     
     private fun isClosingBrace(line: String): Boolean {

@@ -33,5 +33,5 @@ lib/
 # Local configuration
 local.properties
 
-# Private notes/strategy docs
+# Private notes
 .private/
