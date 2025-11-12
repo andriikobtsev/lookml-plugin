@@ -256,6 +256,8 @@ See [CHANGELOG.md](CHANGELOG.md) for complete version history.
 
 **Made with ❤️ by Andrii Kobtsev**
 
-⭐ If you find this plugin helpful, please star the repo!
+## Support
+⭐ If you find this plugin helpful, please star the repo!  
+💝 You can also [support future development](https://paypal.me/andriikobtsev).
 
 💬 Questions? Feedback? Open an issue or reach out!
