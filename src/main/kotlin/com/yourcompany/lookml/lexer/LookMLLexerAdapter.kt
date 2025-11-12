@@ -261,13 +261,13 @@ class LookMLLexerAdapter : LexerBase() {
             // Handle identifiers
             if (ch.isLetter() || ch == '_') {
                 val start = currentPosition
-                while (currentPosition < endOffset && 
+                while (currentPosition < endOffset &&
                        (buffer[currentPosition].isLetterOrDigit() || buffer[currentPosition] == '_')) {
                     currentPosition++
                 }
                 val word = buffer.substring(start, currentPosition).toString()
                 tokenEnd = currentPosition
-                
+
                 currentToken = when (word.uppercase()) {
                     "TABLE" -> LookMLTypes.IDENTIFIER
                     "AND" -> LookMLTypes.AND
@@ -276,7 +276,18 @@ class LookMLLexerAdapter : LexerBase() {
                 }
                 return
             }
-            
+
+            // Handle numbers in SQL blocks - CRITICAL: consume entire number, not digit-by-digit!
+            if (ch.isDigit()) {
+                while (currentPosition < endOffset &&
+                       (buffer[currentPosition].isDigit() || buffer[currentPosition] == '.')) {
+                    currentPosition++
+                }
+                tokenEnd = currentPosition
+                currentToken = LookMLTypes.SQL_CONTENT_TOKEN
+                return
+            }
+
             // Fallback: consume one character as SQL content
             tokenEnd = currentPosition + 1
             currentToken = LookMLTypes.SQL_CONTENT_TOKEN
@@ -536,12 +547,8 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql: pattern
             if (word == "sql" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                // Include the colon but NOT trailing whitespace
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -549,12 +556,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_on: pattern
             if (word == "sql_on" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -562,25 +564,15 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_where: pattern
             if (word == "sql_where" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
             }
             
-            // Check for sql_table_name: pattern  
+            // Check for sql_table_name: pattern
             if (word == "sql_table_name" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -588,12 +580,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_always_where: pattern
             if (word == "sql_always_where" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_ALWAYS_WHERE_START
                 state = SQL_BLOCK
                 return
@@ -601,12 +588,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_always_filter: pattern
             if (word == "sql_always_filter" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_ALWAYS_FILTER_START
                 state = SQL_BLOCK
                 return
@@ -614,12 +596,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_trigger: pattern
             if (word == "sql_trigger" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -627,12 +604,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_always_having: pattern
             if (word == "sql_always_having" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_ALWAYS_HAVING_START
                 state = SQL_BLOCK
                 return
@@ -640,12 +612,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_latitude: pattern
             if (word == "sql_latitude" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -653,12 +620,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for sql_longitude: pattern
             if (word == "sql_longitude" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.SQL_BLOCK_START
                 state = SQL_BLOCK
                 return
@@ -666,12 +628,7 @@ class LookMLLexerAdapter : LexerBase() {
             
             // Check for html: pattern
             if (word == "html" && currentPosition < endOffset && buffer[currentPosition] == ':') {
-                var pos = currentPosition + 1
-                while (pos < endOffset && buffer[pos].isWhitespace()) {
-                    pos++
-                }
-                currentPosition = pos
-                tokenEnd = currentPosition
+                tokenEnd = currentPosition + 1
                 currentToken = LookMLTypes.HTML_BLOCK_START
                 state = SQL_BLOCK
                 return

@@ -90,7 +90,7 @@ Input Text → Lexer → Token Stream → Parser → PSI Elements → IDE Featur
 **Root Cause**: `sort_specification` rule was consuming `users.basic` before `field_pattern` could match the wildcard
 **Solution**: Reorder `array_element` alternatives - put `field_pattern` before `sort_specification`
 
-#### **Problem**: `peakside_v2.is_within_period: yes` failed in YAML
+#### **Problem**: `test_explore.is_within_period: yes` failed in YAML
 **Root Cause**: YAML lexer processed `yes` as `INLINE_CHAR` instead of checking keywords first  
 **Solution**: Add keyword checking before falling back to generic text parsing
 

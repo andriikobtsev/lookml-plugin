@@ -57,7 +57,7 @@
         <!-- Code Formatting -->
         <lang.formatter
             language="LookML"
-            implementationClass="com.yourcompany.lookml.formatting.LookMLFormattingModelBuilder"/>
+            implementationClass="com.yourcompany.lookml.formatting.LookMLFormattingModelBuilderV2"/>
     </extensions>
     
     <actions>

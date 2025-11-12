@@ -8,7 +8,7 @@
   # Test cases that should now work:
   
   # File path with dashboard in the name
-  __FILE: condo-dwh/dashboards/external/peakside/investor_overview_v2.dashboard.lookml
+  __FILE: condo-dwh/dashboards/external/test_explore/investor_overview_v2.dashboard.lookml
   
   # Property with compound identifier value  
   source_file: reports/analytics.dashboard.lkml

@@ -2,6 +2,31 @@
 
 All notable changes to the LookML Plugin will be documented in this file.
 
+## [1.2.0] - 2025-11-12
+
+### Added
+- **Code Formatter** - Automatic code formatting for traditional LookML files
+- **SQL Formatting** - SQL blocks formatted on single line with proper spacing
+- **Template Expression Formatting** - `${TABLE}` formatted with no internal spaces
+- **Operator Spacing** - Proper spaces around operators: `${a} = ${b}`
+- **Structure-Based Indentation** - 2-space indentation based on block nesting
+
+### Fixed
+- **Lexer**: SQL tokens no longer include trailing whitespace
+- **Lexer**: Numbers in SQL blocks now parsed as complete tokens (prevents `100` becoming `1 0 0`)
+- **Formatter**: Literals (numbers, strings) preserved exactly as-is
+
+### Technical Improvements
+- Implemented `LookMLFormattingModelBuilderV2` with PSI-based formatting
+- Created `LookMLBlock` for structure and indentation logic
+- Created `SqlPropertyBlock` for SQL-specific inline formatting
+- Updated plugin.xml to register formatter
+- Added formatter test files in `src/test/resources/formatter/`
+
+### Known Limitations
+- YAML dashboard formatting not yet implemented (planned for v1.2.1)
+- Formatter requires files to be parseable (no syntax errors)
+
 ## [1.1.0] - 2025-11-11
 
 ### Added

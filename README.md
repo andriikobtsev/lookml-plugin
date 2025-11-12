@@ -4,9 +4,10 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ## ✨ Features
 
-### ✅ Working Features (v1.1.0)
+### ✅ Working Features (v1.2.0)
 
-- **YAML Dashboard Autocomplete** 🆕 - 150+ properties for YAML dashboards
+- **Code Formatter** 🆕 - Automatic formatting for traditional LookML (Code → Reformat Code)
+- **YAML Dashboard Autocomplete** - 150+ properties for YAML dashboards
 - **Syntax Highlighting** - Keywords, strings, comments, SQL blocks, field references
 - **File Type Recognition** - `.lkml` and `.lookml` files
 - **Code Completion** - Context-aware completion for traditional LookML and YAML dashboards
@@ -18,7 +19,7 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ### ⚠️ Known Limitations
 
-- **Code formatter** - Not yet implemented
+- **YAML formatter** - Traditional LookML works, YAML planned for v1.2.1
 - **Advanced IDE features** - Planned for future releases (navigation, refactoring)
 - **Solo developer project** - Active development, bugs may exist
 
@@ -60,6 +61,53 @@ Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
 - ✅ **Filter properties** - name, type, ui_config, listens_to_filters, etc.
 - ✅ **Visualization types** - looker_line, looker_column, single_value, table, etc.
 - ✅ **150+ total properties** with descriptions!
+
+### Code Formatter 🆕
+
+Automatically format traditional LookML files for consistent style!
+
+**How to use:**
+1. Open a traditional LookML file (views, explores, dimensions, etc.)
+2. Press **`Cmd+Opt+L`** (Mac) or **`Ctrl+Alt+L`** (Windows/Linux)
+3. Or: Code → Reformat Code
+
+**What it does:**
+- ✅ **Proper indentation** - 2 spaces per nesting level
+- ✅ **SQL formatting** - SQL blocks on single line: `sql: ${TABLE}.id ;;`
+- ✅ **Template expressions** - No spaces inside: `${TABLE}` not `$ { TABLE }`
+- ✅ **Operator spacing** - Spaces around operators: `${a} = ${b}`
+- ✅ **Preserves literals** - Numbers and strings stay intact
+
+**Example:**
+```lkml
+# Before formatting:
+view: users {
+dimension: id {
+type: number
+sql: $ { TABLE } . user_id ;;
+}
+}
+
+# After formatting:
+view: users {
+  dimension: id {
+    type: number
+    sql: ${TABLE}.user_id ;;
+  }
+}
+```
+
+**Note:** YAML dashboard formatting planned for v1.2.1
+
+### YAML Dashboard Autocomplete
+
+Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
+
+**How to use:**
+1. Open a YAML dashboard file (starts with `---` or `- dashboard:`)
+2. Start typing a property name (e.g., type `ti` for "title")
+3. Press **`Ctrl+Space`** to see suggestions
+4. Select from the list!
 
 **Example:**
 ```yaml
