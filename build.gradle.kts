@@ -85,6 +85,17 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
+            <h3>Version 1.2.0 - Code Formatter</h3>
+            <ul>
+                <li><b>NEW:</b> Code formatter for traditional LookML (Cmd/Ctrl+Alt/Option+L)</li>
+                <li><b>NEW:</b> SQL formatting - blocks on single line with proper spacing</li>
+                <li><b>NEW:</b> Template expressions formatted: ${'$'}{TABLE} with no spaces</li>
+                <li><b>NEW:</b> Smart 2-space indentation based on block structure</li>
+                <li><b>FIXED:</b> Lexer now parses numbers correctly (prevents "100" becoming "1 0 0")</li>
+                <li><b>FIXED:</b> SQL tokens no longer include trailing whitespace</li>
+                <li>Note: YAML dashboard formatting coming in v1.2.1</li>
+            </ul>
+
             <h3>Version 1.1.0 - YAML Dashboard Autocomplete</h3>
             <ul>
                 <li><b>NEW:</b> YAML dashboard autocomplete with 150+ properties</li>
