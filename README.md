@@ -233,7 +233,14 @@ This project is **dual-licensed**:
 
 ## 📊 Version History
 
-**Current Version**: 1.1.0
+**Current Version**: 1.2.0
+
+### What's New in v1.2.0
+- 🆕 **Code Formatter** - Automatic formatting for traditional LookML files
+- 🆕 **SQL Formatting** - SQL blocks on single line with proper spacing
+- 🆕 **Template Expression Formatting** - `${TABLE}` with no internal spaces
+- 🆕 **Smart Indentation** - 2-space indentation based on block structure
+- 🐛 **Lexer Fixes** - Numbers and SQL tokens now parse correctly
 
 ### What's New in v1.1.0
 - 🆕 **YAML Dashboard Autocomplete** - 150+ properties with descriptions
