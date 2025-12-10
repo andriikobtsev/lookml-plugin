@@ -62,9 +62,11 @@ Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
 - ✅ **Visualization types** - looker_line, looker_column, single_value, table, etc.
 - ✅ **150+ total properties** with descriptions!
 
-### Code Formatter 🆕
+### Code Formatter
 
-Automatically format traditional LookML files for consistent style!
+Automatically format LookML files for consistent style!
+
+#### Traditional LookML Files
 
 **How to use:**
 1. Open a traditional LookML file (views, explores, dimensions, etc.)
@@ -97,7 +99,40 @@ view: users {
 }
 ```
 
-**Note:** YAML dashboard formatting planned for v1.2.1
+#### YAML Dashboard Files 🆕
+
+**How to use:**
+1. Open a YAML dashboard file (starts with `---` or `- dashboard:`)
+2. Press **`Cmd+Opt+Shift+Y`** (Mac) or **`Ctrl+Alt+Shift+Y`** (Windows/Linux)
+3. Or: **Cmd+Shift+A** → type "Reformat YAML Dashboard" → Enter
+4. Or: Right-click → "Reformat YAML Dashboard"
+
+**What it does:**
+- ✅ **Correct indentation** - Proper YAML structure with 2-space indent
+- ✅ **Property alignment** - All properties at correct nesting level
+- ✅ **List formatting** - Dashboard, elements, and filters properly formatted
+- ✅ **Preserves content** - All properties, values, and data retained
+
+**Example:**
+```yaml
+# Before formatting:
+---
+- dashboard : test
+title : "Sales"
+elements : - name : chart1
+type : looker_line
+row : 0
+
+# After formatting:
+- dashboard: test
+  title: "Sales"
+  elements:
+  - name: "chart1"
+    type: "looker_line"
+    row: "0"
+```
+
+**Note:** Regular Cmd+Option+L skips YAML files - use the special YAML formatter action instead!
 
 ### YAML Dashboard Autocomplete
 
