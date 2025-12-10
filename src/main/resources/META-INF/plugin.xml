@@ -61,6 +61,16 @@
     </extensions>
     
     <actions>
+        <action id="LookML.ReformatYamlDashboard"
+                class="com.yourcompany.lookml.actions.ReformatYamlDashboardAction"
+                text="Reformat YAML Dashboard"
+                description="Reformat YAML dashboard with correct indentation">
+            <add-to-group group-id="CodeFormatGroup" anchor="after" relative-to-action="ReformatCode"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift Y"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt shift Y"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt shift Y"/>
+        </action>
+        
         <action id="LookML.FormatCode"
                 class="com.yourcompany.lookml.formatting.LookMLFormatAction"
                 text="Format LookML Code"
