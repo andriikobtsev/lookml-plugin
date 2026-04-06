@@ -3,11 +3,16 @@
     <name>LookML Support</name>
     <vendor email="andrii.kobtsev@gmail.com" url="https://github.com/andriikobtsev/lookml-plugin">Andrii Kobtsev</vendor>
 
+    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260401" release-version="20261"/>
+
     <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="com.andriidev.lookml.license" displayType="STICKY_BALLOON" isLogByDefault="true"/>
+
+        <postStartupActivity implementation="com.yourcompany.lookml.license.LookMLLicenseStartupActivity"/>
         <!-- File Type -->
         <fileType 
             name="LookML" 
@@ -58,6 +63,10 @@
         <lang.formatter
             language="LookML"
             implementationClass="com.yourcompany.lookml.formatting.LookMLFormattingModelBuilderV2"/>
+
+        <!-- Code Style Settings -->
+        <langCodeStyleSettingsProvider
+            implementation="com.yourcompany.lookml.formatting.LookMLLanguageCodeStyleSettingsProvider"/>
     </extensions>
     
     <actions>

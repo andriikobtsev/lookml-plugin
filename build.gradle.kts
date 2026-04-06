@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = "com.andriidev"
-version = "1.2.1"
+version = "2026.1.0"
 
 repositories {
     mavenCentral()
@@ -46,6 +47,7 @@ intellijPlatform {
         version = project.version.toString()
 
         ideaVersion {
+            // Compiles against bundled SDK below. Raise sinceBuild when raising intellijIdeaCommunity (e.g. 261 for 2026.1).
             sinceBuild = "251"
             untilBuild = provider { null } // No upper bound
         }
@@ -85,6 +87,13 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
+            <h3>2026.1.0 — Version scheme and Marketplace licensing</h3>
+            <ul>
+                <li><b>Versioning:</b> Plugin version uses <code>2026.1.x</code> (JetBrains Marketplace / calendar-style) instead of <code>1.2.x</code>. This line matches the paid-plugin <code>product-descriptor</code> release train.</li>
+                <li><b>Marketplace:</b> JetBrains Marketplace paid license with 30-day trial (see listing for current price). Activate in the IDE from the notification or <b>Help | Register</b>.</li>
+                <li><b>SDK note:</b> Builds currently target IntelliJ IDEA Community <b>2025.1</b> (<code>sinceBuild 251</code>). Bump the SDK in <code>build.gradle.kts</code> when you move to a newer IDE baseline.</li>
+            </ul>
+
             <h3>Version 1.2.0 - Code Formatter</h3>
             <ul>
                 <li><b>NEW:</b> Code formatter for traditional LookML (Cmd/Ctrl+Alt/Option+L)</li>
@@ -128,6 +137,15 @@ intellijPlatform {
         token = providers.environmentVariable("INTELLIJ_PUBLISH_TOKEN")
         channels = listOf("stable")
     }
+
+    pluginVerification {
+        ides {
+            ide(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
+        }
+    }
+
+    // Paid plugins: avoid headless IDE registration during searchable options build
+    buildSearchableOptions = false
 }
 
 // Configure Grammar-Kit to generate parser from our BNF
@@ -166,6 +184,7 @@ tasks {
 
     // Disable instrumentation task if it exists
     findByName("instrumentCode")?.enabled = false
+    findByName("instrumentTestCode")?.enabled = false
 }
 
 // Add generated sources directory
@@ -180,6 +199,7 @@ sourceSets {
 // Disable instrumentation after project evaluation
 afterEvaluate {
     tasks.findByName("instrumentCode")?.enabled = false
+    tasks.findByName("instrumentTestCode")?.enabled = false
 }
 
 // Task to quickly test parsing

@@ -35,3 +35,7 @@ local.properties
 
 # Private notes
 .private/
+
+# Local tooling / scratch
+.serena/
+test_output.txt
