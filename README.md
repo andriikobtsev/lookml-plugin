@@ -4,9 +4,10 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ## ✨ Features
 
-### ✅ Working Features (v1.2.0)
+### ✅ Working Features (2026.1.0)
 
-- **Code Formatter** 🆕 - Automatic formatting for traditional LookML (Code → Reformat Code)
+- **Code Formatter** - **Traditional LookML** and **YAML dashboards** via Code → Reformat Code (`Cmd/Ctrl+Alt+L`)
+- **YAML Dashboard Rewriter** - Same logic via **Reformat YAML Dashboard** (`Cmd/Ctrl+Alt+Shift+Y`); requires an active Marketplace license after the **evaluation period** (trial counts as licensed)
 - **YAML Dashboard Autocomplete** - 150+ properties for YAML dashboards
 - **Syntax Highlighting** - Keywords, strings, comments, SQL blocks, field references
 - **File Type Recognition** - `.lkml` and `.lookml` files
@@ -19,9 +20,16 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ### ⚠️ Known Limitations
 
-- **YAML formatter** - Traditional LookML works, YAML planned for v1.2.1
-- **Advanced IDE features** - Planned for future releases (navigation, refactoring)
-- **Solo developer project** - Active development, bugs may exist
+- **YAML dashboard rewriter** - Best for typical dashboards; nested maps (`ui_config`, `listen`), multiline scalars, and some inline structures may not round-trip perfectly (see `CHANGELOG.md`).
+- **Traditional formatter** - Expects parseable files; severe syntax errors may limit formatting.
+- **Advanced IDE features** - Navigation/refactoring planned for future releases.
+
+## Marketplace, evaluation, and license
+
+- **Distribution:** The plugin is a **paid** JetBrains Marketplace product; the listing shows **price** and **evaluation** length.
+- **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial — **formatting and the YAML rewriter work**.
+- **After evaluation:** Activate with **Help | Register** (JetBrains account + subscription or license). Without a valid license, **all code formatting** is disabled (**Reformat Code**, **Reformat YAML Dashboard**, **Format LookML Code**). Editing aids such as **syntax highlighting**, **folding**, and **completion** are not license-gated in this version.
+- **Product descriptor:** `plugin.xml` includes `<product-descriptor …/>` for paid-plugin activation. **`release-date`** must be the **actual upload day** (`YYYYMMDD`) — update it each time you publish a new build.
 
 ## 📥 Installation
 
@@ -99,19 +107,15 @@ view: users {
 }
 ```
 
-#### YAML Dashboard Files 🆕
+#### YAML Dashboard Files
 
-**How to use:**
-1. Open a YAML dashboard file (starts with `---` or `- dashboard:`)
-2. Press **`Cmd+Opt+Shift+Y`** (Mac) or **`Ctrl+Alt+Shift+Y`** (Windows/Linux)
-3. Or: **Cmd+Shift+A** → type "Reformat YAML Dashboard" → Enter
-4. Or: Right-click → "Reformat YAML Dashboard"
+**How to use (recommended):**
+1. Open a YAML dashboard file (typically `---` and/or `- dashboard:`)
+2. **Code → Reformat Code** — **`Cmd+Option+L`** (Mac) or **`Ctrl+Alt+L`** (Windows/Linux)
 
-**What it does:**
-- ✅ **Correct indentation** - Proper YAML structure with 2-space indent
-- ✅ **Property alignment** - All properties at correct nesting level
-- ✅ **List formatting** - Dashboard, elements, and filters properly formatted
-- ✅ **Preserves content** - All properties, values, and data retained
+**Alternative:** **Reformat YAML Dashboard** — **`Cmd+Option+Shift+Y`** / **`Ctrl+Alt+Shift+Y`**, or Find Action (`Cmd/Ctrl+Shift+A`) → “Reformat YAML Dashboard”.
+
+Both paths run the same **`YamlDashboardRewriter`** (canonical layout, 2-space indent, ordered sections).
 
 **Example:**
 ```yaml
@@ -131,8 +135,6 @@ row : 0
     type: "looker_line"
     row: "0"
 ```
-
-**Note:** Regular Cmd+Option+L skips YAML files - use the special YAML formatter action instead!
 
 ### YAML Dashboard Autocomplete
 
@@ -157,8 +159,6 @@ Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
     # Type "show_" and press Ctrl+Space → see all "show_*" properties!
     show_view_names: false
 ```
-
-See [docs/YAML_AUTOCOMPLETE.md](docs/YAML_AUTOCOMPLETE.md) for complete property list.
 
 ### Traditional LookML Completion
 
@@ -240,25 +240,40 @@ Contributions are welcome! Whether it's bug fixes, new features, or documentatio
 
 ### Development Setup
 
-See [docs/TECHNICAL_GUIDE.md](docs/TECHNICAL_GUIDE.md) for development environment setup.
+- JDK 21 (matches this project’s `jvmTarget`; IntelliJ SDK version is set in `build.gradle.kts` via `intellijIdeaCommunity(...)`)
+- `./gradlew generateParser` (if grammar changed) then `./gradlew build` / `./gradlew test`
+- `./gradlew runIde` to debug in a sandbox IDE
+
+### Publishing to JetBrains Marketplace (maintainers)
+
+1. Set environment variable **`INTELLIJ_PUBLISH_TOKEN`** (create under [JetBrains Marketplace](https://plugins.jetbrains.com/) → **Profile** → **Access Tokens**).
+2. Build and verify: `./gradlew test verifyPlugin buildPlugin`
+3. Upload **`build/distributions/lookml-plugin-2026.1.0.zip`** (version from `build.gradle.kts`) in the vendor UI, or run **`./gradlew publishPlugin`** if your Gradle setup is tied to the same token.
+4. On each release, set **`release-date`** in `plugin.xml` `<product-descriptor>` to the upload date (`YYYYMMDD`).
+5. Add or refresh **screenshots** and **Getting Started** text on the plugin page (see Marketplace editor).
 
 ### Contribution License
 
 By contributing, you agree that your contributions will be licensed under the same AGPL-3.0 license that covers this project. The original author retains the right to offer commercial licenses for the combined work.
 
-## 📄 License
+## 📄 License & distribution (read this carefully)
 
-This project is **dual-licensed**:
+Three different things are easy to confuse:
 
-- **🆓 AGPL-3.0** for open source use
-- **💼 Commercial License** for proprietary/closed-source use
+1. **JetBrains Marketplace plugin (the `.zip` you install from the Marketplace)**  
+   Use is governed by **JetBrains Marketplace terms** and your **purchase or subscription**. This is how most users get the plugin.
 
-**For open source projects:** Free to use under AGPL-3.0. Modifications and derivative works must also be open sourced under AGPL-3.0.
+2. **Source code in this GitHub repository**  
+   Licensed under the **GNU Affero General Public License v3.0** ([LICENSE](LICENSE) — **AGPL-3.0**, not “plain GPL”). If you modify and distribute the source (or run a modified version as a network service), AGPL obligations apply.
 
-**For commercial use:** If you need to use this plugin in closed-source or proprietary software, please contact us for commercial licensing options.
+3. **Alternate / commercial licensing of the source**  
+   If you need a **different** license for the **code** (not the Marketplace binary), contact the author.
 
-📧 **Commercial licensing**: andrii.kobtsev@gmail.com  
-📖 **Full details**: [LICENSE.md](LICENSE.md)
+📧 **andrii.kobtsev@gmail.com**
+
+## 🔒 Privacy
+
+The plugin does **not** implement custom analytics. **License checks** use the standard JetBrains / IDE Marketplace flow.
 
 ## 🏗️ Built With
 
@@ -268,14 +283,16 @@ This project is **dual-licensed**:
 
 ## 📊 Version History
 
-**Current Version**: 1.2.0
+**Current Version**: **2026.1.0** (see `build.gradle.kts` and Marketplace listing)
 
-### What's New in v1.2.0
-- 🆕 **Code Formatter** - Automatic formatting for traditional LookML files
-- 🆕 **SQL Formatting** - SQL blocks on single line with proper spacing
-- 🆕 **Template Expression Formatting** - `${TABLE}` with no internal spaces
-- 🆕 **Smart Indentation** - 2-space indentation based on block structure
-- 🐛 **Lexer Fixes** - Numbers and SQL tokens now parse correctly
+### What's New in 2026.1.0
+- **YAML dashboard formatting** in the main Reformat Code flow (plus dedicated action/shortcut)
+- **Code style settings** entry for LookML (indent defaults)
+- **Rewriter tests** and formatter test updates
+
+### Earlier: v1.2.0
+- **Code Formatter** for traditional LookML (PSI-based)
+- **SQL / template** spacing and **lexer** fixes
 
 ### What's New in v1.1.0
 - 🆕 **YAML Dashboard Autocomplete** - 150+ properties with descriptions

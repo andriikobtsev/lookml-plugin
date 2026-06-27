@@ -2,6 +2,26 @@
 
 All notable changes to the LookML Plugin will be documented in this file.
 
+## [2026.1.0] - 2026-04-21
+
+### Added
+- **YAML dashboard formatting (IDE Reformat)** — `Code → Reformat Code` / `Cmd+Option+L` (`Ctrl+Alt+L`) runs `YamlDashboardRewriter` for YAML-style Looker dashboards (heuristic: `- dashboard:`, `---`, etc.).
+- **Reformat YAML Dashboard** action — optional shortcut `Cmd+Option+Shift+Y` / `Ctrl+Alt+Shift+Y` for the same rewriter path.
+- **LookML code style settings** — `LookMLLanguageCodeStyleSettingsProvider` (default 2-space indent in settings UI).
+- **YAML dashboard annotator** — `YamlDashboardAnnotator` (see `plugin.xml`).
+- **Tests** — `YamlDashboardRewriterTest`, formatter tests updated for YAML + traditional LookML.
+
+### Changed
+- **YAML rewriter** — schema/semantic helpers (`YamlDashboardSchema`, `YamlSemanticAnalyzer`) to support structured output.
+
+### Changed (Marketplace / licensing)
+- **License gating** — `LookMLFormattingModelBuilderV2` (all **Reformat Code**), `LookMLFormatAction`, and `ReformatYamlDashboardAction` require `CheckLicense.isLicensed() == true` in regular IDE runs (skipped in unit tests / headless). **Activate** uses `Messages` + Marketplace link instead of internal `DataContext` / `actionPerformed` hacks.
+- **Documentation** — README and Marketplace `description` / `changeNotes` clarify AGPL source vs Marketplace binary, evaluation, privacy, and publishing token.
+
+### Known limitations
+- **YAML rewriter** — nested maps / `ui_config` / `listen`, multiline scalars, and inline objects are not fully preserved (smoke-tested only; see `YamlDashboardRewriterTest`).
+- **Traditional formatter** — still expects parseable files (syntax errors may limit formatting).
+
 ## [1.2.0] - 2025-11-12
 
 ### Added
@@ -23,10 +43,6 @@ All notable changes to the LookML Plugin will be documented in this file.
 - Updated plugin.xml to register formatter
 - Added formatter test files in `src/test/resources/formatter/`
 
-### Known Limitations
-- YAML dashboard formatting not yet implemented (planned for v1.2.1)
-- Formatter requires files to be parseable (no syntax errors)
-
 ## [1.1.0] - 2025-11-11
 
 ### Added
@@ -44,7 +60,6 @@ All notable changes to the LookML Plugin will be documented in this file.
 - Implemented `YamlDashboardCompletionProvider` for YAML-specific completion
 - Enhanced `LookMLCompletionContributor` to support YAML dashboard files
 - Added support for field-specific properties with pipe syntax (label|field.name)
-- Documentation added in `docs/YAML_AUTOCOMPLETE.md`
 
 ## [1.0.0] - 2025-11-10
 
@@ -64,9 +79,3 @@ All notable changes to the LookML Plugin will be documented in this file.
 - Solo developer project in active development
 - Some advanced IDE features planned for future releases
 - Bug reports and feedback welcome
-
----
-
-## Upcoming Features
-
-See [docs/DEVELOPMENT_ROADMAP.md](docs/DEVELOPMENT_ROADMAP.md) for planned features.

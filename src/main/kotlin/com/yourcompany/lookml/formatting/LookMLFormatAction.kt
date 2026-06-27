@@ -4,8 +4,10 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDocumentManager
 import com.yourcompany.lookml.LookMLLanguage
+import com.yourcompany.lookml.license.LicenseConditions
 
 class LookMLFormatAction : AnAction("Format LookML Code") {
     
@@ -14,10 +16,19 @@ class LookMLFormatAction : AnAction("Format LookML Code") {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
         val document = editor.document
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return
-        
+
         // Only format LookML files
         if (psiFile.language != LookMLLanguage) return
-        
+
+        if (!LicenseConditions.allowPaidPluginFeatures()) {
+            Messages.showWarningDialog(
+                project,
+                "LookML Support requires an active license after the evaluation period. Use Help | Register to activate.",
+                "LookML Support",
+            )
+            return
+        }
+
         WriteCommandAction.runWriteCommandAction(project, "Format LookML", null, {
             val text = document.text
             
@@ -35,7 +46,8 @@ class LookMLFormatAction : AnAction("Format LookML Code") {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = editor?.let { PsiDocumentManager.getInstance(project!!).getPsiFile(it.document) }
         
-        e.presentation.isEnabled = psiFile?.language == LookMLLanguage
+        e.presentation.isEnabled =
+            psiFile?.language == LookMLLanguage && LicenseConditions.allowPaidPluginFeatures()
     }
     
     private fun isYamlDashboard(text: String): Boolean {
@@ -233,7 +245,8 @@ class LookMLFormatAction : AnAction("Format LookML Code") {
         normalized = normalized.replace(Regex("\\s+"), " ")
             .replace(" :", ":")
             .replace(":  ", ": ")
-            .replace("{ ", "{")
+            .replace(" {", "{")  // Remove space before {
+            .replace("{ ", "{")  // Remove space after {
             .replace(" }", "}")
 
         // Capitalize SQL keywords if this is an inline SQL property

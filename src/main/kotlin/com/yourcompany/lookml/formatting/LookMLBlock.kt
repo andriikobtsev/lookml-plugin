@@ -26,21 +26,6 @@ class LookMLBlock(
         val blocks = mutableListOf<Block>()
         var child = myNode.firstChildNode
 
-        // DEBUG: YAML structure only
-        if (myNode.elementType == LookMLTypes.YAML_CONTENT ||
-            myNode.elementType == LookMLTypes.YAML_LIST_ENTRY) {
-            println("Building ${myNode.elementType} children:")
-            var c = myNode.firstChildNode
-            var count = 0
-            while (c != null && count < 8) {
-                if (c.elementType != TokenType.WHITE_SPACE && c.textLength > 0) {
-                    println("  Child: ${c.elementType}")
-                }
-                count++
-                c = c.treeNext
-            }
-        }
-
         while (child != null) {
             // Skip whitespace - IntelliJ will add it based on our spacing rules
             if (child.elementType != TokenType.WHITE_SPACE &&
@@ -111,18 +96,6 @@ class LookMLBlock(
         }
 
         return myNode.firstChildNode == null
-    }
-
-    private fun countChildren(): Int {
-        var count = 0
-        var child = myNode.firstChildNode
-        while (child != null) {
-            if (child.elementType != TokenType.WHITE_SPACE && child.textLength > 0) {
-                count++
-            }
-            child = child.treeNext
-        }
-        return count
     }
 
     override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
@@ -220,12 +193,6 @@ class LookMLBlock(
             parentType == LookMLTypes.YAML_CONTENT -> Indent.getNormalIndent()
 
             else -> Indent.getNoneIndent()
-        }
-
-        // DEBUG
-        if (parentType == LookMLTypes.YAML_CONTENT || parentType == LookMLTypes.YAML_LIST_ENTRY) {
-            val matched = (childType == LookMLTypes.YAML_LIST_ITEM)
-            println("  YAML indent: parent=$parentType, child=$childType → $result (is YAML_LIST_ITEM: $matched)")
         }
 
         return result

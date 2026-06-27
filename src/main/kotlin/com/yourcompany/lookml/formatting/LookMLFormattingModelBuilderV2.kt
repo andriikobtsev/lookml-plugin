@@ -2,12 +2,15 @@ package com.yourcompany.lookml.formatting
 
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.tree.TokenSet
 import com.yourcompany.lookml.LookMLLanguage
+import com.yourcompany.lookml.license.LicenseConditions
 import com.yourcompany.lookml.psi.LookMLTypes
 
 /**
@@ -15,31 +18,38 @@ import com.yourcompany.lookml.psi.LookMLTypes
  * Uses Block hierarchy and SpacingBuilder instead of string manipulation
  */
 class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
-    
-    companion object {
-        private val rewritingFiles = mutableSetOf<String>()
-    }
 
     override fun createModel(formattingContext: FormattingContext): FormattingModel {
         val codeStyleSettings = formattingContext.codeStyleSettings
         val element = formattingContext.psiElement
         val file = element.containingFile
 
-        val fileName = file.name
-        
-        // Detect YAML dashboard files - check if parser created YAML nodes
-        val isYaml = hasYamlContent(file)
-        
-        println("=".repeat(60))
-        println("FORMATTER CALLED: $fileName")
-        println("IS YAML: $isYaml")
-        
-        // For YAML dashboards, skip formatting - use the manual action instead
-        if (isYaml) {
-            println("⏭️ YAML dashboard detected - skipping formatter (use 'Reformat YAML Dashboard' action instead)")
+        if (!LicenseConditions.allowPaidPluginFeatures()) {
+            return FormattingModelProvider.createFormattingModelForPsiFile(
+                file,
+                SimpleBlock(element.node),
+                codeStyleSettings
+            )
         }
-        
-        println("=".repeat(60))
+
+        val isYaml = hasYamlContent(file)
+
+        if (isYaml) {
+            val document = PsiDocumentManager.getInstance(file.project).getDocument(file)
+            if (document != null) {
+                WriteCommandAction.runWriteCommandAction(file.project) {
+                    val reformatted = YamlDashboardRewriter.rewriteDashboard(file)
+                    document.setText(reformatted)
+                    PsiDocumentManager.getInstance(file.project).commitDocument(document)
+                }
+            }
+
+            return FormattingModelProvider.createFormattingModelForPsiFile(
+                file,
+                SimpleBlock(element.node),
+                codeStyleSettings
+            )
+        }
 
         val spacingBuilder = createSpacingBuilder(codeStyleSettings)
 
@@ -51,23 +61,11 @@ class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
             Indent.getNoneIndent()
         )
 
-        if (isYaml) {
-            println("ROOT BLOCK created: ${rootBlock.node.elementType}")
-            println("Root has ${rootBlock.subBlocks.size} children")
-        }
-
-        val model = FormattingModelProvider.createFormattingModelForPsiFile(
+        return FormattingModelProvider.createFormattingModelForPsiFile(
             element.containingFile,
             rootBlock,
             codeStyleSettings
         )
-
-        if (isYaml) {
-            println("FORMATTING MODEL created: ${model.javaClass.simpleName}")
-            println("=".repeat(60))
-        }
-
-        return model
     }
 
     override fun getRangeAffectingIndent(
@@ -85,32 +83,29 @@ class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
         val text = file.text.trim()
         
         // Check for YAML dashboard indicators in the raw text
-        val hasYamlIndicators = text.contains("- dashboard:") ||
-                                text.contains("- dashboard :") ||
-                                (text.contains("dashboard") && text.contains("elements:")) ||
-                                (text.contains("dashboard") && text.contains("filters:")) ||
-                                text.startsWith("---") ||
-                                text.startsWith("# ") && text.contains("dashboard")
-        
-        if (hasYamlIndicators) {
-            println("✅ Detected YAML dashboard from content patterns")
-        } else {
-            println("❌ No YAML dashboard patterns found in content")
-        }
-        
-        return hasYamlIndicators
+        return text.contains("- dashboard:") ||
+            text.contains("- dashboard :") ||
+            (text.contains("dashboard") && text.contains("elements:")) ||
+            (text.contains("dashboard") && text.contains("filters:")) ||
+            text.startsWith("---") ||
+            text.startsWith("# ") && text.contains("dashboard")
     }
 
     private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder {
         val lookmlSettings = settings.getCommonSettings(LookMLLanguage.getID())
 
         // Set indent size to 2 spaces
-        lookmlSettings.indentOptions?.INDENT_SIZE = 2
-        lookmlSettings.indentOptions?.CONTINUATION_INDENT_SIZE = 2
+        lookmlSettings.indentOptions?.apply {
+            INDENT_SIZE = 2
+            CONTINUATION_INDENT_SIZE = 2
+            TAB_SIZE = 2
+            USE_TAB_CHARACTER = false
+        }
 
         return SpacingBuilder(settings, LookMLLanguage)
             // Traditional LookML - Colons
-            .after(LookMLTypes.COLON).spacing(1, 1, 0, false, 0)
+            .before(LookMLTypes.COLON).spacing(0, 0, 0, false, 0)  // NO space before colon
+            .after(LookMLTypes.COLON).spacing(1, 1, 0, false, 0)   // ONE space after colon
 
             // Traditional LookML - Braces
             .before(LookMLTypes.LBRACE).spacing(1, 1, 0, true, 0)

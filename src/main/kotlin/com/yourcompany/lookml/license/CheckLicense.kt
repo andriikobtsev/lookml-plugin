@@ -1,11 +1,9 @@
 package com.yourcompany.lookml.license
 
-import com.intellij.openapi.actionSystem.ActionPlaces
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataContext
-import com.intellij.openapi.actionSystem.Presentation
+import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.ui.Messages
 import com.intellij.ui.LicensingFacade
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
@@ -31,6 +29,10 @@ import org.jetbrains.annotations.Nullable
  */
 object CheckLicense {
     const val PRODUCT_CODE: String = "PLOOKMLSUPPORT"
+
+    /** Marketplace search; replace with your plugin’s public URL when known. */
+    const val MARKETPLACE_PLUGIN_SEARCH_URL: String =
+        "https://plugins.jetbrains.com/search?plugins=LookML%20Support&orderBy=relevance"
 
     private const val KEY_PREFIX = "key:"
     private const val STAMP_PREFIX = "stamp:"
@@ -123,27 +125,23 @@ object CheckLicense {
     }
 
     private fun showRegisterDialog(productCode: String, message: String?) {
-        val actionManager = com.intellij.openapi.actionSystem.ActionManager.getInstance()
-        var registerAction = actionManager.getAction("RegisterPlugins")
-        if (registerAction == null) {
-            registerAction = actionManager.getAction("Register")
-        }
-        registerAction?.let { action ->
-            val context = asDataContext(productCode, message)
-            val event = AnActionEvent.createFromDataContext(ActionPlaces.UNKNOWN, Presentation(), context)
-            action.actionPerformed(event)
+        val body =
+            message
+                ?: "LookML Support requires an active JetBrains Marketplace license after the evaluation period.\n\n" +
+                "Use Help | Register (or Settings | Plugins | gear) to sign in and activate.\n" +
+                "Product code: $productCode"
+        val result =
+            Messages.showOkCancelDialog(
+                body,
+                "LookML Support — License",
+                "Open Marketplace page",
+                Messages.getCancelButton(),
+                Messages.getInformationIcon(),
+            )
+        if (result == Messages.OK) {
+            BrowserUtil.browse(MARKETPLACE_PLUGIN_SEARCH_URL)
         }
     }
-
-    private fun asDataContext(productCode: String, message: String?): DataContext =
-        object : DataContext {
-            override fun getData(dataId: String): Any? =
-                when (dataId) {
-                    "register.product-descriptor.code" -> productCode
-                    "register.message" -> message
-                    else -> null
-                }
-        }
 
     private fun isKeyValid(key: String): Boolean {
         val licenseParts = key.split("-").toTypedArray()

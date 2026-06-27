@@ -78,7 +78,7 @@ class LookMLLicenseStartupActivity : StartupActivity.DumbAware {
 
         private const val TITLE = "LookML Support license"
         private const val BODY =
-            "LookML Support requires a license. A 30-day trial may be available on the JetBrains Marketplace."
+            "LookML Support is a paid Marketplace plugin (evaluation on the listing). After evaluation, activate with Help | Register — formatting and the YAML rewriter need a valid license."
         private const val ACTION_LABEL = "Activate or start trial…"
     }
 }

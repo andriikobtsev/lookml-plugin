@@ -3,7 +3,8 @@
     <name>LookML Support</name>
     <vendor email="andrii.kobtsev@gmail.com" url="https://github.com/andriikobtsev/lookml-plugin">Andrii Kobtsev</vendor>
 
-    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260401" release-version="20261"/>
+    <!-- release-date = YYYYMMDD of the Marketplace release you upload; update when publishing. -->
+    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260421" release-version="20261"/>
 
     <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
     <depends>com.intellij.modules.platform</depends>
@@ -67,6 +68,10 @@
         <!-- Code Style Settings -->
         <langCodeStyleSettingsProvider
             implementation="com.yourcompany.lookml.formatting.LookMLLanguageCodeStyleSettingsProvider"/>
+
+        <annotator
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.yaml.YamlDashboardAnnotator"/>
     </extensions>
     
     <actions>

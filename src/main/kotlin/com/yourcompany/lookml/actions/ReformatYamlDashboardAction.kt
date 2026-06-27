@@ -2,18 +2,24 @@ package com.yourcompany.lookml.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.diagnostic.logger
+import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDocumentManager
 import com.yourcompany.lookml.formatting.YamlDashboardRewriter
+import com.yourcompany.lookml.license.LicenseConditions
+import com.yourcompany.lookml.yaml.YamlDashboardFiles
 
 /**
  * Action to reformat YAML dashboard files
  * Triggered manually via menu or keyboard shortcut
  */
 class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
-    
+
+    private val log = logger<ReformatYamlDashboardAction>()
+
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
     
     override fun actionPerformed(e: AnActionEvent) {
@@ -23,10 +29,19 @@ class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
         
         // Check if it's a YAML dashboard
         val text = psiFile.text
-        if (!isYamlDashboard(text)) {
+        if (!YamlDashboardFiles.isYamlDashboardContent(text)) {
             return
         }
-        
+
+        if (!LicenseConditions.allowPaidPluginFeatures()) {
+            Messages.showWarningDialog(
+                project,
+                "LookML Support requires an active license after the evaluation period. Use Help | Register to activate.",
+                "LookML Support",
+            )
+            return
+        }
+
         // Reformat
         WriteCommandAction.runWriteCommandAction(project) {
             try {
@@ -38,7 +53,7 @@ class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
                     PsiDocumentManager.getInstance(project).commitDocument(document)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                log.error("YamlDashboardRewriter failed", e)
             }
         }
     }
@@ -48,13 +63,9 @@ class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
         val text = psiFile?.text ?: ""
         
         // Show action only for YAML dashboard files
-        e.presentation.isEnabled = isYamlDashboard(text)
-        e.presentation.isVisible = isYamlDashboard(text)
-    }
-    
-    private fun isYamlDashboard(text: String): Boolean {
-        return text.contains("- dashboard:") ||
-               text.contains("- dashboard :") ||
-               (text.contains("dashboard") && text.contains("elements:"))
+        val isYaml = YamlDashboardFiles.isYamlDashboardContent(text)
+        val licensed = LicenseConditions.allowPaidPluginFeatures()
+        e.presentation.isEnabled = isYaml && licensed
+        e.presentation.isVisible = isYaml
     }
 }

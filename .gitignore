@@ -12,6 +12,12 @@ out/
 .intellijPlatform/
 .kotlin/
 
+# Cursor / local AI tooling (not part of the plugin artifact)
+.cursor/
+
+# Logs
+*.log
+
 # Generated files
 src/main/kotlin/com/yourcompany/lookml/lexer/_LookMLLexer.java
 src/main/kotlin/com/yourcompany/lookml/lexer/LookMLLexer.java
@@ -36,6 +42,10 @@ local.properties
 # Private notes
 .private/
 
+# Internal docs (keep locally; not versioned)
+docs/
+
 # Local tooling / scratch
 .serena/
 test_output.txt
+test_yaml_formatter.sh

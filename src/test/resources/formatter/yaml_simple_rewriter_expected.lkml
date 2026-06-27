@@ -1,4 +1,4 @@
-# Test: Simple YAML dashboard - EXPECTED (IDE reformat = YamlDashboardRewriter)
+# Golden: YamlDashboardRewriter output for yaml_simple_input (leading # ignored in test)
 ---
 - dashboard: test_dashboard
   title: "Sales Dashboard"
