@@ -14,6 +14,9 @@ out/
 
 # Cursor / local AI tooling (not part of the plugin artifact)
 .cursor/
+.claude/
+CLAUDE.md
+CLAUDE.local.md
 
 # Logs
 *.log
