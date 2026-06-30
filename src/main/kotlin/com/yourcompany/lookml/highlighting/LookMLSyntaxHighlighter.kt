@@ -50,10 +50,13 @@ class LookMLSyntaxHighlighter : SyntaxHighlighterBase() {
             LookMLTypes.VIEW, LookMLTypes.EXPLORE, LookMLTypes.DASHBOARD,
             LookMLTypes.LOOKML_DASHBOARD, LookMLTypes.DIMENSION, LookMLTypes.DIMENSION_GROUP,
             LookMLTypes.MEASURE, LookMLTypes.FILTER, LookMLTypes.PARAMETER, LookMLTypes.JOIN,
-            LookMLTypes.TEST
+            LookMLTypes.TEST,
+            LookMLTypes.CONSTANT, LookMLTypes.LOCAL_DEPENDENCY, LookMLTypes.REMOTE_DEPENDENCY,
+            LookMLTypes.OVERRIDE_CONSTANT
         )
         
         private val PROPERTY_KEYWORDS = TokenSet.create(
+            LookMLTypes.PROJECT_NAME, LookMLTypes.NEW_LOOKML_RUNTIME,
             LookMLTypes.TYPE, LookMLTypes.LABEL, LookMLTypes.VIEW_LABEL, LookMLTypes.DESCRIPTION,
             LookMLTypes.HIDDEN, LookMLTypes.PRIMARY_KEY, LookMLTypes.SQL,
             LookMLTypes.SQL_TABLE_NAME, LookMLTypes.SQL_ON, LookMLTypes.SQL_WHERE,

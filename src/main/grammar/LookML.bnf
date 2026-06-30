@@ -95,7 +95,15 @@
     ACCESS_GRANT='access_grant'
     NAMED_VALUE_FORMAT='named_value_format'
     TEST='test'
-    
+
+    // Manifest (project-level) keywords
+    PROJECT_NAME='project_name'
+    CONSTANT='constant'
+    LOCAL_DEPENDENCY='local_dependency'
+    REMOTE_DEPENDENCY='remote_dependency'
+    OVERRIDE_CONSTANT='override_constant'
+    NEW_LOOKML_RUNTIME='new_lookml_runtime'
+
     // SQL keywords
     SQL='sql'
     SQL_TABLE_NAME='sql_table_name'
@@ -383,24 +391,29 @@ private file_item ::= !<<eof>> item_ {
   recoverWhile=file_item_recover
 }
 
-private file_item_recover ::= !(VIEW | EXPLORE | DASHBOARD | LOOKML_DASHBOARD | TEST | DATAGROUP | ACCESS_GRANT | NAMED_VALUE_FORMAT | CONNECTION | PERSIST_WITH | WEEK_START_DAY | CASE_SENSITIVE | LABEL | INCLUDE | COMMENT | YAML_LIST_ITEM | YAML_DOCUMENT_START | <<eof>>)
+private file_item_recover ::= !(VIEW | EXPLORE | DASHBOARD | LOOKML_DASHBOARD | TEST | DATAGROUP | ACCESS_GRANT | NAMED_VALUE_FORMAT | CONNECTION | PERSIST_WITH | WEEK_START_DAY | CASE_SENSITIVE | LABEL | INCLUDE | PROJECT_NAME | CONSTANT | LOCAL_DEPENDENCY | REMOTE_DEPENDENCY | NEW_LOOKML_RUNTIME | COMMENT | YAML_LIST_ITEM | YAML_DOCUMENT_START | <<eof>>)
 
 
 private item_ ::= (
-    connection_statement 
+    connection_statement
   | persist_with_statement
   | week_start_day_statement
   | case_sensitive_statement
   | label_statement
+  | project_name_statement
+  | new_lookml_runtime_statement
+  | constant_definition
+  | local_dependency_statement
+  | remote_dependency_definition
   | datagroup_definition
   | access_grant_definition
   | named_value_format_definition
-  | view_definition 
-  | explore_definition 
-  | dashboard_definition 
+  | view_definition
+  | explore_definition
+  | dashboard_definition
   | yaml_dashboard_document
   | test_definition
-  | include_statement 
+  | include_statement
   | COMMENT
 )
 
@@ -419,6 +432,25 @@ label_statement ::= LABEL COLON STRING SEMICOLON?
 
 // Include statements
 include_statement ::= INCLUDE COLON STRING SEMICOLON?
+
+// Manifest (manifest.lkml) project-level statements
+project_name_statement ::= PROJECT_NAME COLON STRING SEMICOLON?
+
+new_lookml_runtime_statement ::= NEW_LOOKML_RUNTIME COLON boolean_value SEMICOLON?
+
+constant_definition ::= CONSTANT COLON IDENTIFIER LBRACE constant_body RBRACE
+
+constant_body ::= (property | COMMENT)*
+
+local_dependency_statement ::= LOCAL_DEPENDENCY COLON LBRACE local_dependency_body RBRACE
+
+local_dependency_body ::= (property | COMMENT)*
+
+remote_dependency_definition ::= REMOTE_DEPENDENCY COLON IDENTIFIER LBRACE remote_dependency_body RBRACE
+
+remote_dependency_body ::= (override_constant_definition | property | COMMENT)*
+
+override_constant_definition ::= OVERRIDE_CONSTANT COLON IDENTIFIER LBRACE constant_body RBRACE
 
 // Datagroup definition
 datagroup_definition ::= DATAGROUP COLON IDENTIFIER LBRACE datagroup_body RBRACE {
@@ -1156,6 +1188,7 @@ private keyword ::= (
   | DIMENSION | DIMENSION_GROUP | MEASURE | FILTER | PARAMETER | JOIN
   | FROM | CONNECTION | INCLUDE | PERSIST_WITH | WEEK_START_DAY | CASE_SENSITIVE
   | DATAGROUP | ACCESS_GRANT | NAMED_VALUE_FORMAT
+  | PROJECT_NAME | CONSTANT | LOCAL_DEPENDENCY | REMOTE_DEPENDENCY | OVERRIDE_CONSTANT | NEW_LOOKML_RUNTIME
   | MAX_CACHE_AGE | ALLOWED_VALUE | ALLOWED_VALUES | USER_ATTRIBUTE | VALUE_FORMAT | STRICT_VALUE_FORMAT
   | VIEW_NAME | ALWAYS_FILTER | CONDITIONALLY_FILTER | FILTERS | UNLESS | ACCESS_FILTER | FIELD | FIELDS | REQUIRED_JOINS
   | AGGREGATE_TABLE | QUERY | DIMENSIONS | MEASURES | TIMEZONE | MATERIALIZATION

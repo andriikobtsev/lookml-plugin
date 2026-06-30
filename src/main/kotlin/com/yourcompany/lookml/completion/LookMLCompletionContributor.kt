@@ -14,9 +14,11 @@ class LookMLCompletionContributor : CompletionContributor() {
     
     companion object {
         private val TOP_LEVEL_KEYWORDS = listOf(
-            "view", "explore", "dashboard", "lookml_dashboard", "datagroup", "access_grant", 
-            "named_value_format", "test", "connection", "include", "persist_with", 
-            "week_start_day", "case_sensitive", "label"
+            "view", "explore", "dashboard", "lookml_dashboard", "datagroup", "access_grant",
+            "named_value_format", "test", "connection", "include", "persist_with",
+            "week_start_day", "case_sensitive", "label",
+            // Manifest (manifest.lkml) project-level keywords
+            "project_name", "constant", "local_dependency", "remote_dependency", "new_lookml_runtime"
         )
         
         private val VIEW_BLOCK_KEYWORDS = listOf(
@@ -233,7 +235,8 @@ class LookMLCompletionContributor : CompletionContributor() {
         private fun addTopLevelCompletions(result: CompletionResultSet) {
             TOP_LEVEL_KEYWORDS.forEach { keyword ->
                 val builder = when (keyword) {
-                    "view", "explore", "dashboard", "datagroup", "access_grant", "named_value_format", "test" -> {
+                    "view", "explore", "dashboard", "datagroup", "access_grant", "named_value_format", "test",
+                    "constant", "remote_dependency" -> {
                         LookupElementBuilder.create(keyword)
                             .withIcon(com.intellij.icons.AllIcons.Nodes.Class)
                             .withTypeText("LookML keyword")
@@ -242,6 +245,17 @@ class LookMLCompletionContributor : CompletionContributor() {
                                 val caretOffset = editor.caretModel.offset
                                 editor.document.insertString(caretOffset, ": name {\n  \n}")
                                 editor.caretModel.moveToOffset(caretOffset + 2)
+                            }
+                    }
+                    "local_dependency" -> {
+                        LookupElementBuilder.create(keyword)
+                            .withIcon(com.intellij.icons.AllIcons.Nodes.Class)
+                            .withTypeText("LookML keyword")
+                            .withInsertHandler { context, item ->
+                                val editor = context.editor
+                                val caretOffset = editor.caretModel.offset
+                                editor.document.insertString(caretOffset, ": {\n  \n}")
+                                editor.caretModel.moveToOffset(caretOffset + 4)
                             }
                     }
                     else -> {

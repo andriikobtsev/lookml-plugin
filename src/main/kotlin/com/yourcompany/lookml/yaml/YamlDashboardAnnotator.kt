@@ -5,7 +5,6 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import com.yourcompany.lookml.formatting.ObjectType
-import com.yourcompany.lookml.formatting.ValueType
 import com.yourcompany.lookml.formatting.YamlDashboardSchema
 import com.yourcompany.lookml.formatting.YamlSemanticAnalyzer
 import com.yourcompany.lookml.psi.LookMLFile
@@ -33,7 +32,7 @@ class YamlDashboardAnnotator : Annotator {
         val propertyName = info.propertyName ?: return
         if (propertyName.isEmpty()) return
 
-        if (YamlDashboardSchema.getValueType(info.objectType, propertyName) != ValueType.UNKNOWN) {
+        if (YamlDashboardSchema.isKnownProperty(info.objectType, propertyName)) {
             return
         }
 

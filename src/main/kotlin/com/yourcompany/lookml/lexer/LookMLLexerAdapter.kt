@@ -32,23 +32,15 @@ class LookMLLexerAdapter : LexerBase() {
         this.currentToken = null
         this.state = initialState
         
-        // Check if this is a YAML dashboard (starts with --- or - dashboard: or YAML list items)
-        isYamlDashboard = (startOffset + 3 <= endOffset && 
-            buffer[startOffset] == '-' && 
-            buffer[startOffset + 1] == '-' && 
-            buffer[startOffset + 2] == '-') ||
-            (startOffset + 12 <= endOffset &&
-            buffer.substring(startOffset, startOffset + 12) == "- dashboard:") ||
-            // Also detect YAML dashboard elements starting with common properties
-            (startOffset + 8 <= endOffset &&
-            buffer.substring(startOffset, startOffset + 8) == "- title:") ||
-            (startOffset + 7 <= endOffset &&
-            buffer.substring(startOffset, startOffset + 7) == "- name:") ||
-            (startOffset + 7 <= endOffset &&
-            buffer.substring(startOffset, startOffset + 7) == "- type:") ||
-            (startOffset + 8 <= endOffset &&
-            buffer.substring(startOffset, startOffset + 8) == "- model:")
-        
+        // Check if this is a YAML dashboard (starts with --- or - dashboard: or YAML list items).
+        // Skip leading blank and #-comment lines first: a header comment before --- is valid and
+        // must not defeat detection (otherwise the file is parsed as traditional LookML).
+        val detectAt = skipLeadingCommentsAndBlanks(buffer, startOffset, endOffset)
+        fun marker(s: String): Boolean =
+            detectAt + s.length <= endOffset && buffer.subSequence(detectAt, detectAt + s.length).toString() == s
+        isYamlDashboard = marker("---") || marker("- dashboard:") || marker("- title:") ||
+            marker("- name:") || marker("- type:") || marker("- model:")
+
         if (isYamlDashboard) {
             yamlLexer = YamlDashboardLexer()
             yamlLexer!!.start(buffer, startOffset, endOffset, initialState)
@@ -675,6 +667,12 @@ class LookMLLexerAdapter : LexerBase() {
                 "access_grant" -> LookMLTypes.ACCESS_GRANT
                 "named_value_format" -> LookMLTypes.NAMED_VALUE_FORMAT
                 "test" -> LookMLTypes.TEST
+                "project_name" -> LookMLTypes.PROJECT_NAME
+                "constant" -> LookMLTypes.CONSTANT
+                "local_dependency" -> LookMLTypes.LOCAL_DEPENDENCY
+                "remote_dependency" -> LookMLTypes.REMOTE_DEPENDENCY
+                "override_constant" -> LookMLTypes.OVERRIDE_CONSTANT
+                "new_lookml_runtime" -> LookMLTypes.NEW_LOOKML_RUNTIME
                 "assert" -> LookMLTypes.ASSERT
                 "expression" -> LookMLTypes.EXPRESSION
                 "sql_trigger" -> LookMLTypes.SQL_TRIGGER
@@ -929,6 +927,29 @@ class LookMLLexerAdapter : LexerBase() {
     }
     
     override fun getBufferSequence(): CharSequence = buffer
-    
+
     override fun getBufferEnd(): Int = endOffset
+
+    /** Offset of the first line that is neither blank nor a #-comment, used only for YAML detection. */
+    private fun skipLeadingCommentsAndBlanks(buffer: CharSequence, from: Int, end: Int): Int {
+        var pos = from
+        while (pos < end) {
+            // Skip leading spaces/tabs on this line.
+            var lineStart = pos
+            while (lineStart < end && (buffer[lineStart] == ' ' || buffer[lineStart] == '\t')) lineStart++
+            if (lineStart >= end) return lineStart
+            val ch = buffer[lineStart]
+            if (ch == '\n' || ch == '\r') {
+                pos = lineStart + 1 // blank line
+            } else if (ch == '#') {
+                // Comment line: advance to the next line.
+                var p = lineStart
+                while (p < end && buffer[p] != '\n') p++
+                pos = p + 1
+            } else {
+                return lineStart
+            }
+        }
+        return pos
+    }
 }

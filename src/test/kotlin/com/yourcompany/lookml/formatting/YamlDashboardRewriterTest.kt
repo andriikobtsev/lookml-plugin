@@ -23,6 +23,15 @@ class YamlDashboardRewriterTest : BasePlatformTestCase() {
     }
 
     /**
+     * Multi-line flow arrays (fields wrapped over two lines) join into one line; values keep their
+     * original form (arrays stay arrays, numbers stay numbers); |- block scalars (body_text) are
+     * preserved verbatim. Regression guard for the array-becomes-quoted-string formatter bug.
+     */
+    fun testYamlMultilineArraysAndBlockScalars() {
+        assertRewriterOutput("yaml_multiline_input.lkml", "yaml_multiline_expected.lkml")
+    }
+
+    /**
      * Nested maps / ui_config / listen blocks are not fully preserved by the line-based rewriter yet.
      * Smoke-test: no throw, dashboard id and major sections still present.
      */
@@ -32,6 +41,49 @@ class YamlDashboardRewriterTest : BasePlatformTestCase() {
         val out = YamlDashboardRewriter.rewriteDashboard(psi)
         assertTrue(out.contains("- dashboard: complex_dashboard"))
         assertTrue(out.contains("filters:") || out.contains("elements:"))
+    }
+
+    /**
+     * Nested block sequences (dynamic_fields / table calculations) and multi-line flow object
+     * arrays (y_axes) are preserved verbatim, never re-parsed or collapsed. Their inner `-` items
+     * must not be promoted to dashboard elements.
+     */
+    fun testDynamicFieldsAndObjectArraysPreservedVerbatim() {
+        val input = """
+            ---
+            - dashboard: d
+              title: "T"
+              elements:
+              - name: e1
+                type: looker_grid
+                filters:
+                  some_view.status: Completed
+                dynamic_fields:
+                  - category: table_calculation
+                    label: Capex
+                    expression: "${'$'}{a.b}/${'$'}{c.d}"
+                    table_calculation: capex
+                    _kind_hint: measure
+                    _type_hint: number
+                y_axes: [{label: '', orientation: left,
+                    showLabels: false}]
+                row: 0
+        """.trimIndent()
+        val psi = myFixture.configureByText("d.lookml", input)
+        val out = YamlDashboardRewriter.rewriteDashboard(psi)
+
+        // dynamic_fields block kept intact (key + inner item + expression verbatim).
+        assertTrue("dynamic_fields key", out.contains("dynamic_fields:"))
+        assertTrue("table calc item kept", out.contains("- category: table_calculation"))
+        assertTrue("expression intact", out.contains("expression: \"\${a.b}/\${c.d}\""))
+        // The inner `- category` item must NOT become a second dashboard element.
+        assertEquals("only one element name line", 1, Regex("(?m)^  - name: ").findAll(out).count())
+        // Multi-line object array preserved (still spans two lines, not collapsed/quoted).
+        assertTrue("y_axes object array preserved", out.contains("y_axes: [{label: '', orientation: left,"))
+        assertTrue("y_axes continuation preserved", out.contains("showLabels: false}]"))
+        // Element-level filters MAP preserved verbatim (not turned into a dashboard filters section).
+        assertTrue("element filters map preserved", out.contains("some_view.status: Completed"))
+        assertFalse("element filters not promoted to list item", out.contains("- some_view.status:"))
     }
 
     /**

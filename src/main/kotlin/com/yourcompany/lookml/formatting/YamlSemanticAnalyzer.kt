@@ -6,47 +6,69 @@ import com.yourcompany.lookml.psi.LookMLTypes
 object YamlSemanticAnalyzer {
 
     fun analyzeNode(node: ASTNode): SemanticInfo {
-        val nodeType = node.elementType
-
-        when (nodeType) {
-            LookMLTypes.YAML_LIST_ENTRY -> return analyzeListEntry(node)
-            LookMLTypes.YAML_PROPERTY -> return analyzeProperty(node)
-            else -> return SemanticInfo(
-                objectType = ObjectType.UNKNOWN,
-                propertyName = null,
-                valueType = ValueType.UNKNOWN,
-                level = 0
-            )
+        val text = node.psi?.containingFile?.text ?: ""
+        return when (node.elementType) {
+            LookMLTypes.YAML_LIST_ENTRY -> analyzeListEntry(node, text)
+            LookMLTypes.YAML_PROPERTY -> analyzeProperty(node, text)
+            else -> SemanticInfo(ObjectType.UNKNOWN, null, ValueType.UNKNOWN, 0)
         }
     }
 
-    private fun analyzeListEntry(node: ASTNode): SemanticInfo {
+    private fun analyzeListEntry(node: ASTNode, text: String): SemanticInfo {
         val key = getListEntryKey(node)
-        val objectType = YamlDashboardSchema.getObjectTypeFromKey(key)
-        val level = calculateLevel(node)
-
         return SemanticInfo(
-            objectType = objectType,
+            objectType = if (key == "dashboard") ObjectType.DASHBOARD else ObjectType.ELEMENT,
             propertyName = key,
             valueType = ValueType.UNKNOWN,
-            level = level
+            level = calculateLevel(node)
         )
     }
 
-    private fun analyzeProperty(node: ASTNode): SemanticInfo {
+    private fun analyzeProperty(node: ASTNode, text: String): SemanticInfo {
         val propertyName = getPropertyName(node)
-        val parentListEntry = findPreviousListEntry(node)
-        val parentKey = parentListEntry?.let { getListEntryKey(it) }
-        val objectType = YamlDashboardSchema.getObjectTypeFromKey(parentKey)
-        val valueType = YamlDashboardSchema.getValueType(objectType, propertyName ?: "")
-        val level = calculateLevel(node)
-
+        val objectType = classifyProperty(node, text)
         return SemanticInfo(
             objectType = objectType,
             propertyName = propertyName,
-            valueType = valueType,
-            level = level
+            valueType = YamlDashboardSchema.getValueType(objectType, propertyName ?: ""),
+            level = calculateLevel(node)
         )
+    }
+
+    /** Column (0-based indent) of the node's first character. */
+    private fun indentOf(node: ASTNode, text: String): Int {
+        val off = node.startOffset
+        if (off <= 0 || off > text.length) return 0
+        var i = off
+        while (i > 0 && text[i - 1] != '\n') i--
+        return off - i
+    }
+
+    /**
+     * Classify a property by indentation depth, not by section markers (the YAML PSI does not
+     * reliably materialize `elements:` / `filters:` markers or nested map keys):
+     * - parent is the `- dashboard:` entry -> DASHBOARD (dashboard-level property).
+     * - parent is any other list entry     -> ELEMENT (item-level; validated against the
+     *   element+filter union in [YamlDashboardSchema.isKnownProperty]).
+     * - parent is another property          -> nested map entry (dynamic keys) -> UNKNOWN (skip).
+     */
+    private fun classifyProperty(node: ASTNode, text: String): ObjectType {
+        val myIndent = indentOf(node, text)
+        var sib = node.treePrev
+        while (sib != null) {
+            val t = sib.elementType
+            if ((t == LookMLTypes.YAML_LIST_ENTRY || t == LookMLTypes.YAML_PROPERTY) &&
+                indentOf(sib, text) < myIndent
+            ) {
+                return when {
+                    t != LookMLTypes.YAML_LIST_ENTRY -> ObjectType.UNKNOWN
+                    getListEntryKey(sib) == "dashboard" -> ObjectType.DASHBOARD
+                    else -> ObjectType.ELEMENT
+                }
+            }
+            sib = sib.treePrev
+        }
+        return ObjectType.UNKNOWN
     }
 
     private fun calculateLevel(node: ASTNode): Int {
@@ -107,17 +129,6 @@ object YamlSemanticAnalyzer {
                 }
             }
             child = child.treeNext
-        }
-        return null
-    }
-
-    private fun findPreviousListEntry(node: ASTNode): ASTNode? {
-        var sibling = node.treePrev
-        while (sibling != null) {
-            if (sibling.elementType == LookMLTypes.YAML_LIST_ENTRY) {
-                return sibling
-            }
-            sibling = sibling.treePrev
         }
         return null
     }

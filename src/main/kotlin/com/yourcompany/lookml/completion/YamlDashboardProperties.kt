@@ -148,6 +148,7 @@ object YamlDashboardProperties {
         "note_text" to "Note/text content",
         "note_state" to "Note state (expanded/collapsed)",
         "note_display" to "Note display mode",
+        "tab_name" to "Tab this element belongs to (dashboard tabs)",
 
         // Advanced
         "hidden_fields" to "Fields to hide",

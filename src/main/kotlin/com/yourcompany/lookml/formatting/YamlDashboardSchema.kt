@@ -62,7 +62,11 @@ object YamlDashboardSchema {
         "note_display" to ValueType.STRING,
         "note_text" to ValueType.STRING,
         "rich_content_json" to ValueType.STRING,  // For buttons
-        
+        "title_text" to ValueType.STRING,         // text/markdown tile
+        "subtitle_text" to ValueType.STRING,      // text/markdown tile
+        "body_text" to ValueType.STRING,          // text/markdown tile (block scalar)
+        "tab_name" to ValueType.STRING,
+
         // ===== POSITIONING (CRITICAL - newspaper layout) =====
         "row" to ValueType.STRING,
         "col" to ValueType.STRING,
@@ -306,6 +310,8 @@ object YamlDashboardSchema {
         
         // ===== ADDITIONAL OPTIONS FROM REAL DASHBOARDS =====
         "y_axis_combined" to ValueType.STRING,
+        "series_collapsed" to ValueType.MAP,
+        "advanced_vis_config" to ValueType.STRING,
         "is_active" to ValueType.STRING,
         "bold" to ValueType.STRING,
         "italic" to ValueType.STRING,
@@ -337,6 +343,28 @@ object YamlDashboardSchema {
         "options" to ValueType.MAP
     )
 
+    // dynamic_fields entries: table calculations and custom/dynamic measures & dimensions.
+    // Includes the internal _kind_hint / _type_hint that Looker writes into generated dashboards.
+    private val DYNAMIC_FIELD_PROPERTIES = mapOf(
+        "category" to ValueType.STRING,
+        "table_calculation" to ValueType.STRING,
+        "dimension" to ValueType.STRING,
+        "measure" to ValueType.STRING,
+        "label" to ValueType.STRING,
+        "label_from_parameter" to ValueType.STRING,
+        "expression" to ValueType.STRING,
+        "value_format" to ValueType.STRING,
+        "value_format_name" to ValueType.STRING,
+        "based_on" to ValueType.STRING,
+        "type" to ValueType.STRING,
+        "description" to ValueType.STRING,
+        "is_disabled" to ValueType.STRING,
+        "filters" to ValueType.UNKNOWN,
+        "args" to ValueType.LIST,
+        "_kind_hint" to ValueType.STRING,
+        "_type_hint" to ValueType.STRING
+    )
+
     /**
      * Get value type for a property in a given object context
      */
@@ -346,6 +374,26 @@ object YamlDashboardSchema {
             ObjectType.ELEMENT -> ELEMENT_PROPERTIES[propertyName] ?: ValueType.UNKNOWN
             ObjectType.DASHBOARD_FILTER -> DASHBOARD_FILTER_PROPERTIES[propertyName] ?: ValueType.UNKNOWN
             else -> ValueType.UNKNOWN
+        }
+    }
+
+    /**
+     * Whether the property exists in the schema for this object, regardless of its value type.
+     * Distinguishes "known but type-flexible" (mapped to UNKNOWN, e.g. fields/sorts) from
+     * "not in schema". Use this for validation; getValueType alone cannot tell them apart.
+     */
+    fun isKnownProperty(objectType: ObjectType, propertyName: String): Boolean {
+        return when (objectType) {
+            ObjectType.DASHBOARD -> DASHBOARD_PROPERTIES.containsKey(propertyName)
+            // The YAML PSI cannot reliably tell an element item from a filter item or a
+            // dynamic_fields (table calculation) entry - the section/list markers are not always
+            // materialized as nodes - so item-level properties are validated against the union of
+            // all three. Still catches typos absent from every schema.
+            ObjectType.ELEMENT, ObjectType.DASHBOARD_FILTER ->
+                ELEMENT_PROPERTIES.containsKey(propertyName) ||
+                    DASHBOARD_FILTER_PROPERTIES.containsKey(propertyName) ||
+                    DYNAMIC_FIELD_PROPERTIES.containsKey(propertyName)
+            else -> false
         }
     }
 

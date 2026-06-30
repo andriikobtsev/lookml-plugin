@@ -85,7 +85,10 @@ object YamlDashboardRewriter {
             if (trimmed.contains(":")) {
                 val colonIndex = trimmed.indexOf(':')
                 val key = trimmed.substring(0, colonIndex).trim().removePrefix("-").trim()
-                val value = trimmed.substring(colonIndex + 1).trim()
+                val rawValue = trimmed.substring(colonIndex + 1).trim()
+                // Join multi-line flow arrays, and capture block scalars / nested blocks verbatim.
+                val (value, lastConsumed) = captureValue(lines, i, indentOf(line), key, rawValue)
+                i = lastConsumed
 
                 // List entry (starts with -)
                 if (trimmed.startsWith("-")) {
@@ -107,13 +110,14 @@ object YamlDashboardRewriter {
 
                     // Start new item
                     currentItem = ElementWithComments(
-                        properties = mutableMapOf(key to value.removeSurrounding("\"").removeSurrounding("'")),
+                        properties = mutableMapOf(key to value),
                         commentsBefore = pendingComments.toMutableList()
                     )
                     pendingComments.clear()
                 } else {
-                    // Regular property
-                    if (key == "elements" || key == "filters") {
+                    // Regular property. elements:/filters: is a section unless captureValue grabbed
+                    // it as an element-level nested block (verbatim values start with "\n").
+                    if ((key == "elements" || key == "filters") && !value.startsWith("\n")) {
                         // Section marker
                         if (currentItem != null) {
                             currentItem.commentsAfter.addAll(pendingComments)
@@ -162,14 +166,14 @@ object YamlDashboardRewriter {
                         }
                     } else if (currentItem != null) {
                         // Add to current item
-                        currentItem!!.properties[key] = value.removeSurrounding("\"").removeSurrounding("'")
+                        currentItem!!.properties[key] = value
                     } else {
                         // Property not inside elements/filters
                         if (seenDashboard && currentSection.isEmpty()) {
                             // Dashboard-level property - context determines classification
                             val prop = PropertyWithComments(
                                 key = key,
-                                value = value.removeSurrounding("\"").removeSurrounding("'"),
+                                value = value,
                                 commentsBefore = pendingComments.toMutableList()
                             )
                             pendingComments.clear()
@@ -218,7 +222,7 @@ object YamlDashboardRewriter {
         // Dashboard properties with their comments
         dashboardProps.forEach { prop ->
             prop.commentsBefore.forEach { result.appendLine("  $it") }
-            result.appendLine("  ${prop.key}: \"${prop.value}\"")
+            appendProperty(result, "  ", prop.key, prop.value)
         }
 
         // Output sections in their original order (preserves filters/elements order from input)
@@ -248,10 +252,10 @@ object YamlDashboardRewriter {
 
                             val firstKey = filter.properties.keys.firstOrNull()
                             if (firstKey != null) {
-                                result.appendLine("  - $firstKey: \"${filter.properties[firstKey]}\"")
+                                result.appendLine("  - $firstKey: ${filter.properties[firstKey]}")
                                 filter.properties.forEach { (k, v) ->
                                     if (k != firstKey) {
-                                        result.appendLine("    $k: \"$v\"")
+                                        appendProperty(result, "    ", k, v)
                                     }
                                 }
                             }
@@ -270,10 +274,10 @@ object YamlDashboardRewriter {
                                 ?: element.properties.keys.firstOrNull()
 
                             if (firstKey != null) {
-                                result.appendLine("  - $firstKey: \"${element.properties[firstKey]}\"")
+                                result.appendLine("  - $firstKey: ${element.properties[firstKey]}")
                                 element.properties.forEach { (k, v) ->
                                     if (k != firstKey) {
-                                        result.appendLine("    $k: \"$v\"")
+                                        appendProperty(result, "    ", k, v)
                                     }
                                 }
                             }
@@ -292,5 +296,113 @@ object YamlDashboardRewriter {
         }
 
         return result.toString()
+    }
+
+    /** Leading-space count of a raw line. */
+    private fun indentOf(line: String): Int = line.length - line.trimStart().length
+
+    /** A block scalar starts with | or > optionally followed by chomping/indent indicators. */
+    private fun isBlockScalarStart(value: String): Boolean {
+        if (value.isEmpty() || (value[0] != '|' && value[0] != '>')) return false
+        return value.drop(1).all { it == '-' || it == '+' || it.isDigit() }
+    }
+
+    /** True when [ and { are balanced by ] and }, ignoring brackets inside quotes. */
+    private fun bracketsBalanced(s: String): Boolean {
+        var depth = 0
+        var quote: Char? = null
+        for (c in s) {
+            when {
+                quote != null -> if (c == quote) quote = null
+                c == '"' || c == '\'' -> quote = c
+                c == '[' || c == '{' -> depth++
+                c == ']' || c == '}' -> depth--
+            }
+        }
+        return depth <= 0
+    }
+
+    /**
+     * Capture a full logical value beginning at [startIndex]. Returns the captured value and the
+     * index of the last consumed line.
+     * - Block scalar (| or >): indicator + deeper-indented content lines verbatim (body_text tiles).
+     * - Nested block (empty value, deeper-indented lines follow): the whole block is preserved
+     *   verbatim (dynamic_fields, ui_config, listen, ...). Returned with a leading newline marker so
+     *   the inner `-` items are never re-parsed as dashboard elements. The dashboard-level
+     *   `elements:` / `filters:` sections are excluded - they must stay reformattable.
+     * - Flow array/object ([ or {) spanning lines: scalar arrays (fields, pivots) join to one line;
+     *   object arrays (contain {, e.g. y_axes, conditional_formatting) are preserved verbatim.
+     * - Otherwise: the value unchanged.
+     */
+    private fun captureValue(lines: List<String>, startIndex: Int, keyIndent: Int, key: String, value: String): Pair<String, Int> {
+        if (isBlockScalarStart(value)) {
+            val sb = StringBuilder(value)
+            var j = startIndex + 1
+            while (j < lines.size) {
+                val l = lines[j]
+                if (l.isBlank()) { sb.append("\n").append(l); j++; continue }
+                if (indentOf(l) > keyIndent) { sb.append("\n").append(l); j++ } else break
+            }
+            // Trailing blank lines belong to the following content, not the block.
+            return sb.toString().trimEnd('\n', ' ', '\t') to (j - 1)
+        }
+        if (value.isEmpty()) {
+            var peek = startIndex + 1
+            while (peek < lines.size && lines[peek].isBlank()) peek++
+            val hasNestedBlock = peek < lines.size && indentOf(lines[peek]) > keyIndent
+            // The dashboard `elements:` / `filters:` SECTIONS are list sequences (- items) and must
+            // stay reformattable. An element-level `filters:` is a MAP (field: value) and, like every
+            // other nested block (dynamic_fields, ui_config, listen), is preserved verbatim.
+            val isDashboardSection = (key == "elements" || key == "filters") &&
+                peek < lines.size && lines[peek].trimStart().startsWith("-")
+            if (hasNestedBlock && !isDashboardSection) {
+                val block = mutableListOf<String>()
+                var j = startIndex + 1
+                while (j < lines.size) {
+                    val l = lines[j]
+                    if (l.isBlank()) { block.add(l); j++; continue }
+                    if (indentOf(l) > keyIndent) { block.add(l); j++ } else break
+                }
+                while (block.isNotEmpty() && block.last().isBlank()) block.removeAt(block.size - 1)
+                return ("\n" + block.joinToString("\n")) to (j - 1)
+            }
+        }
+        if (value.startsWith("[") || value.startsWith("{")) {
+            if (bracketsBalanced(value)) return value to startIndex
+            val joined = StringBuilder(value)
+            val verbatim = StringBuilder(value)
+            var j = startIndex + 1
+            while (j < lines.size && !bracketsBalanced(joined.toString())) {
+                joined.append(" ").append(lines[j].trim())
+                verbatim.append("\n").append(lines[j])
+                j++
+            }
+            val out = if (joined.contains("{")) verbatim.toString() else joined.toString()
+            return out to (j - 1)
+        }
+        return value to startIndex
+    }
+
+    /**
+     * Emit a property verbatim.
+     * - Leading-newline value: a nested block; emit `key:` then the block lines exactly as captured.
+     * - Other multi-line value (block scalar / multi-line flow object): first segment on the key
+     *   line, the rest verbatim.
+     * - Empty value: `key:` with no trailing space.
+     */
+    private fun appendProperty(result: StringBuilder, indent: String, key: String, value: String) {
+        when {
+            value.startsWith("\n") -> {
+                result.appendLine("$indent$key:")
+                value.removePrefix("\n").split("\n").forEach { result.appendLine(it) }
+            }
+            value.contains("\n") -> {
+                val parts = value.split("\n")
+                result.appendLine("$indent$key: ${parts.first()}")
+                parts.drop(1).forEach { result.appendLine(it) }
+            }
+            value.isEmpty() -> result.appendLine("$indent$key:")
+            else -> result.appendLine("$indent$key: $value")
+        }
     }
 }

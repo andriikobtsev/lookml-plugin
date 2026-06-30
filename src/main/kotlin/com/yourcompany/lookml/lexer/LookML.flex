@@ -58,7 +58,7 @@ StringLiteral = \"([^\\\"]|\\.)*\"
   "access_grant"      { return LookMLTypes.ACCESS_GRANT; }
   "named_value_format" { return LookMLTypes.NAMED_VALUE_FORMAT; }
   "test"              { return LookMLTypes.TEST; }
-  
+
   "dimension"         { return LookMLTypes.DIMENSION; }
   "dimension_group"   { return LookMLTypes.DIMENSION_GROUP; }
   "measure"           { return LookMLTypes.MEASURE; }

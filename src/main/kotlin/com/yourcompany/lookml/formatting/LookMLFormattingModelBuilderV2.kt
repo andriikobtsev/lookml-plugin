@@ -35,12 +35,16 @@ class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
         val isYaml = hasYamlContent(file)
 
         if (isYaml) {
-            val document = PsiDocumentManager.getInstance(file.project).getDocument(file)
-            if (document != null) {
-                WriteCommandAction.runWriteCommandAction(file.project) {
-                    val reformatted = YamlDashboardRewriter.rewriteDashboard(file)
-                    document.setText(reformatted)
-                    PsiDocumentManager.getInstance(file.project).commitDocument(document)
+            // Rewrite only on an explicit full reformat. createModel is also called for auto-indent
+            // (e.g. pressing Enter); rewriting the document there moves the caret and corrupts edits.
+            if (formattingContext.formattingMode == FormattingMode.REFORMAT) {
+                val document = PsiDocumentManager.getInstance(file.project).getDocument(file)
+                if (document != null) {
+                    WriteCommandAction.runWriteCommandAction(file.project) {
+                        val reformatted = YamlDashboardRewriter.rewriteDashboard(file)
+                        document.setText(reformatted)
+                        PsiDocumentManager.getInstance(file.project).commitDocument(document)
+                    }
                 }
             }
 

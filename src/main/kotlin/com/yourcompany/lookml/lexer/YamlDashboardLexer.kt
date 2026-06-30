@@ -59,13 +59,14 @@ class YamlDashboardLexer : LexerBase() {
         
         currentPosition = tokenEnd
         
-        // Handle document start marker
-        if (currentPosition == startOffset && currentPosition + 3 <= endOffset &&
-            buffer[currentPosition] == '-' && 
-            buffer[currentPosition + 1] == '-' && 
+        // Handle document start marker (--- at the start of any line, e.g. after a header comment)
+        if ((currentPosition == startOffset || isAtLineStart) && currentPosition + 3 <= endOffset &&
+            buffer[currentPosition] == '-' &&
+            buffer[currentPosition + 1] == '-' &&
             buffer[currentPosition + 2] == '-') {
             tokenEnd = currentPosition + 3
             currentToken = LookMLTypes.YAML_DOCUMENT_START
+            isAtLineStart = false
             return
         }
         
@@ -447,6 +448,17 @@ class YamlDashboardLexer : LexerBase() {
             }
         }
         
+        // Supplementary characters (e.g. emoji) arrive as a surrogate pair; consume both
+        // halves as one inline char so they do not become BAD_CHARACTER and break parsing.
+        if (Character.isHighSurrogate(ch) && currentPosition + 1 < endOffset &&
+            Character.isLowSurrogate(buffer[currentPosition + 1])) {
+            currentPosition += 2
+            tokenEnd = currentPosition
+            currentToken = LookMLTypes.INLINE_CHAR
+            isAtLineStart = false
+            return
+        }
+
         // ENHANCED: Handle individual Unicode characters that don't fit other patterns
         // This ensures we don't generate BAD_CHARACTER tokens for valid Unicode
         if (isUnicodeCharacter(ch)) {
@@ -456,7 +468,7 @@ class YamlDashboardLexer : LexerBase() {
             isAtLineStart = false
             return
         }
-        
+
         // Unknown character - only for truly invalid characters
         tokenEnd = currentPosition + 1
         currentToken = TokenType.BAD_CHARACTER
