@@ -6,7 +6,7 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ### ✅ Working Features (2026.1.0)
 
-- **Code Formatter** - **Traditional LookML** and **YAML dashboards** via Code → Reformat Code (`Cmd/Ctrl+Alt+L`)
+- **Code Formatter** - **Traditional LookML** and **YAML dashboards** via Code > Reformat Code (`Cmd/Ctrl+Alt+L`)
 - **YAML Dashboard Rewriter** - Same logic via **Reformat YAML Dashboard** (`Cmd/Ctrl+Alt+Shift+Y`); requires an active Marketplace license after the **evaluation period** (trial counts as licensed)
 - **YAML Dashboard Autocomplete** - 150+ properties for YAML dashboards
 - **Syntax Highlighting** - Keywords, strings, comments, SQL blocks, field references
@@ -14,28 +14,29 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 - **Code Completion** - Context-aware completion for traditional LookML and YAML dashboards
 - **Code Commenting** - Line and block comments (`Cmd/Ctrl + /`)
 - **Brace Matching** - Automatic matching of `{}`, `[]`, `()`
-- **Error Detection** - Syntax validation for traditional LookML
+- **Error Detection** - Syntax validation for traditional LookML and schema-backed checks for YAML dashboard properties
+- **Manifest Files** - `manifest.lkml` support: `project_name`, `constant`, `local_dependency`, `remote_dependency`, `override_constant`, `new_lookml_runtime`
 - **Code Folding** - Collapse/expand views, explores, measures, dashboards
 - **Wildcard Field References** - Support for `users.basic*`, `detail*` syntax
 
 ### ⚠️ Known Limitations
 
-- **YAML dashboard rewriter** - Best for typical dashboards; nested maps (`ui_config`, `listen`), multiline scalars, and some inline structures may not round-trip perfectly (see `CHANGELOG.md`).
+- **YAML dashboard rewriter** - Deeply nested structures (`dynamic_fields`, `ui_config`, `listen`, element-level `filters`) are preserved verbatim rather than reformatted, so they are never mangled but also not re-indented (see `CHANGELOG.md`).
 - **Traditional formatter** - Expects parseable files; severe syntax errors may limit formatting.
 - **Advanced IDE features** - Navigation/refactoring planned for future releases.
 
 ## Marketplace, evaluation, and license
 
 - **Distribution:** The plugin is a **paid** JetBrains Marketplace product; the listing shows **price** and **evaluation** length.
-- **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial — **formatting and the YAML rewriter work**.
+- **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial - **formatting and the YAML rewriter work**.
 - **After evaluation:** Activate with **Help | Register** (JetBrains account + subscription or license). Without a valid license, **all code formatting** is disabled (**Reformat Code**, **Reformat YAML Dashboard**, **Format LookML Code**). Editing aids such as **syntax highlighting**, **folding**, and **completion** are not license-gated in this version.
-- **Product descriptor:** `plugin.xml` includes `<product-descriptor …/>` for paid-plugin activation. **`release-date`** must be the **actual upload day** (`YYYYMMDD`) — update it each time you publish a new build.
+- **Product descriptor:** `plugin.xml` includes `<product-descriptor .../>` for paid-plugin activation. **`release-date`** must be the **actual upload day** (`YYYYMMDD`) - update it each time you publish a new build.
 
 ## 📥 Installation
 
 ### From IntelliJ Plugin Marketplace (Recommended)
 
-1. Open **Settings/Preferences** → **Plugins**
+1. Open **Settings/Preferences** > **Plugins**
 2. Search for "**LookML Support**"
 3. Click **Install**
 4. Restart IDE
@@ -43,7 +44,7 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 ### Manual Installation
 
 1. Download the latest release from [Releases](https://github.com/andriikobtsev/lookml-plugin/releases)
-2. Open **Settings/Preferences** → **Plugins** → **⚙️** → **Install Plugin from Disk**
+2. Open **Settings/Preferences** > **Plugins** > **⚙️** > **Install Plugin from Disk**
 3. Select the downloaded `.zip` file
 4. Restart IDE
 
@@ -79,7 +80,7 @@ Automatically format LookML files for consistent style!
 **How to use:**
 1. Open a traditional LookML file (views, explores, dimensions, etc.)
 2. Press **`Cmd+Opt+L`** (Mac) or **`Ctrl+Alt+L`** (Windows/Linux)
-3. Or: Code → Reformat Code
+3. Or: Code > Reformat Code
 
 **What it does:**
 - ✅ **Proper indentation** - 2 spaces per nesting level
@@ -111,9 +112,9 @@ view: users {
 
 **How to use (recommended):**
 1. Open a YAML dashboard file (typically `---` and/or `- dashboard:`)
-2. **Code → Reformat Code** — **`Cmd+Option+L`** (Mac) or **`Ctrl+Alt+L`** (Windows/Linux)
+2. **Code > Reformat Code** - **`Cmd+Option+L`** (Mac) or **`Ctrl+Alt+L`** (Windows/Linux)
 
-**Alternative:** **Reformat YAML Dashboard** — **`Cmd+Option+Shift+Y`** / **`Ctrl+Alt+Shift+Y`**, or Find Action (`Cmd/Ctrl+Shift+A`) → “Reformat YAML Dashboard”.
+**Alternative:** **Reformat YAML Dashboard** - **`Cmd+Option+Shift+Y`** / **`Ctrl+Alt+Shift+Y`**, or Find Action (`Cmd/Ctrl+Shift+A`) > "Reformat YAML Dashboard".
 
 Both paths run the same **`YamlDashboardRewriter`** (canonical layout, 2-space indent, ordered sections).
 
@@ -128,13 +129,17 @@ type : looker_line
 row : 0
 
 # After formatting:
+---
 - dashboard: test
   title: "Sales"
   elements:
-  - name: "chart1"
-    type: "looker_line"
-    row: "0"
+  - name: chart1
+    type: looker_line
+    row: 0
 ```
+
+Values keep their original form (strings, numbers, and arrays are not force-quoted); block
+scalars and nested blocks such as `dynamic_fields` are preserved as-is.
 
 ### YAML Dashboard Autocomplete
 
@@ -150,13 +155,13 @@ Get intelligent autocomplete for YAML dashboard files with **150+ properties**!
 ```yaml
 ---
 - dashboard: sales_dashboard
-  # Type "ti" and press Ctrl+Space → see "title"
+  # Type "ti" and press Ctrl+Space > see "title"
   title: "Sales Dashboard"
 
   elements:
-  # Type "ty" and press Ctrl+Space → see "type"
+  # Type "ty" and press Ctrl+Space > see "type"
   - type: looker_column
-    # Type "show_" and press Ctrl+Space → see all "show_*" properties!
+    # Type "show_" and press Ctrl+Space > see all "show_*" properties!
     show_view_names: false
 ```
 
@@ -178,7 +183,7 @@ Traditional LookML files also have autocomplete for:
 ### Customization
 
 Customize syntax highlighting colors:
-**Settings** → **Editor** → **Color Scheme** → **LookML**
+**Settings** > **Editor** > **Color Scheme** > **LookML**
 
 ## 📝 Supported Syntax
 
@@ -240,13 +245,13 @@ Contributions are welcome! Whether it's bug fixes, new features, or documentatio
 
 ### Development Setup
 
-- JDK 21 (matches this project’s `jvmTarget`; IntelliJ SDK version is set in `build.gradle.kts` via `intellijIdeaCommunity(...)`)
+- JDK 21 (matches this project's `jvmTarget`; IntelliJ SDK version is set in `build.gradle.kts` via `intellijIdeaCommunity(...)`)
 - `./gradlew generateParser` (if grammar changed) then `./gradlew build` / `./gradlew test`
 - `./gradlew runIde` to debug in a sandbox IDE
 
 ### Publishing to JetBrains Marketplace (maintainers)
 
-1. Set environment variable **`INTELLIJ_PUBLISH_TOKEN`** (create under [JetBrains Marketplace](https://plugins.jetbrains.com/) → **Profile** → **Access Tokens**).
+1. Set environment variable **`INTELLIJ_PUBLISH_TOKEN`** (create under [JetBrains Marketplace](https://plugins.jetbrains.com/) > **Profile** > **Access Tokens**).
 2. Build and verify: `./gradlew test verifyPlugin buildPlugin`
 3. Upload **`build/distributions/lookml-plugin-2026.1.0.zip`** (version from `build.gradle.kts`) in the vendor UI, or run **`./gradlew publishPlugin`** if your Gradle setup is tied to the same token.
 4. On each release, set **`release-date`** in `plugin.xml` `<product-descriptor>` to the upload date (`YYYYMMDD`).
@@ -264,7 +269,7 @@ Three different things are easy to confuse:
    Use is governed by **JetBrains Marketplace terms** and your **purchase or subscription**. This is how most users get the plugin.
 
 2. **Source code in this GitHub repository**  
-   Licensed under the **GNU Affero General Public License v3.0** ([LICENSE](LICENSE) — **AGPL-3.0**, not “plain GPL”). If you modify and distribute the source (or run a modified version as a network service), AGPL obligations apply.
+   Licensed under the **GNU Affero General Public License v3.0** ([LICENSE](LICENSE) - **AGPL-3.0**, not "plain GPL"). If you modify and distribute the source (or run a modified version as a network service), AGPL obligations apply.
 
 3. **Alternate / commercial licensing of the source**  
    If you need a **different** license for the **code** (not the Marketplace binary), contact the author.
@@ -286,9 +291,11 @@ The plugin does **not** implement custom analytics. **License checks** use the s
 **Current Version**: **2026.1.0** (see `build.gradle.kts` and Marketplace listing)
 
 ### What's New in 2026.1.0
-- **YAML dashboard formatting** in the main Reformat Code flow (plus dedicated action/shortcut)
-- **Code style settings** entry for LookML (indent defaults)
-- **Rewriter tests** and formatter test updates
+- **First paid release (freemium):** code formatting requires a license after a free evaluation; all other features stay free
+- **Manifest file support:** `project_name`, `constant`, `local_dependency`, `remote_dependency`, `override_constant`, `new_lookml_runtime`
+- **Better dashboard validation:** far fewer false "unknown property" warnings; covers table calculations, filters, and text tiles
+- **More robust dashboard formatting:** arrays stay arrays, block scalars and nested blocks are preserved, multi-line field lists handled
+- **Fixes:** dashboards with a leading comment before `---` parse correctly; emoji in text tiles supported; formatting runs only on an explicit reformat, not while typing
 
 ### Earlier: v1.2.0
 - **Code Formatter** for traditional LookML (PSI-based)
