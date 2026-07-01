@@ -30,7 +30,6 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 - **Distribution:** The plugin is a **paid** JetBrains Marketplace product; the listing shows **price** and **evaluation** length.
 - **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial - **formatting and the YAML rewriter work**.
 - **After evaluation:** Activate with **Help | Register** (JetBrains account + subscription or license). Without a valid license, **all code formatting** is disabled (**Reformat Code**, **Reformat YAML Dashboard**, **Format LookML Code**). Editing aids such as **syntax highlighting**, **folding**, and **completion** are not license-gated in this version.
-- **Product descriptor:** `plugin.xml` includes `<product-descriptor .../>` for paid-plugin activation. **`release-date`** must be the **actual upload day** (`YYYYMMDD`) - update it each time you publish a new build.
 
 ## 📥 Installation
 
@@ -230,36 +229,6 @@ Found a bug or have a feature request?
 - **Questions**: andrii.kobtsev@gmail.com
 
 Your feedback helps improve the plugin!
-
-## 🤝 Contributing
-
-Contributions are welcome! Whether it's bug fixes, new features, or documentation improvements.
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-### Development Setup
-
-- JDK 21 (matches this project's `jvmTarget`; IntelliJ SDK version is set in `build.gradle.kts` via `intellijIdeaCommunity(...)`)
-- `./gradlew generateParser` (if grammar changed) then `./gradlew build` / `./gradlew test`
-- `./gradlew runIde` to debug in a sandbox IDE
-
-### Publishing to JetBrains Marketplace (maintainers)
-
-1. Set environment variable **`INTELLIJ_PUBLISH_TOKEN`** (create under [JetBrains Marketplace](https://plugins.jetbrains.com/) > **Profile** > **Access Tokens**).
-2. Build and verify: `./gradlew test verifyPlugin buildPlugin`
-3. Upload **`build/distributions/lookml-plugin-2026.1.0.zip`** (version from `build.gradle.kts`) in the vendor UI, or run **`./gradlew publishPlugin`** if your Gradle setup is tied to the same token.
-4. On each release, set **`release-date`** in `plugin.xml` `<product-descriptor>` to the upload date (`YYYYMMDD`).
-5. Add or refresh **screenshots** and **Getting Started** text on the plugin page (see Marketplace editor).
-
-### Contribution License
-
-By contributing, you agree that your contributions will be licensed under the same AGPL-3.0 license that covers this project. The original author retains the right to offer commercial licenses for the combined work.
 
 ## 📄 License & distribution (read this carefully)
 
