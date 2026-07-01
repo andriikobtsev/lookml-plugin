@@ -70,7 +70,8 @@ intellijPlatform {
                 <li><b>Syntax highlighting</b> - keywords, strings, SQL blocks, field references.</li>
                 <li><b>File types</b> - <code>.lkml</code>, <code>.lookml</code>.</li>
                 <li><b>Commenting, brace matching, folding</b> - standard IDE editing aids.</li>
-                <li><b>Validation</b> - syntax errors for traditional LookML where the parser applies.</li>
+                <li><b>Manifest files</b> - <code>manifest.lkml</code> support (<code>project_name</code>, <code>constant</code>, <code>local_dependency</code>, <code>remote_dependency</code>, and more).</li>
+                <li><b>Validation</b> - syntax errors for traditional LookML, plus schema-backed checks for YAML dashboard properties.</li>
             </ul>
 
             <h3>Supported syntax</h3>
@@ -81,7 +82,7 @@ intellijPlatform {
             </ul>
 
             <h3>Paid plugin &amp; evaluation</h3>
-            <p>This plugin is distributed on the JetBrains Marketplace as a <b>paid</b> product with an <b>evaluation period</b> (length shown on the listing). During evaluation, Marketplace treats the installation as licensed for that period. <b>After evaluation</b>, you need an active subscription or license tied to your JetBrains account; <b>all code formatting</b> (including <b>Reformat Code</b> and the YAML dashboard rewriter) requires a valid license. Use <b>Help | Register</b> to sign in and activate. Syntax highlighting, folding, and completion are available without a format license check in this release.</p>
+            <p>This plugin is distributed on the JetBrains Marketplace as a <b>paid</b> product with an <b>evaluation period</b> (length shown on the listing). During evaluation, Marketplace treats the installation as licensed for that period. <b>After evaluation</b>, you need an active subscription or license tied to your JetBrains account; <b>all code formatting</b> (including <b>Reformat Code</b> and the YAML dashboard rewriter) requires a valid license. Use <b>Help | Register</b> to sign in and activate. All other features stay <b>free</b> (no license check): syntax highlighting, code completion, folding, brace matching, commenting, manifest support, and validation.</p>
 
             <h3>Privacy</h3>
             <p>The plugin does not add custom telemetry. License validation uses the standard JetBrains Marketplace / IDE licensing flow.</p>
