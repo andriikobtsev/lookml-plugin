@@ -4,10 +4,11 @@ All notable changes to the LookML Plugin will be documented in this file.
 
 ## [2026.1.0] - 2026-07-01
 
-First paid release (freemium). **Code formatting becomes a paid feature** after a free
-evaluation period; all other features stay free. Activate via **Help | Register**.
+First release with a Pro tier (freemium). **Code formatting becomes a Pro feature** after a
+free trial; the plugin stays free and all other features keep working. Activate Pro via
+**Help | Register**.
 
-### Paid (evaluation included)
+### Pro (free trial included)
 - **LookML and YAML dashboard formatting** - IDE **Reformat Code** (`Cmd/Ctrl+Alt+L`) and the
   **Reformat YAML Dashboard** action (`Cmd/Ctrl+Alt+Shift+Y`), gated by `CheckLicense` in
   `LookMLFormattingModelBuilderV2`, `LookMLFormatAction`, and `ReformatYamlDashboardAction`

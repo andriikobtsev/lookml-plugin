@@ -25,11 +25,13 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 - **Traditional formatter** - Expects parseable files; severe syntax errors may limit formatting.
 - **Advanced IDE features** - Navigation/refactoring planned for future releases.
 
-## Marketplace, evaluation, and license
+## Pricing
 
-### Free vs paid
+**LookML Support is free.** Code formatting is a **Pro** feature, available with a license and a free trial.
 
-| Capability | Free | Paid |
+### Free vs Pro
+
+| Capability | Free | Pro |
 | --- | :---: | :---: |
 | Syntax highlighting | ✅ | ✅ |
 | Code completion (150+ dashboard properties) | ✅ | ✅ |
@@ -39,11 +41,9 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 | Code formatting (**Reformat Code**, Format LookML Code) | - | ✅ |
 | YAML dashboard rewriter (**Reformat YAML Dashboard**) | - | ✅ |
 
-The evaluation period (length shown on the listing) unlocks the paid features as a trial.
-
-- **Distribution:** The plugin is a **paid** JetBrains Marketplace product; the listing shows **price** and **evaluation** length.
-- **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial - **formatting and the YAML rewriter work**.
-- **After evaluation:** Activate with **Help | Register** (JetBrains account + subscription or license). Without a valid license, **all code formatting** is disabled (**Reformat Code**, **Reformat YAML Dashboard**, **Format LookML Code**). Editing aids such as **syntax highlighting**, **folding**, and **completion** are not license-gated in this version.
+- **Free tier:** everything except formatting works with no license, no expiry.
+- **Pro features:** LookML and YAML dashboard formatting. Try them free during the trial (length shown on the listing).
+- **After the trial:** activate Pro via **Help | Register** (JetBrains account + license). The free features keep working regardless.
 
 ## 📥 Installation
 
@@ -274,7 +274,7 @@ The plugin does **not** implement custom analytics. **License checks** use the s
 **Current Version**: **2026.1.0** (see `build.gradle.kts` and Marketplace listing)
 
 ### What's New in 2026.1.0
-- **First paid release (freemium):** code formatting requires a license after a free evaluation; all other features stay free
+- **Formatting is now a Pro feature (freemium):** code formatting needs a license after a free trial; the plugin stays free and all other features keep working
 - **Manifest file support:** `project_name`, `constant`, `local_dependency`, `remote_dependency`, `override_constant`, `new_lookml_runtime`
 - **Better dashboard validation:** far fewer false "unknown property" warnings; covers table calculations, filters, and text tiles
 - **More robust dashboard formatting:** arrays stay arrays, block scalars and nested blocks are preserved, multi-line field lists handled
