@@ -59,18 +59,18 @@ intellijPlatform {
         }
 
         description = """
-            <p><b>LookML Support</b> — Looker Modeling Language for IntelliJ-based IDEs (IntelliJ IDEA, PyCharm, and others). Minimum IDE: <b>2025.1</b> (build 251+).</p>
+            <p><b>LookML Support</b> - Looker Modeling Language for IntelliJ-based IDEs (IntelliJ IDEA, PyCharm, and others). Minimum IDE: <b>2025.1</b> (build 251+).</p>
 
             <h3>Features</h3>
             <ul>
-                <li><b>Code formatting</b> — <b>Reformat Code</b> for traditional LookML; YAML Looker dashboards use the same action plus an optional <b>Reformat YAML Dashboard</b> shortcut (see change notes for keys).</li>
-                <li><b>YAML dashboard rewriter</b> — canonical layout and indentation when a valid license is active (evaluation/trial included).</li>
-                <li><b>Code style</b> — <b>Settings | Editor | Code Style | LookML</b> (default 2-space indent).</li>
-                <li><b>YAML dashboard completion</b> — 150+ properties with descriptions.</li>
-                <li><b>Syntax highlighting</b> — keywords, strings, SQL blocks, field references.</li>
-                <li><b>File types</b> — <code>.lkml</code>, <code>.lookml</code>.</li>
-                <li><b>Commenting, brace matching, folding</b> — standard IDE editing aids.</li>
-                <li><b>Validation</b> — syntax errors for traditional LookML where the parser applies.</li>
+                <li><b>Code formatting</b> - <b>Reformat Code</b> for traditional LookML; YAML Looker dashboards use the same action plus an optional <b>Reformat YAML Dashboard</b> shortcut (see change notes for keys).</li>
+                <li><b>YAML dashboard rewriter</b> - canonical layout and indentation when a valid license is active (evaluation/trial included).</li>
+                <li><b>Code style</b> - <b>Settings | Editor | Code Style | LookML</b> (default 2-space indent).</li>
+                <li><b>YAML dashboard completion</b> - 150+ properties with descriptions.</li>
+                <li><b>Syntax highlighting</b> - keywords, strings, SQL blocks, field references.</li>
+                <li><b>File types</b> - <code>.lkml</code>, <code>.lookml</code>.</li>
+                <li><b>Commenting, brace matching, folding</b> - standard IDE editing aids.</li>
+                <li><b>Validation</b> - syntax errors for traditional LookML where the parser applies.</li>
             </ul>
 
             <h3>Supported syntax</h3>
@@ -88,16 +88,26 @@ intellijPlatform {
 
             <h3>Source code &amp; license (GitHub)</h3>
             <p>Source is available under the <b>GNU Affero General Public License v3</b> (AGPL-3.0). Using or modifying the source is separate from the Marketplace binary: follow AGPL for the repository. For questions about alternate licensing of the source, contact the vendor.</p>
-            <p>Vendor: <a href="mailto:andrii.kobtsev@gmail.com">andrii.kobtsev@gmail.com</a> · <a href="https://github.com/andriikobtsev/lookml-plugin">GitHub</a></p>
+            <p>Vendor: <a href="mailto:andrii.kobtsev@gmail.com">andrii.kobtsev@gmail.com</a> | <a href="https://github.com/andriikobtsev/lookml-plugin">GitHub</a></p>
         """.trimIndent()
 
         changeNotes = """
-            <h3>2026.1.0 — YAML dashboard reformat, licensing, versioning</h3>
+            <h3>2026.1.0</h3>
+            <p><b>Important for existing users:</b> code formatting is becoming a paid feature. The
+            IDE <b>Reformat Code</b> action for LookML and the YAML dashboard rewriter now require a
+            license after a free evaluation period. Everything else stays free. Activate or start the
+            evaluation via <b>Help | Register</b>.</p>
             <ul>
-                <li><b>YAML dashboards:</b> <b>Reformat Code</b> (<code>Cmd/Ctrl+Alt+L</code>) and <b>Reformat YAML Dashboard</b> (<code>Cmd/Ctrl+Alt+Shift+Y</code>) run the YAML dashboard rewriter when the plugin is licensed (evaluation counts as licensed).</li>
-                <li><b>License gating:</b> After evaluation, <b>all</b> formatting (IDE <b>Reformat Code</b>, YAML rewriter, format actions) requires activation via <b>Help | Register</b>.</li>
+                <li><b>Paid (evaluation included):</b> LookML and YAML dashboard formatting (<b>Reformat Code</b> <code>Cmd/Ctrl+Alt+L</code>, <b>Reformat YAML Dashboard</b> <code>Cmd/Ctrl+Alt+Shift+Y</code>).</li>
+                <li><b>Free:</b> syntax highlighting, code completion, folding, brace matching, commenting, and validation.</li>
+            </ul>
+            <p><b>Also new in this release:</b></p>
+            <ul>
+                <li><b>Manifest files:</b> <code>manifest.lkml</code> support for <code>project_name</code>, <code>constant</code>, <code>local_dependency</code>, <code>remote_dependency</code>, <code>override_constant</code>, and <code>new_lookml_runtime</code>.</li>
+                <li><b>Better dashboard validation:</b> fewer false "unknown property" warnings; covers table calculations (<code>dynamic_fields</code>), filters, and text tiles.</li>
+                <li><b>More robust dashboard formatting:</b> arrays stay arrays, block scalars and nested blocks (such as <code>dynamic_fields</code>) are preserved, and multi-line field lists are handled.</li>
+                <li><b>Fixes:</b> dashboards with a leading comment before <code>---</code> now parse correctly; emoji in text tiles are supported; formatting runs only on an explicit reformat, not while typing.</li>
                 <li><b>Code style:</b> LookML indent defaults in <b>Settings | Editor | Code Style | LookML</b>.</li>
-                <li><b>Versioning:</b> Plugin uses <code>2026.1.x</code> (Marketplace / product-descriptor train).</li>
                 <li><b>Compatibility:</b> <code>sinceBuild 251</code> (IntelliJ 2025.1+).</li>
             </ul>
 
@@ -138,7 +148,7 @@ intellijPlatform {
         """.trimIndent()
     }
 
-    // Publishing: create token at https://plugins.jetbrains.com/author/me → Profile → Access Tokens
+    // Publishing: create token at https://plugins.jetbrains.com/author/me > Profile > Access Tokens
     publishing {
         token = providers.environmentVariable("INTELLIJ_PUBLISH_TOKEN")
         channels = listOf("stable")

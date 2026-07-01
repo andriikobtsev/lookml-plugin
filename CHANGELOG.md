@@ -2,25 +2,46 @@
 
 All notable changes to the LookML Plugin will be documented in this file.
 
-## [2026.1.0] - 2026-04-21
+## [2026.1.0] - 2026-07-01
+
+First paid release (freemium). **Code formatting becomes a paid feature** after a free
+evaluation period; all other features stay free. Activate via **Help | Register**.
+
+### Paid (evaluation included)
+- **LookML and YAML dashboard formatting** - IDE **Reformat Code** (`Cmd/Ctrl+Alt+L`) and the
+  **Reformat YAML Dashboard** action (`Cmd/Ctrl+Alt+Shift+Y`), gated by `CheckLicense` in
+  `LookMLFormattingModelBuilderV2`, `LookMLFormatAction`, and `ReformatYamlDashboardAction`
+  (skipped in unit tests / headless).
+
+### Free
+- Syntax highlighting, code completion, folding, brace matching, commenting, and validation.
 
 ### Added
-- **YAML dashboard formatting (IDE Reformat)** — `Code → Reformat Code` / `Cmd+Option+L` (`Ctrl+Alt+L`) runs `YamlDashboardRewriter` for YAML-style Looker dashboards (heuristic: `- dashboard:`, `---`, etc.).
-- **Reformat YAML Dashboard** action — optional shortcut `Cmd+Option+Shift+Y` / `Ctrl+Alt+Shift+Y` for the same rewriter path.
-- **LookML code style settings** — `LookMLLanguageCodeStyleSettingsProvider` (default 2-space indent in settings UI).
-- **YAML dashboard annotator** — `YamlDashboardAnnotator` (see `plugin.xml`).
-- **Tests** — `YamlDashboardRewriterTest`, formatter tests updated for YAML + traditional LookML.
+- **Manifest files** - `manifest.lkml` support for `project_name`, `constant`, `local_dependency`,
+  `remote_dependency`, `override_constant`, and `new_lookml_runtime` (grammar, lexer, highlighting,
+  completion).
+- **LookML code style settings** - `LookMLLanguageCodeStyleSettingsProvider` (default 2-space indent).
+- **Tests** - `YamlSemanticAnalyzerTest`, `YamlLeadingCommentTest`, and expanded `YamlDashboardRewriterTest`.
 
 ### Changed
-- **YAML rewriter** — schema/semantic helpers (`YamlDashboardSchema`, `YamlSemanticAnalyzer`) to support structured output.
+- **Dashboard validation** - classify properties by indentation and validate item-level properties
+  against the combined element / filter / `dynamic_fields` schemas; far fewer false
+  "unknown property" warnings. Added missing element, filter, and table-calculation properties.
+- **Dashboard formatting** - values are preserved verbatim instead of force-quoted (arrays stay
+  arrays); multi-line flow arrays are joined; block scalars and nested blocks (`dynamic_fields`,
+  `ui_config`, element-level `filters`, etc.) are preserved. Reformatting runs only on an explicit
+  reformat, not on Enter / auto-indent.
 
-### Changed (Marketplace / licensing)
-- **License gating** — `LookMLFormattingModelBuilderV2` (all **Reformat Code**), `LookMLFormatAction`, and `ReformatYamlDashboardAction` require `CheckLicense.isLicensed() == true` in regular IDE runs (skipped in unit tests / headless). **Activate** uses `Messages` + Marketplace link instead of internal `DataContext` / `actionPerformed` hacks.
-- **Documentation** — README and Marketplace `description` / `changeNotes` clarify AGPL source vs Marketplace binary, evaluation, privacy, and publishing token.
+### Fixed
+- Dashboards with a leading `#` comment before `---` now parse as YAML (were parsed as traditional
+  LookML). The `---` document start is recognized at any line start.
+- Emoji (surrogate pairs) in text tiles no longer break parsing.
 
 ### Known limitations
-- **YAML rewriter** — nested maps / `ui_config` / `listen`, multiline scalars, and inline objects are not fully preserved (smoke-tested only; see `YamlDashboardRewriterTest`).
-- **Traditional formatter** — still expects parseable files (syntax errors may limit formatting).
+- **YAML rewriter** - deeply nested structures are preserved verbatim rather than reformatted; a
+  block-style element-level `filters:` map is distinguished from the dashboard `filters:` section
+  by content shape (heuristic).
+- **Traditional formatter** - still expects parseable files (syntax errors may limit formatting).
 
 ## [1.2.0] - 2025-11-12
 
