@@ -4,18 +4,23 @@ All notable changes to the LookML Plugin will be documented in this file.
 
 ## [2026.1.0] - 2026-07-01
 
-First release with a Pro tier (freemium). **Code formatting becomes a Pro feature** after a
-free trial; the plugin stays free and all other features keep working. Activate Pro via
-**Help | Register**.
+First release with a Pro tier (freemium). **Code completion, dashboard validation, and code
+formatting become Pro features** with a free trial; the plugin stays free to install and syntax
+highlighting plus basic editing stay free. Activate Pro via **Help | Register**.
 
 ### Pro (free trial included)
+- **Code completion** - gated in `LookMLCompletionContributor`.
+- **Schema-backed dashboard validation** - gated in `YamlDashboardAnnotator` (basic parser syntax
+  errors remain free).
 - **LookML and YAML dashboard formatting** - IDE **Reformat Code** (`Cmd/Ctrl+Alt+L`) and the
-  **Reformat YAML Dashboard** action (`Cmd/Ctrl+Alt+Shift+Y`), gated by `CheckLicense` in
-  `LookMLFormattingModelBuilderV2`, `LookMLFormatAction`, and `ReformatYamlDashboardAction`
-  (skipped in unit tests / headless).
+  **Reformat YAML Dashboard** action (`Cmd/Ctrl+Alt+Shift+Y`), gated in
+  `LookMLFormattingModelBuilderV2`, `LookMLFormatAction`, and `ReformatYamlDashboardAction`.
+- License checks run through `CheckLicense` (skipped in unit tests / headless) and are cached with a
+  short TTL so validation does not run on every editor event.
 
 ### Free
-- Syntax highlighting, code completion, folding, brace matching, commenting, and validation.
+- Syntax highlighting, file type recognition, folding, commenting, brace matching, quote handling,
+  and color settings.
 
 ### Added
 - **Manifest files** - `manifest.lkml` support for `project_name`, `constant`, `local_dependency`,

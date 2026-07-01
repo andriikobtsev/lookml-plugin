@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.yourcompany.lookml.formatting.ObjectType
 import com.yourcompany.lookml.formatting.YamlDashboardSchema
 import com.yourcompany.lookml.formatting.YamlSemanticAnalyzer
+import com.yourcompany.lookml.license.LicenseConditions
 import com.yourcompany.lookml.psi.LookMLFile
 import com.yourcompany.lookml.psi.LookMLTypes
 import com.yourcompany.lookml.psi.LookMLYamlProperty
@@ -19,6 +20,8 @@ class YamlDashboardAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         if (element !is LookMLYamlProperty) return
+        // Pro feature: schema-backed dashboard validation requires a license (evaluation counts).
+        if (!LicenseConditions.allowPaidPluginFeatures()) return
         val file = element.containingFile as? LookMLFile ?: return
         if (!YamlDashboardFiles.isYamlDashboardContent(file.text)) return
         if (element.isUnderPropertyNamed("listen")) return

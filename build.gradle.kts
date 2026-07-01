@@ -81,9 +81,9 @@ intellijPlatform {
                 <li>Wildcard field references (<code>users.basic*</code>, etc.)</li>
             </ul>
 
-            <h3>Free plugin, with Pro formatting</h3>
-            <p><b>LookML Support is free.</b> Syntax highlighting, code completion, folding, brace matching, commenting, manifest support, and validation work with <b>no license</b> and no expiry.</p>
-            <p><b>Code formatting is a Pro feature</b> - the IDE <b>Reformat Code</b> action for LookML and the YAML dashboard rewriter (<b>Reformat YAML Dashboard</b>). Try it free during the evaluation period (length shown on the listing); after the trial, activate Pro via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
+            <h3>Free and Pro</h3>
+            <p><b>Free</b> (no license, no expiry): syntax highlighting, file type recognition, code folding, commenting, brace matching, quote handling, and color settings.</p>
+            <p><b>Pro</b>: code completion (150+ dashboard properties), schema-backed dashboard validation, and code formatting (<b>Reformat Code</b> and the YAML dashboard rewriter). Try Pro free during the evaluation period (length shown on the listing); after the trial, activate via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
 
             <h3>Privacy</h3>
             <p>The plugin does not add custom telemetry. License validation uses the standard JetBrains Marketplace / IDE licensing flow.</p>
@@ -95,13 +95,14 @@ intellijPlatform {
 
         changeNotes = """
             <h3>2026.1.0</h3>
-            <p><b>Important for existing users:</b> code formatting is becoming a <b>Pro</b> feature.
-            The IDE <b>Reformat Code</b> action for LookML and the YAML dashboard rewriter now need a
-            license after a free trial. The plugin stays free to install and everything else keeps
-            working. Start the free trial or activate Pro via <b>Help | Register</b>.</p>
+            <p><b>Important for existing users:</b> LookML Support is moving to a freemium model.
+            <b>Code completion</b>, <b>dashboard validation</b>, and <b>code formatting</b> are becoming
+            <b>Pro</b> features, with a free trial. The plugin stays free to install, and syntax
+            highlighting and basic editing stay free forever. Start the trial or activate Pro via
+            <b>Help | Register</b>.</p>
             <ul>
-                <li><b>Pro (free trial included):</b> LookML and YAML dashboard formatting (<b>Reformat Code</b> <code>Cmd/Ctrl+Alt+L</code>, <b>Reformat YAML Dashboard</b> <code>Cmd/Ctrl+Alt+Shift+Y</code>).</li>
-                <li><b>Free:</b> syntax highlighting, code completion, folding, brace matching, commenting, and validation.</li>
+                <li><b>Pro (free trial included):</b> code completion (150+ properties), schema-backed dashboard validation, and formatting (<b>Reformat Code</b> <code>Cmd/Ctrl+Alt+L</code>, <b>Reformat YAML Dashboard</b> <code>Cmd/Ctrl+Alt+Shift+Y</code>).</li>
+                <li><b>Free:</b> syntax highlighting, file type recognition, folding, commenting, brace matching, and quote handling.</li>
             </ul>
             <p><b>Also new in this release:</b></p>
             <ul>
