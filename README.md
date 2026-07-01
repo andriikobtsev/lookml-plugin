@@ -27,6 +27,20 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ## Marketplace, evaluation, and license
 
+### Free vs paid
+
+| Capability | Free | Paid |
+| --- | :---: | :---: |
+| Syntax highlighting | ✅ | ✅ |
+| Code completion (150+ dashboard properties) | ✅ | ✅ |
+| Folding, brace matching, commenting | ✅ | ✅ |
+| Manifest file support (`manifest.lkml`) | ✅ | ✅ |
+| Validation (LookML syntax + dashboard properties) | ✅ | ✅ |
+| Code formatting (**Reformat Code**, Format LookML Code) | - | ✅ |
+| YAML dashboard rewriter (**Reformat YAML Dashboard**) | - | ✅ |
+
+The evaluation period (length shown on the listing) unlocks the paid features as a trial.
+
 - **Distribution:** The plugin is a **paid** JetBrains Marketplace product; the listing shows **price** and **evaluation** length.
 - **During evaluation:** Marketplace licensing treats your IDE as entitled for the trial - **formatting and the YAML rewriter work**.
 - **After evaluation:** Activate with **Help | Register** (JetBrains account + subscription or license). Without a valid license, **all code formatting** is disabled (**Reformat Code**, **Reformat YAML Dashboard**, **Format LookML Code**). Editing aids such as **syntax highlighting**, **folding**, and **completion** are not license-gated in this version.
