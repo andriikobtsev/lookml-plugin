@@ -85,6 +85,9 @@ intellijPlatform {
             <p><b>Free</b> (no license, no expiry): syntax highlighting, file type recognition, code folding, commenting, brace matching, quote handling, and color settings.</p>
             <p><b>Pro</b>: code completion (150+ dashboard properties), schema-backed dashboard validation, and code formatting (<b>Reformat Code</b> and the YAML dashboard rewriter). Try Pro free during the evaluation period (length shown on the listing); after the trial, activate via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
 
+            <h3>Founding price</h3>
+            <p>Pro is launching at an early one-time price. Buy once and own it for good, including every feature added next (go-to-definition and more are planned). The price increases as the plugin grows, so early buyers lock in the lowest price and get all future updates free.</p>
+
             <h3>Privacy</h3>
             <p>The plugin does not add custom telemetry. License validation uses the standard JetBrains Marketplace / IDE licensing flow.</p>
 
@@ -103,6 +106,7 @@ intellijPlatform {
             <ul>
                 <li><b>Pro (free trial included):</b> code completion (150+ properties), schema-backed dashboard validation, and formatting (<b>Reformat Code</b> <code>Cmd/Ctrl+Alt+L</code>, <b>Reformat YAML Dashboard</b> <code>Cmd/Ctrl+Alt+Shift+Y</code>).</li>
                 <li><b>Free:</b> syntax highlighting, file type recognition, folding, commenting, brace matching, and quote handling.</li>
+                <li><b>Founding offer:</b> Pro is available at an early one-time price. Buy once to own it for good and get all future features (go-to-definition planned) as free updates. The price rises as the plugin grows.</li>
             </ul>
             <p><b>Also new in this release:</b></p>
             <ul>
