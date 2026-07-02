@@ -4,7 +4,8 @@
     <vendor email="andrii.kobtsev@gmail.com" url="https://github.com/andriikobtsev/lookml-plugin">Andrii Kobtsev</vendor>
 
     <!-- release-date = YYYYMMDD of the Marketplace release you upload; update when publishing. -->
-    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260605" release-version="20261"/>
+    <!-- optional="true" = freemium: plugin loads without a license; only Pro features are gated. -->
+    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260605" release-version="20261" optional="true"/>
 
     <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
     <depends>com.intellij.modules.platform</depends>
