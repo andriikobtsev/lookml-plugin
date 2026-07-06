@@ -47,6 +47,16 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 Basic syntax errors (for example an unclosed brace) are shown for free; the schema-backed dashboard property checks are the Pro validation.
 
+## Roadmap
+
+Pro is actively developed. **Buy Pro now at the founding price and you get future Pro features as free updates** (a Pro license includes lifetime updates). Planned directions:
+
+- **Looker API validation** - run Looker's own LookML validator on your changes from inside the IDE and see real errors before you push (requires a Looker connection). This is authoritative validation, beyond the local schema checks.
+- **Go-to-definition** - jump from a field reference to the dimension or measure it resolves to, correctly following extended and refined views.
+- **Find usages and rename** for LookML fields.
+
+These are planned directions, not dated commitments. Early Pro buyers lock in the founding price; the price increases as these features ship.
+
 ## 📥 Installation
 
 ### From IntelliJ Plugin Marketplace (Recommended)

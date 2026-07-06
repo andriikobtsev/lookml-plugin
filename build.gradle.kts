@@ -86,7 +86,10 @@ intellijPlatform {
             <p><b>Pro</b>: code completion (150+ dashboard properties), schema-backed dashboard validation, and code formatting (<b>Reformat Code</b> and the YAML dashboard rewriter). Try Pro free during the evaluation period (length shown on the listing); after the trial, activate via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
 
             <h3>Founding price</h3>
-            <p>Pro is launching at an early one-time price. Buy once and own it for good, including every feature added next (go-to-definition and more are planned). The price increases as the plugin grows, so early buyers lock in the lowest price and get all future updates free.</p>
+            <p>Pro is launching at an early one-time price. Buy once and own it for good, including every feature added next. The price increases as the plugin grows, so early buyers lock in the lowest price and get all future updates free.</p>
+
+            <h3>Roadmap</h3>
+            <p>Pro is actively developed, and a Pro license includes future Pro features as free updates. Planned directions: <b>Looker API validation</b> (run Looker's own LookML validator from the IDE and catch real errors before you push - requires a Looker connection), <b>go-to-definition</b> for fields across extended and refined views, and <b>find-usages / rename</b>. These are planned directions, not dated commitments; the price rises as they ship.</p>
 
             <h3>Privacy</h3>
             <p>The plugin does not add custom telemetry. License validation uses the standard JetBrains Marketplace / IDE licensing flow.</p>
