@@ -30,15 +30,14 @@ class LookMLLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvide
         """.trimIndent()
     }
 
-    @Suppress("DEPRECATION")
-    override fun getDefaultCommonSettings(): CommonCodeStyleSettings {
-        val defaultSettings = CommonCodeStyleSettings(language)
-        val indentOptions = defaultSettings.initIndentOptions()
+    override fun customizeDefaults(
+        commonSettings: CommonCodeStyleSettings,
+        indentOptions: CommonCodeStyleSettings.IndentOptions
+    ) {
         indentOptions.INDENT_SIZE = 2
         indentOptions.CONTINUATION_INDENT_SIZE = 2
         indentOptions.TAB_SIZE = 2
         indentOptions.USE_TAB_CHARACTER = false
-        return defaultSettings
     }
 
     override fun getIndentOptionsEditor(): IndentOptionsEditor {
