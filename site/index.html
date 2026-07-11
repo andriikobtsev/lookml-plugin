@@ -42,6 +42,7 @@
     ul { padding-left: 20px; }
     footer { color: var(--muted); text-align: center; padding: 40px 0 60px; font-size: 0.9rem; }
     .note { color: var(--muted); font-size: 0.92rem; }
+    .badge { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 1px 6px; margin-right: 6px; vertical-align: middle; }
   </style>
 </head>
 <body>
@@ -49,7 +50,7 @@
     <header>
       <h1>LookML Support</h1>
       <p class="tagline">Looker Modeling Language for IntelliJ IDEA, PyCharm and other JetBrains IDEs. Highlighting, completion, validation and formatting - right in your editor.</p>
-      <a class="cta" href="https://plugins.jetbrains.com/search?plugins=LookML%20Support&orderBy=relevance">Get it on the JetBrains Marketplace</a>
+      <a class="cta" href="https://plugins.jetbrains.com/plugin/28971-lookml-support">Get it on the JetBrains Marketplace</a>
       <a class="cta secondary" href="https://github.com/andriikobtsev/lookml-plugin">Source on GitHub</a>
     </header>
 
@@ -87,6 +88,16 @@
     <section>
       <h2>Founding price</h2>
       <p>Pro is launching at an early one-time price. Buy once and own it for good, including every Pro feature added next - a Pro license includes future updates free. The price rises as the plugin grows, so early buyers lock in the lowest price.</p>
+    </section>
+
+    <section>
+      <h2>On the Pro roadmap</h2>
+      <p class="note">Actively in progress. A Pro license includes these as free updates when they ship, and the founding price rises as they land.</p>
+      <ul>
+        <li><span class="badge">In progress</span> <b>Looker API validation</b> - run Looker's own validator from the IDE and catch real errors before you push (requires a Looker connection).</li>
+        <li><span class="badge">Planned</span> <b>Go-to-definition</b> - jump from a field reference to the dimension or measure it resolves to, following extended and refined views.</li>
+        <li><span class="badge">Planned</span> <b>Find usages and rename</b> for LookML fields.</li>
+      </ul>
     </section>
 
     <footer>
