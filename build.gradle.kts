@@ -74,6 +74,8 @@ intellijPlatform {
                 <li><b>Validation</b> - syntax errors for traditional LookML, plus schema-backed checks for YAML dashboard properties.</li>
             </ul>
 
+            <p><a href="https://andriikobtsev.github.io/lookml-plugin/">Website</a> | <a href="https://andriikobtsev.github.io/lookml-plugin/eula.html">End User License Agreement</a></p>
+
             <h3>Supported syntax</h3>
             <ul>
                 <li>Traditional LookML (views, explores, dimensions, measures, SQL blocks, templates)</li>

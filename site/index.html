@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LookML Support - LookML for IntelliJ IDEs</title>
+  <meta name="description" content="LookML (Looker Modeling Language) support for IntelliJ IDEA, PyCharm and other JetBrains IDEs. Syntax highlighting free; completion, validation and formatting in Pro.">
+  <style>
+    :root {
+      --bg: #0e1116;
+      --panel: #161b22;
+      --border: #2a313c;
+      --text: #e6edf3;
+      --muted: #9aa7b4;
+      --accent: #4f8cff;
+      --ok: #3fb950;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+    header { text-align: center; padding: 72px 0 40px; }
+    h1 { font-size: 2.4rem; margin: 0 0 12px; }
+    .tagline { font-size: 1.2rem; color: var(--muted); margin: 0 auto 28px; max-width: 620px; }
+    .cta {
+      display: inline-block; background: var(--accent); color: #fff;
+      padding: 12px 26px; border-radius: 8px; font-weight: 600; text-decoration: none;
+    }
+    .cta.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); margin-left: 8px; }
+    section { padding: 28px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 1.4rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+    th.center, td.center { text-align: center; width: 90px; }
+    .yes { color: var(--ok); font-weight: 700; }
+    .no { color: var(--muted); }
+    ul { padding-left: 20px; }
+    footer { color: var(--muted); text-align: center; padding: 40px 0 60px; font-size: 0.9rem; }
+    .note { color: var(--muted); font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>LookML Support</h1>
+      <p class="tagline">Looker Modeling Language for IntelliJ IDEA, PyCharm and other JetBrains IDEs. Highlighting, completion, validation and formatting - right in your editor.</p>
+      <a class="cta" href="https://plugins.jetbrains.com/search?plugins=LookML%20Support&orderBy=relevance">Get it on the JetBrains Marketplace</a>
+      <a class="cta secondary" href="https://github.com/andriikobtsev/lookml-plugin">Source on GitHub</a>
+    </header>
+
+    <section>
+      <h2>What it does</h2>
+      <ul>
+        <li><b>Syntax highlighting</b> for <code>.lkml</code> / <code>.lookml</code> - keywords, strings, SQL blocks, field references.</li>
+        <li><b>Code completion</b> for traditional LookML and YAML dashboards (150+ dashboard properties).</li>
+        <li><b>Validation</b> - syntax errors plus schema-backed checks for YAML dashboard properties.</li>
+        <li><b>Formatting</b> - Reformat Code for LookML and a canonical YAML dashboard rewriter.</li>
+        <li><b>Editing aids</b> - folding, commenting, brace matching, manifest file support.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Free vs Pro</h2>
+      <p class="note">Free to install. Reading LookML and basic editing are free forever. The productivity features are Pro, with a free trial.</p>
+      <table>
+        <thead>
+          <tr><th>Capability</th><th class="center">Free</th><th class="center">Pro</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Syntax highlighting</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
+          <tr><td>File type recognition (<code>.lkml</code>, <code>.lookml</code>)</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
+          <tr><td>Folding, commenting, brace matching, quotes</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
+          <tr><td>Color settings</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
+          <tr><td>Code completion (150+ dashboard properties)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Dashboard validation (schema-backed)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Code formatting (Reformat Code, YAML rewriter)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+        </tbody>
+      </table>
+      <p class="note">After the trial, activate Pro via <b>Help | Register</b> (JetBrains account + license). Free features keep working regardless.</p>
+    </section>
+
+    <section>
+      <h2>Founding price</h2>
+      <p>Pro is launching at an early one-time price. Buy once and own it for good, including every Pro feature added next - a Pro license includes future updates free. The price rises as the plugin grows, so early buyers lock in the lowest price.</p>
+    </section>
+
+    <footer>
+      <p><a href="./eula.html">End User License Agreement</a> · <a href="mailto:andrii.kobtsev@gmail.com">andrii.kobtsev@gmail.com</a></p>
+      <p>Source code licensed under AGPL-3.0. The Marketplace binary is governed by the EULA and JetBrains Marketplace terms.</p>
+      <p>Made by Andrii Kobtsev.</p>
+    </footer>
+  </div>
+</body>
+</html>

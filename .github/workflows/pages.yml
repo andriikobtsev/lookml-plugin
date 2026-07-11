@@ -1,0 +1,42 @@
+name: Deploy site to GitHub Pages
+
+# Publishes ONLY the site/ folder. The rest of the repo is never served.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "eula.md"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Generate eula.html from eula.md
+        run: |
+          pip install --quiet markdown
+          python3 site/build_eula.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
