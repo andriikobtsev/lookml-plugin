@@ -5,7 +5,7 @@
 
     <!-- release-date = YYYYMMDD of the Marketplace release you upload; update when publishing. -->
     <!-- optional="true" = freemium: plugin loads without a license; only Pro features are gated. -->
-    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260717" release-version="20261" optional="true"/>
+    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260717" release-version="20262" optional="true"/>
 
     <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
     <depends>com.intellij.modules.platform</depends>

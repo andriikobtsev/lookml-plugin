@@ -211,12 +211,8 @@ intellijPlatform {
     }
 
     pluginVerification {
-        // release-version stays 20261 across the 2026.x updates so existing trials/licenses are not
-        // reset (it is the major/perpetual boundary, not the display version). That deliberately
-        // trips the verifier's "release-version prefix must match plugin version" lint, which is a
-        // known, mutable warning (reportable/suppressible per JetBrains). Mute only that one check.
-        freeArgs = listOf("-mute", "ReleaseVersionAndPluginVersionMismatch")
-
+        // release-version 20262 matches plugin version 2026.2.0, so the Marketplace prefix rule is
+        // satisfied and no mute is needed. Bump release-version whenever the 2026.<major> changes.
         ides {
             ide(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
         }
