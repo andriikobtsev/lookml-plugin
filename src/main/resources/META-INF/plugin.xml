@@ -5,7 +5,7 @@
 
     <!-- release-date = YYYYMMDD of the Marketplace release you upload; update when publishing. -->
     <!-- optional="true" = freemium: plugin loads without a license; only Pro features are gated. -->
-    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260605" release-version="20261" optional="true"/>
+    <product-descriptor code="PLOOKMLSUPPORT" release-date="20260717" release-version="20261" optional="true"/>
 
     <!-- Compatible with PyCharm and other IntelliJ-based IDEs -->
     <depends>com.intellij.modules.platform</depends>
@@ -55,6 +55,29 @@
         <completion.contributor 
             language="LookML"
             implementationClass="com.yourcompany.lookml.completion.LookMLCompletionContributor"/>
+
+        <!-- Go to Definition (Track A) -->
+        <gotoDeclarationHandler
+            implementation="com.yourcompany.lookml.references.LookMLGotoDeclarationHandler"/>
+
+        <!-- Find Usages (Track A reference layer) -->
+        <lang.findUsagesProvider
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.references.LookMLFindUsagesProvider"/>
+
+        <!-- Extends / extended-by gutter markers (Track A) -->
+        <codeInsight.lineMarkerProvider
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.references.LookMLViewLineMarkerProvider"/>
+
+        <!-- Go to Implementation(s) (Ctrl/Cmd+Alt+B): base view -> extenders/refinements (Track A / E) -->
+        <definitionsSearch
+            implementation="com.yourcompany.lookml.references.LookMLImplementationsSearch"/>
+
+        <!-- Go to Super (Ctrl/Cmd+U): view -> the base view(s) it extends/refines (Track A / E) -->
+        <codeInsight.gotoSuper
+            language="LookML"
+            implementationClass="com.yourcompany.lookml.references.LookMLGotoSuperHandler"/>
         
         <!-- Code Folding -->
         <lang.foldingBuilder

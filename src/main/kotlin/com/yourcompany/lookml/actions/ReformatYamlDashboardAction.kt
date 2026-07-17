@@ -6,10 +6,10 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.diagnostic.logger
-import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDocumentManager
 import com.yourcompany.lookml.formatting.YamlDashboardRewriter
 import com.yourcompany.lookml.license.LicenseConditions
+import com.yourcompany.lookml.license.ProUpsell
 import com.yourcompany.lookml.yaml.YamlDashboardFiles
 
 /**
@@ -34,11 +34,7 @@ class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
         }
 
         if (!LicenseConditions.allowPaidPluginFeatures()) {
-            Messages.showWarningDialog(
-                project,
-                "LookML Support requires an active license after the evaluation period. Use Help | Register to activate.",
-                "LookML Support",
-            )
+            ProUpsell.showDialog(project, "Reformatting YAML dashboards")
             return
         }
 
@@ -64,8 +60,7 @@ class ReformatYamlDashboardAction : AnAction("Reformat YAML Dashboard") {
         
         // Show action only for YAML dashboard files
         val isYaml = YamlDashboardFiles.isYamlDashboardContent(text)
-        val licensed = LicenseConditions.allowPaidPluginFeatures()
-        e.presentation.isEnabled = isYaml && licensed
+        e.presentation.isEnabled = isYaml
         e.presentation.isVisible = isYaml
     }
 }

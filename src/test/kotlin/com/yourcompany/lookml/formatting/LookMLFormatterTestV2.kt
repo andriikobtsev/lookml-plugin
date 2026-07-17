@@ -35,6 +35,26 @@ class LookMLFormatterTestV2 : FormatterTestCase() {
         doTestFromFiles("yaml_simple_input.lkml", "yaml_simple_expected.lkml")
     }
 
+    fun testLongArrayWrapsOnePerLine() {
+        doTestFromFiles("traditional_array_wrap_input.lkml", "traditional_array_wrap_expected.lkml")
+    }
+
+    fun testSqlFunctionCallKeepsParenTight() {
+        doTestFromFiles("sql_function_paren_input.lkml", "sql_function_paren_expected.lkml")
+    }
+
+    fun testDerivedTableWraps() {
+        doTestFromFiles("derived_table_input.lkml", "derived_table_expected.lkml")
+    }
+
+    fun testSqlCommaHasNoSpaceBefore() {
+        doTestFromFiles("sql_comma_input.lkml", "sql_comma_expected.lkml")
+    }
+
+    fun testMultilineSqlIsPreserved() {
+        doTestFromFiles("sql_multiline_input.lkml", "sql_multiline_expected.lkml")
+    }
+
     private fun doTestFromFiles(inputFile: String, expectedFile: String) {
         val input = loadFile(inputFile)
         val expected = loadFile(expectedFile)

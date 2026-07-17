@@ -4,8 +4,9 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 ## ✨ Features
 
-### ✅ Working Features (2026.1.0)
+### ✅ Working Features (2026.2.0)
 
+- **Code Navigation** - go-to-definition, find usages, rename, and go-to-implementation/super for LookML fields and views, across extended and refined views and YAML dashboards
 - **Code Formatter** - **Traditional LookML** and **YAML dashboards** via Code > Reformat Code (`Cmd/Ctrl+Alt+L`)
 - **YAML Dashboard Rewriter** - Same logic via **Reformat YAML Dashboard** (`Cmd/Ctrl+Alt+Shift+Y`); requires an active Marketplace license after the **evaluation period** (trial counts as licensed)
 - **YAML Dashboard Autocomplete** - 150+ properties for YAML dashboards
@@ -23,7 +24,8 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 
 - **YAML dashboard rewriter** - Deeply nested structures (`dynamic_fields`, `ui_config`, `listen`, element-level `filters`) are preserved verbatim rather than reformatted, so they are never mangled but also not re-indented (see `CHANGELOG.md`).
 - **Traditional formatter** - Expects parseable files; severe syntax errors may limit formatting.
-- **Advanced IDE features** - Navigation/refactoring planned for future releases.
+- **Navigation in Liquid** - references inside Liquid expressions (`{% ... %}`, `{{ ... }}`) are not yet resolved.
+- **Find Usages on `dimension_group`** - does not yet list references to its generated timeframe fields (e.g. `created_month`, `created_date`); Go to Definition from those fields back to the group still works.
 
 ## Pricing
 
@@ -37,12 +39,13 @@ A comprehensive plugin that adds **Looker Modeling Language (LookML)** support t
 | File type recognition (`.lkml`, `.lookml`) | ✅ | ✅ |
 | Folding, commenting, brace matching, quote handling | ✅ | ✅ |
 | Color settings | ✅ | ✅ |
-| Code completion (150+ dashboard properties) | - | ✅ |
+| Code navigation (go-to-definition, find usages, rename, go-to-implementation/super) | - | ✅ |
+| Code completion (150+ dashboard properties, in-`sql:` field suggestions) | - | ✅ |
 | Dashboard validation (schema-backed property checks) | - | ✅ |
 | Code formatting (**Reformat Code**, **Reformat YAML Dashboard**) | - | ✅ |
 
 - **Free forever:** highlighting and basic editing - no license, no expiry.
-- **Pro:** code completion, dashboard validation, and formatting. Try them free during the trial (length shown on the listing).
+- **Pro:** code navigation, code completion, dashboard validation, and formatting. Try them free during the trial (length shown on the listing).
 - **After the trial:** activate Pro via **Help | Register** (JetBrains account + license). The free features keep working regardless.
 
 Basic syntax errors (for example an unclosed brace) are shown for free; the schema-backed dashboard property checks are the Pro validation.
@@ -52,8 +55,6 @@ Basic syntax errors (for example an unclosed brace) are shown for free; the sche
 Pro is actively developed. **Buy Pro now at the founding price and you get future Pro features as free updates** (a Pro license includes lifetime updates). Planned directions:
 
 - **Looker API validation** - run Looker's own LookML validator on your changes from inside the IDE and see real errors before you push (requires a Looker connection). This is authoritative validation, beyond the local schema checks.
-- **Go-to-definition** - jump from a field reference to the dimension or measure it resolves to, correctly following extended and refined views.
-- **Find usages and rename** for LookML fields.
 
 These are planned directions, not dated commitments. Early Pro buyers lock in the founding price; the price increases as these features ship.
 
@@ -283,7 +284,14 @@ The plugin does **not** implement custom analytics. **License checks** use the s
 
 ## 📊 Version History
 
-**Current Version**: **2026.1.0** (see `build.gradle.kts` and Marketplace listing)
+**Current Version**: **2026.2.0** (see `build.gradle.kts` and Marketplace listing)
+
+### What's New in 2026.2.0
+- **Code navigation (Pro):** go-to-definition, find usages (Alt+F7), rename, and go-to-implementation/super for LookML fields and views - scoped to the view family, across extended and refined views and YAML dashboards
+- **Field completion in `sql:`** - inside `${...}`, suggests fields available to the view, including those inherited up the `extends` chain
+- **Formatting fixes:** function calls in `sql:` stay tight to the parenthesis (`DATE_TRUNC(...)`), no space before a comma (`SELECT a, b`), multi-line `sql:` blocks (e.g. `derived_table` queries) keep their line breaks, and `derived_table`/`explore_source` blocks lay out one property per line
+- **License:** Pro features turn on immediately after activating a license (no restart needed)
+- **Existing users - thank you:** your free features keep working with no license; for pricing and any current offer, see the [website](https://andriikobtsev.github.io/lookml-plugin/#offer)
 
 ### What's New in 2026.1.0
 - **Freemium model:** code completion, dashboard validation, and formatting are now **Pro** (free trial); syntax highlighting and basic editing stay free forever

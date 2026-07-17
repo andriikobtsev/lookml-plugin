@@ -4,9 +4,12 @@ import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
 import com.yourcompany.lookml.LookMLLanguage
 import com.yourcompany.lookml.license.LicenseConditions
+import com.yourcompany.lookml.psi.LookMLViewDefinition
+import com.yourcompany.lookml.references.LookMLResolve
 
 /**
  * Context-aware completion contributor for LookML with fixed context detection
@@ -114,6 +117,8 @@ class LookMLCompletionContributor : CompletionContributor() {
         override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {
             // Pro feature: code completion requires a license (evaluation counts as licensed).
             if (!LicenseConditions.allowPaidPluginFeatures()) return
+            // Upstream-family field autosuggest inside `${...}` (sql: and other field refs).
+            if (addFieldReferenceCompletions(parameters, result)) return
             val position = parameters.position
             val completionContext = detectContext(position)
             val caseInsensitiveResult = result.caseInsensitive()
@@ -153,6 +158,61 @@ class LookMLCompletionContributor : CompletionContributor() {
             }
         }
         
+        /**
+         * When the caret sits inside an open `${...}` field reference, suggest the fields available to
+         * the enclosing view: its own fields plus everything inherited up the `extends` chain (Looker's
+         * `${field}`), or, when the user typed `${view.`, that view's fields. Returns true when it
+         * handled completion (so the keyword providers are skipped). Additive and Pro-gated by caller.
+         */
+        private fun addFieldReferenceCompletions(
+            parameters: CompletionParameters,
+            result: CompletionResultSet,
+        ): Boolean {
+            val text = parameters.originalFile.text
+            val caret = parameters.offset
+            if (caret < 2 || caret > text.length) return false
+            val open = text.lastIndexOf("\${", caret - 1)
+            if (open < 0) return false
+            val inner = text.substring(open + 2, caret)
+            // Still inside the same reference: no closing brace and no line break between ${ and caret.
+            if (inner.contains('}') || inner.contains('\n')) return false
+
+            val view = PsiTreeUtil.getParentOfType(parameters.position, LookMLViewDefinition::class.java)
+            val project = parameters.originalFile.project
+
+            val dot = inner.lastIndexOf('.')
+            val suggestions =
+                if (dot >= 0) {
+                    val viewName = inner.substring(0, dot).trim()
+                    if (viewName.isEmpty()) return false
+                    LookMLResolve.familyFieldSuggestionsFor(project, viewName)
+                } else {
+                    if (view == null) return false
+                    LookMLResolve.familyFieldSuggestions(project, view)
+                }
+            if (suggestions.isEmpty()) return false
+
+            val typed = inner.substring(dot + 1)
+            val scoped = result.withPrefixMatcher(typed)
+            for (s in suggestions) {
+                scoped.addElement(
+                    LookupElementBuilder.create(s.name)
+                        .withIcon(com.intellij.icons.AllIcons.Nodes.Field)
+                        .withTypeText("${s.kind} · ${s.ownerView}")
+                        .withInsertHandler { ctx, _ ->
+                            val editor = ctx.editor
+                            val doc = editor.document
+                            val end = ctx.tailOffset
+                            if (end >= doc.textLength || doc.charsSequence[end] != '}') {
+                                doc.insertString(end, "}")
+                            }
+                            editor.caretModel.moveToOffset(end + 1)
+                        },
+                )
+            }
+            return true
+        }
+
         private fun detectContext(position: PsiElement): CompletionContext {
             val text = position.containingFile?.text ?: ""
             val caretOffset = position.textOffset

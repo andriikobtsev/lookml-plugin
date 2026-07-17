@@ -153,11 +153,39 @@ class LookMLLexerAdapter : LexerBase() {
                     currentToken = LookMLTypes.DOLLAR
                     return
                 }
+                '@' -> {
+                    // Constant reference `@{name}` -> opaque token (like Liquid). Keeps it out of the
+                    // sql grammar's way and makes it navigable via its text in the goto handler.
+                    if (currentPosition + 1 < endOffset && buffer[currentPosition + 1] == '{') {
+                        currentPosition += 2
+                        while (currentPosition < endOffset && buffer[currentPosition] != '}') {
+                            currentPosition++
+                        }
+                        if (currentPosition < endOffset) currentPosition++ // consume '}'
+                        tokenEnd = currentPosition
+                        currentToken = LookMLTypes.SQL_CONTENT_TOKEN
+                        return
+                    }
+                }
                 '{' -> {
+                    // Liquid tag `{% ... %}` or output `{{ ... }}` -> opaque token.
                     if (currentPosition + 1 < endOffset && buffer[currentPosition + 1] == '%') {
                         currentPosition += 2
                         while (currentPosition + 1 < endOffset) {
                             if (buffer[currentPosition] == '%' && buffer[currentPosition + 1] == '}') {
+                                currentPosition += 2
+                                break
+                            }
+                            currentPosition++
+                        }
+                        tokenEnd = currentPosition
+                        currentToken = LookMLTypes.SQL_CONTENT_TOKEN
+                        return
+                    }
+                    if (currentPosition + 1 < endOffset && buffer[currentPosition + 1] == '{') {
+                        currentPosition += 2
+                        while (currentPosition + 1 < endOffset) {
+                            if (buffer[currentPosition] == '}' && buffer[currentPosition + 1] == '}') {
                                 currentPosition += 2
                                 break
                             }
@@ -618,6 +646,18 @@ class LookMLLexerAdapter : LexerBase() {
                 return
             }
             
+            // Any other `sql_*:` property opens a ;; SQL block in Looker (e.g. sql_distinct_key,
+            // sql_trigger_value, sql_step, sql_start, sql_end, sql_create). The specific sql_* params
+            // that need dedicated START tokens (sql_always_where/having/filter, sql_trigger, ...) are
+            // handled above and have already returned. This generic fallback prevents false parse
+            // errors on valid but rarer SQL parameters.
+            if (word.startsWith("sql_") && currentPosition < endOffset && buffer[currentPosition] == ':') {
+                tokenEnd = currentPosition + 1
+                currentToken = LookMLTypes.SQL_BLOCK_START
+                state = SQL_BLOCK
+                return
+            }
+
             // Check for html: pattern
             if (word == "html" && currentPosition < endOffset && buffer[currentPosition] == ':') {
                 tokenEnd = currentPosition + 1

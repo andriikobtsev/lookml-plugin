@@ -412,6 +412,7 @@ private item_ ::= (
   | explore_definition
   | dashboard_definition
   | yaml_dashboard_document
+  | yaml_list_line
   | test_definition
   | include_statement
   | COMMENT
@@ -438,7 +439,10 @@ project_name_statement ::= PROJECT_NAME COLON STRING SEMICOLON?
 
 new_lookml_runtime_statement ::= NEW_LOOKML_RUNTIME COLON boolean_value SEMICOLON?
 
-constant_definition ::= CONSTANT COLON IDENTIFIER LBRACE constant_body RBRACE
+constant_definition ::= CONSTANT COLON IDENTIFIER LBRACE constant_body RBRACE {
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
+}
 
 constant_body ::= (property | COMMENT)*
 
@@ -454,7 +458,8 @@ override_constant_definition ::= OVERRIDE_CONSTANT COLON IDENTIFIER LBRACE const
 
 // Datagroup definition
 datagroup_definition ::= DATAGROUP COLON IDENTIFIER LBRACE datagroup_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 datagroup_body ::= datagroup_item*
@@ -465,7 +470,8 @@ sql_trigger_property ::= SQL_BLOCK_START sql_block_content
 
 // Access grant definition
 access_grant_definition ::= ACCESS_GRANT COLON IDENTIFIER LBRACE access_grant_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 access_grant_body ::= access_grant_item*
@@ -474,7 +480,8 @@ private access_grant_item ::= (property | COMMENT)
 
 // Named value format definition
 named_value_format_definition ::= NAMED_VALUE_FORMAT COLON IDENTIFIER LBRACE named_value_format_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 named_value_format_body ::= named_value_format_item*
@@ -483,7 +490,8 @@ private named_value_format_item ::= (property | COMMENT)
 
 // View definition
 view_definition ::= VIEW COLON IDENTIFIER LBRACE view_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 view_body ::= view_item*
@@ -509,32 +517,42 @@ private view_item ::= (
 
 // Dimension definition
 dimension_definition ::= DIMENSION COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
-  methods=[getName getType getSql]
+  methods=[getType getSql]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 // Dimension group definition
 dimension_group_definition ::= DIMENSION_GROUP COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
-  methods=[getName getTimeframes]
+  methods=[getTimeframes]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 // Measure definition
 measure_definition ::= MEASURE COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
-  methods=[getName getType getSql]
+  methods=[getType getSql]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 // Filter definition
 filter_definition ::= FILTER COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 // Parameter definition
 parameter_definition ::= PARAMETER COLON (IDENTIFIER | keyword) LBRACE property_list RBRACE {
-  methods=[getName getType]
+  methods=[getType]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 // Set definition
 set_definition ::= SET COLON IDENTIFIER LBRACE set_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 set_body ::= set_item*
@@ -570,7 +588,8 @@ indexes_property ::= INDEXES COLON array_value SEMICOLON?
 
 // Explore definition
 explore_definition ::= EXPLORE COLON IDENTIFIER LBRACE explore_body RBRACE {
-  methods=[getName]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 explore_body ::= explore_item*
@@ -593,7 +612,9 @@ private explore_item ::= (
 )
 
 // View name property
-view_name_property ::= VIEW_NAME COLON IDENTIFIER SEMICOLON?
+view_name_property ::= VIEW_NAME COLON IDENTIFIER SEMICOLON? {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Always filter property
 always_filter_property ::= ALWAYS_FILTER COLON LBRACE filter_body RBRACE
@@ -615,7 +636,9 @@ private filters_block_item ::= (field_property | value_property | COMMENT)
 
 filter_list ::= filter_spec (COMMA filter_spec)*
 
-filter_spec ::= (qualified_identifier | IDENTIFIER) COLON STRING
+filter_spec ::= (qualified_identifier | IDENTIFIER) COLON STRING {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Conditionally filter property
 conditionally_filter_property ::= CONDITIONALLY_FILTER COLON LBRACE conditionally_filter_body RBRACE
@@ -693,11 +716,15 @@ increment_key_property ::= INCREMENT_KEY COLON STRING SEMICOLON?
 increment_offset_property ::= INCREMENT_OFFSET COLON NUMBER SEMICOLON?
 
 // From property (in explore)
-from_property ::= FROM COLON IDENTIFIER SEMICOLON?
+from_property ::= FROM COLON IDENTIFIER SEMICOLON? {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Join definition
 join_definition ::= JOIN COLON IDENTIFIER LBRACE join_body RBRACE {
-  methods=[getName getType getSqlOn]
+  methods=[getType getSqlOn]
+  implements="com.yourcompany.lookml.psi.LookMLNamedElement"
+  mixin="com.yourcompany.lookml.psi.impl.LookMLNamedElementMixin"
 }
 
 join_body ::= join_item*
@@ -781,7 +808,9 @@ yaml_simple_value ::= (
   | yaml_value_tokens
   | yaml_expression_value
   | yaml_text_line
-)
+) {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 yaml_expression_value ::= yaml_expression_part+
 
@@ -819,7 +848,9 @@ yaml_object_property ::= yaml_property_name COLON yaml_simple_value
 // Multi-line values
 yaml_multiline_value ::= yaml_text_line+
 
-yaml_text_line ::= yaml_text_token+
+yaml_text_line ::= yaml_text_token+ {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 private yaml_text_token ::= (
     IDENTIFIER | keyword | NUMBER | STRING | DOT | COMMA | LBRACE | RBRACE | COLON | LPAREN | RPAREN | LBRACKET | RBRACKET | MINUS | PLUS | STAR
@@ -1085,7 +1116,9 @@ property_value ::=
   | template_expression DOT IDENTIFIER
   | template_expression
   | property_value_expression
-  | LBRACE property_list RBRACE
+  | LBRACE property_list RBRACE {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Boolean values
 boolean_value ::= YES | NO | TRUE_VALUE | FALSE_VALUE
@@ -1095,7 +1128,9 @@ array_value ::= LBRACKET array_elements? RBRACKET
 
 array_elements ::= array_element (COMMA array_element)*
 
-array_element ::= field_pattern | wildcard_identifier | sort_specification | template_expression | qualified_identifier | STRING | NUMBER | IDENTIFIER
+array_element ::= field_pattern | wildcard_identifier | sort_specification | template_expression | qualified_identifier | STRING | NUMBER | IDENTIFIER {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Sort specification for sorts arrays
 sort_specification ::= qualified_identifier (DESC | ASC | (COLON (IDENTIFIER | DESC | ASC)))?  // Allow DESC/ASC keywords after colon
@@ -1147,7 +1182,9 @@ html_expression ::=
   | SQL_CONTENT_TOKEN
 
 // SQL block content - everything between sql: and ;;
-sql_block_content ::= sql_block_element* SQL_BLOCK_END
+sql_block_content ::= sql_block_element* SQL_BLOCK_END {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // SQL block elements can include comments and expressions
 private sql_block_element ::= COMMENT | sql_expression
@@ -1177,7 +1214,9 @@ private sql_operator ::= (EQ | NE | LT | GT | LE | GE | PLUS | MINUS | STAR | SL
 // Template expressions like ${view.field} or ${TABLE}.column
 template_expression ::= DOLLAR LBRACE template_reference RBRACE
 
-template_reference ::= IDENTIFIER (DOT IDENTIFIER)*
+template_reference ::= IDENTIFIER (DOT IDENTIFIER)* {
+  mixin="com.yourcompany.lookml.psi.impl.LookMLReferenceHostMixin"
+}
 
 // Keywords that can be used as property names
 private keyword ::= (

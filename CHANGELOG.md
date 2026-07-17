@@ -2,6 +2,39 @@
 
 All notable changes to the LookML Plugin will be documented in this file.
 
+## [2026.2.0] - 2026-07-17
+
+Adds a **Pro code-navigation layer** for LookML fields and views, plus in-`sql:` field completion
+and two formatter fixes. All new capabilities are Pro (free during the trial); free editing features
+are unchanged. Ships to existing 2026.1.x users (same `release-version`).
+
+### Added (Pro)
+- **Go to Definition** - from `${field}` / `view.field` references, `from:` / `view_name:`,
+  `value_format_name:`, `@{constant}`, filter keys, and YAML dashboard fields/explores/models to
+  their declarations, resolving aliases through explore `from:` and joins.
+- **Find Usages** (Alt+F7) and **Rename** - project-wide, scoped to the view family
+  (base + refinements + `extends`), so unrelated same-named fields are untouched. Reference
+  resolution is index-backed and cached (`LookMLResolve` `ProjectIndex`).
+- **Go to Implementation(s)** (Ctrl/Cmd+Alt+B) and **Go to Super** (Ctrl/Cmd+U), with matching
+  parent/implementation gutter icons.
+- **Field completion in `sql:`** - inside `${...}`, suggests the view's own and inherited fields.
+
+### Fixed
+- Function calls in `sql:` keep the name tight to the parenthesis (`DATE_TRUNC(...)`, not
+  `DATE_TRUNC (...)`); SQL keywords before `(` keep their space.
+- No space before a comma in `sql:` (`SELECT a, b`, not `SELECT a , b`).
+- Multi-line `sql:` blocks (e.g. a `derived_table` query) keep their line breaks and indentation
+  instead of collapsing onto one line.
+- `derived_table` and `explore_source` blocks are laid out one property per line on reformat instead
+  of collapsing onto a single line.
+- Pro features now turn on immediately after activating a license mid-session (the license check no
+  longer caches an "unlicensed" result for several minutes).
+
+### Known limitations
+- Navigation inside Liquid expressions (`{% ... %}`, `{{ ... }}`) is not yet resolved.
+- Find Usages on a `dimension_group` does not yet list its generated timeframe fields (e.g.
+  `created_month`, `created_date`); Go to Definition from those fields back to the group works.
+
 ## [2026.1.0] - 2026-07-01
 
 First release with a Pro tier (freemium). **Code completion, dashboard validation, and code

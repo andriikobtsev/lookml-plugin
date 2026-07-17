@@ -58,7 +58,8 @@
       <h2>What it does</h2>
       <ul>
         <li><b>Syntax highlighting</b> for <code>.lkml</code> / <code>.lookml</code> - keywords, strings, SQL blocks, field references.</li>
-        <li><b>Code completion</b> for traditional LookML and YAML dashboards (150+ dashboard properties).</li>
+        <li><b>Code navigation</b> - go-to-definition, find usages, rename, and go-to-implementation/super for fields and views, across extended and refined views and YAML dashboards.</li>
+        <li><b>Code completion</b> for traditional LookML and YAML dashboards (150+ dashboard properties), plus in-<code>sql:</code> field suggestions.</li>
         <li><b>Validation</b> - syntax errors plus schema-backed checks for YAML dashboard properties.</li>
         <li><b>Formatting</b> - Reformat Code for LookML and a canonical YAML dashboard rewriter.</li>
         <li><b>Editing aids</b> - folding, commenting, brace matching, manifest file support.</li>
@@ -77,6 +78,7 @@
           <tr><td>File type recognition (<code>.lkml</code>, <code>.lookml</code>)</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
           <tr><td>Folding, commenting, brace matching, quotes</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
           <tr><td>Color settings</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
+          <tr><td>Code navigation (go-to-definition, find usages, rename)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
           <tr><td>Code completion (150+ dashboard properties)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
           <tr><td>Dashboard validation (schema-backed)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
           <tr><td>Code formatting (Reformat Code, YAML rewriter)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
@@ -90,13 +92,31 @@
       <p>Pro is launching at an early one-time price. Buy once and own it for good, including every Pro feature added next - a Pro license includes future updates free. The price rises as the plugin grows, so early buyers lock in the lowest price.</p>
     </section>
 
+    <!--
+      ======================= DISCOUNTS & OFFERS (edit freely, no plugin release needed) =======================
+      This section is the single source of truth for the current promo. The Marketplace description and the
+      plugin's "What's New" only link here (anchor #offer), so you can start/stop/change an offer any time by
+      editing THIS block and pushing the site - no new plugin build or review required.
+      To END an offer: replace the offer paragraph with something like
+        <p>No active discount right now. Pro is available at the founding price.</p>
+      ==========================================================================================================
+    -->
+    <section id="offer">
+      <h2>Discounts &amp; offers</h2>
+      <p class="note">Current promos live here. If you already use the plugin, check this before you buy.</p>
+      <p><b>Launch thank-you - 70% off Pro.</b> The productivity features are now Pro (your free features keep
+        working with no license). As a thank-you to existing users there are <b>100 discount codes</b> for
+        <b>70% off</b>. Email <a href="mailto:andrii.kobtsev@gmail.com">andrii.kobtsev@gmail.com</a> and I will
+        send you a personal code - first come, first served. The offer closes once the 100 codes are gone or on
+        <b>31 July 2026</b>, whichever comes first. Buy at the founding price and you lock it in: future Pro
+        features arrive as free updates.</p>
+    </section>
+
     <section>
       <h2>On the Pro roadmap</h2>
       <p class="note">Actively in progress. A Pro license includes these as free updates when they ship, and the founding price rises as they land.</p>
       <ul>
         <li><span class="badge">In progress</span> <b>Looker API validation</b> - run Looker's own validator from the IDE and catch real errors before you push (requires a Looker connection).</li>
-        <li><span class="badge">Planned</span> <b>Go-to-definition</b> - jump from a field reference to the dimension or measure it resolves to, following extended and refined views.</li>
-        <li><span class="badge">Planned</span> <b>Find usages and rename</b> for LookML fields.</li>
       </ul>
     </section>
 

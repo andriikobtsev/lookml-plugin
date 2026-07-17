@@ -57,7 +57,7 @@ class LookMLLicenseStartupActivity : StartupActivity.DumbAware {
                 .createNotification(
                     TITLE,
                     BODY,
-                    NotificationType.WARNING,
+                    NotificationType.INFORMATION,
                 )
                 .apply {
                     addAction(
@@ -76,9 +76,9 @@ class LookMLLicenseStartupActivity : StartupActivity.DumbAware {
 
         private val NOTIFIED_KEY = Key.create<Boolean>("lookml.license.banner.shown")
 
-        private const val TITLE = "LookML Support license"
+        private const val TITLE = "LookML Support"
         private const val BODY =
-            "LookML Support is a paid Marketplace plugin (evaluation on the listing). After evaluation, activate with Help | Register — formatting and the YAML rewriter need a valid license."
-        private const val ACTION_LABEL = "Activate or start trial…"
+            "Reading and basic editing are free. The Pro features (code completion, dashboard validation, and formatting) are free during the trial; after that, activate with Help | Register."
+        private const val ACTION_LABEL = "Start free trial or activate…"
     }
 }

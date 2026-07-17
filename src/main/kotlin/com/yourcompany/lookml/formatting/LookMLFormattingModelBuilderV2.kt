@@ -2,6 +2,7 @@ package com.yourcompany.lookml.formatting
 
 import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
@@ -11,6 +12,7 @@ import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.tree.TokenSet
 import com.yourcompany.lookml.LookMLLanguage
 import com.yourcompany.lookml.license.LicenseConditions
+import com.yourcompany.lookml.license.ProUpsell
 import com.yourcompany.lookml.psi.LookMLTypes
 
 /**
@@ -25,6 +27,11 @@ class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
         val file = element.containingFile
 
         if (!LicenseConditions.allowPaidPluginFeatures()) {
+            // Explicit reformat by an unlicensed user: surface a one-time Pro upsell instead of
+            // silently doing nothing. Skip for auto-indent (Enter), which also calls createModel.
+            if (formattingContext.formattingMode == FormattingMode.REFORMAT) {
+                ProUpsell.showBalloonOnce(file.project)
+            }
             return FormattingModelProvider.createFormattingModelForPsiFile(
                 file,
                 SimpleBlock(element.node),
@@ -35,9 +42,14 @@ class LookMLFormattingModelBuilderV2 : FormattingModelBuilder {
         val isYaml = hasYamlContent(file)
 
         if (isYaml) {
-            // Rewrite only on an explicit full reformat. createModel is also called for auto-indent
-            // (e.g. pressing Enter); rewriting the document there moves the caret and corrupts edits.
-            if (formattingContext.formattingMode == FormattingMode.REFORMAT) {
+            // Rewrite only on an explicit full reformat, and only on the EDT. createModel is also
+            // called for auto-indent (pressing Enter) and for background indent auto-detection
+            // (IndentOptionsDetector runs inside a read action); starting a WriteCommandAction there
+            // is illegal ("Must not start write action from within read action") and crashes, e.g.
+            // when Rename touches a dashboard file. The real user reformat runs on the EDT.
+            if (formattingContext.formattingMode == FormattingMode.REFORMAT &&
+                ApplicationManager.getApplication().isDispatchThread
+            ) {
                 val document = PsiDocumentManager.getInstance(file.project).getDocument(file)
                 if (document != null) {
                     WriteCommandAction.runWriteCommandAction(file.project) {

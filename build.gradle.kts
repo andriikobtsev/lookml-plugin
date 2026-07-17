@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.andriidev"
-version = "2026.1.1"
+version = "2026.2.0"
 
 repositories {
     mavenCentral()
@@ -63,6 +63,7 @@ intellijPlatform {
 
             <h3>Features</h3>
             <ul>
+                <li><b>Code navigation</b> - go-to-definition, find usages, rename, and go-to-implementation/super for LookML fields and views, across extended and refined views and YAML dashboards.</li>
                 <li><b>Code formatting</b> - <b>Reformat Code</b> for traditional LookML; YAML Looker dashboards use the same action plus an optional <b>Reformat YAML Dashboard</b> shortcut (see change notes for keys).</li>
                 <li><b>YAML dashboard rewriter</b> - canonical layout and indentation when a valid license is active (evaluation/trial included).</li>
                 <li><b>Code style</b> - <b>Settings | Editor | Code Style | LookML</b> (default 2-space indent).</li>
@@ -85,13 +86,14 @@ intellijPlatform {
 
             <h3>Free and Pro</h3>
             <p><b>Free</b> (no license, no expiry): syntax highlighting, file type recognition, code folding, commenting, brace matching, quote handling, and color settings.</p>
-            <p><b>Pro</b>: code completion (150+ dashboard properties), schema-backed dashboard validation, and code formatting (<b>Reformat Code</b> and the YAML dashboard rewriter). Try Pro free during the evaluation period (length shown on the listing); after the trial, activate via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
+            <p><b>Pro</b>: code completion (150+ dashboard properties plus in-<code>sql:</code> field suggestions), schema-backed dashboard validation, code formatting (<b>Reformat Code</b> and the YAML dashboard rewriter), and <b>code navigation</b> - go-to-definition, find usages, rename, and go-to-implementation/super across extended and refined views and YAML dashboards. Try Pro free during the evaluation period (length shown on the listing); after the trial, activate via <b>Help | Register</b> (JetBrains account + license). The free features keep working regardless.</p>
 
             <h3>Founding price</h3>
             <p>Pro is launching at an early one-time price. Buy once and own it for good, including every feature added next. The price increases as the plugin grows, so early buyers lock in the lowest price and get all future updates free.</p>
+            <p><b>Discounts &amp; promos:</b> any current offers are posted at <a href="https://andriikobtsev.github.io/lookml-plugin/#offer">andriikobtsev.github.io/lookml-plugin/#offer</a> - check there before you buy.</p>
 
             <h3>Roadmap</h3>
-            <p>Pro is actively developed, and a Pro license includes future Pro features as free updates. Planned directions: <b>Looker API validation</b> (run Looker's own LookML validator from the IDE and catch real errors before you push - requires a Looker connection), <b>go-to-definition</b> for fields across extended and refined views, and <b>find-usages / rename</b>. These are planned directions, not dated commitments; the price rises as they ship.</p>
+            <p>Pro is actively developed, and a Pro license includes future Pro features as free updates. Next up: <b>Looker API validation</b> - run Looker's own LookML validator from the IDE and catch real errors before you push (requires a Looker connection). These are planned directions, not dated commitments; the price rises as they ship.</p>
 
             <h3>Privacy</h3>
             <p>The plugin does not add custom telemetry. License validation uses the standard JetBrains Marketplace / IDE licensing flow.</p>
@@ -102,6 +104,48 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
+            <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+            <p><b>Stay up to date.</b> New features, the roadmap, pricing, and any current discounts &amp; promos
+            are always posted on the <a href="https://andriikobtsev.github.io/lookml-plugin/">website</a> and the
+            <a href="https://plugins.jetbrains.com/plugin/28971-lookml-support">Freemium &amp; Roadmap page</a> -
+            check there so you never miss an update.</p>
+            <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+
+            <h3>2026.2.0 - Code navigation (Pro)</h3>
+            <p><b>New Pro navigation for LookML fields and views</b>, across extended and refined views and
+            YAML dashboards:</p>
+            <ul>
+                <li><b>Go to Definition</b> - jump from a <code>${'$'}{field}</code> / <code>view.field</code>
+                    reference to its dimension, measure, set, constant, or <code>named_value_format</code>;
+                    from <code>from:</code> / <code>view_name:</code> to the view; and from dashboard
+                    fields/explores/models to their declarations.</li>
+                <li><b>Find Usages</b> (Alt+F7) and <b>Rename</b> - project-wide, scoped to the view family
+                    (base + refinements + extends), so unrelated same-named fields are left alone.</li>
+                <li><b>Go to Implementation(s)</b> (Ctrl/Cmd+Alt+B) and <b>Go to Super</b> (Ctrl/Cmd+U) - move
+                    between a base view and the views that extend or refine it; matching gutter icons too.</li>
+                <li><b>Field completion in <code>sql:</code></b> - inside <code>${'$'}{...}</code>, suggests the
+                    fields available to the view, including everything inherited up the <code>extends</code> chain.</li>
+            </ul>
+            <p><b>Formatting fixes:</b></p>
+            <ul>
+                <li>Function calls in <code>sql:</code> keep the name tight to the parenthesis
+                    (<code>DATE_TRUNC(...)</code>, not <code>DATE_TRUNC (...)</code>), and there is no
+                    space before a comma (<code>SELECT a, b</code>).</li>
+                <li>Multi-line <code>sql:</code> blocks (e.g. a <code>derived_table</code> query) keep
+                    their line breaks and indentation instead of collapsing onto one line.</li>
+                <li><code>derived_table</code> and <code>explore_source</code> blocks are laid out one
+                    property per line instead of collapsing onto a single line.</li>
+            </ul>
+            <p>Also: Pro features now turn on right after you activate a license, without needing an IDE
+            restart.</p>
+            <p>These are Pro features (free during the trial). All free editing features are unchanged.
+            Known limitations: navigation inside Liquid expressions is not yet resolved, and Find Usages on a
+            <code>dimension_group</code> does not yet list its generated timeframe fields (e.g. <code>created_month</code>).</p>
+            <p><b>Existing users - thank you.</b> The productivity features are now Pro, but your free
+            features keep working with no license. For pricing and any current offer, see the
+            <a href="https://andriikobtsev.github.io/lookml-plugin/#offer">website</a>. Buy at the founding
+            price and lock it in - future Pro features arrive as free updates.</p>
+
             <h3>2026.1.0</h3>
             <p><b>Important for existing users:</b> LookML Support is moving to a freemium model.
             <b>Code completion</b>, <b>dashboard validation</b>, and <b>code formatting</b> are becoming
@@ -167,6 +211,12 @@ intellijPlatform {
     }
 
     pluginVerification {
+        // release-version stays 20261 across the 2026.x updates so existing trials/licenses are not
+        // reset (it is the major/perpetual boundary, not the display version). That deliberately
+        // trips the verifier's "release-version prefix must match plugin version" lint, which is a
+        // known, mutable warning (reportable/suppressible per JetBrains). Mute only that one check.
+        freeArgs = listOf("-mute", "ReleaseVersionAndPluginVersionMismatch")
+
         ides {
             ide(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
         }

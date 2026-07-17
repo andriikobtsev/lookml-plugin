@@ -36,11 +36,15 @@ class LookMLBlock(
 
 
                 // Use custom SqlPropertyBlock ONLY for SQL properties
+                // Traditional LookML arrays get their own block so long lists wrap one-per-line.
                 // All other children use regular LookMLBlock to preserve indentation
-                val childBlock = if (isSqlProperty(child.elementType)) {
-                    SqlPropertyBlock(child, spacingBuilder, childIndent)  // Pass correct indent!
-                } else {
-                    LookMLBlock(child, childWrap, null, spacingBuilder, childIndent)
+                val childBlock = when {
+                    isSqlProperty(child.elementType) ->
+                        SqlPropertyBlock(child, spacingBuilder, childIndent)  // Pass correct indent!
+                    child.elementType == LookMLTypes.ARRAY_VALUE ->
+                        ArrayValueBlock(child, spacingBuilder)
+                    else ->
+                        LookMLBlock(child, childWrap, null, spacingBuilder, childIndent)
                 }
                 blocks.add(childBlock)
             }
@@ -79,6 +83,15 @@ class LookMLBlock(
     override fun getIndent(): Indent? = indentLevel
 
     override fun getSpacing(child1: Block?, child2: Block): Spacing? {
+        // Smart wrapping for derived_table / explore_source blocks: put each property on its own
+        // line (like traditional array wrapping), so a `derived_table { ... }` never collapses onto
+        // one line. The opening `{`/closing `}` breaks are handled by the global brace rules; here we
+        // only force a line break between the sibling properties inside the body. SQL content stays
+        // on its own logical line (unchanged), matching every other `sql:` block.
+        if (child1 != null && myNode.elementType in ONE_PER_LINE_BODIES) {
+            return ONE_PER_LINE_SPACING
+        }
+
         val spacing = spacingBuilder.getSpacing(this, child1, child2)
 
         return spacing
@@ -160,6 +173,15 @@ class LookMLBlock(
 
     private fun isYamlNode(type: com.intellij.psi.tree.IElementType): Boolean {
         return type.toString().startsWith("YAML_")
+    }
+
+    private companion object {
+        /** Bodies whose properties are always laid out one per line on reformat. */
+        private val ONE_PER_LINE_BODIES =
+            setOf(LookMLTypes.DERIVED_TABLE_BODY, LookMLTypes.EXPLORE_SOURCE_BODY)
+
+        /** One line break between siblings, keeping existing breaks and dropping blank lines. */
+        private val ONE_PER_LINE_SPACING: Spacing = Spacing.createSpacing(0, 0, 1, true, 0)
     }
 
     private fun isSqlProperty(type: com.intellij.psi.tree.IElementType): Boolean {

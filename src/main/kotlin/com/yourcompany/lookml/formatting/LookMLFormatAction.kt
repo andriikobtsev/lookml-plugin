@@ -4,10 +4,10 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
-import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDocumentManager
 import com.yourcompany.lookml.LookMLLanguage
 import com.yourcompany.lookml.license.LicenseConditions
+import com.yourcompany.lookml.license.ProUpsell
 
 class LookMLFormatAction : AnAction("Format LookML Code") {
     
@@ -21,11 +21,7 @@ class LookMLFormatAction : AnAction("Format LookML Code") {
         if (psiFile.language != LookMLLanguage) return
 
         if (!LicenseConditions.allowPaidPluginFeatures()) {
-            Messages.showWarningDialog(
-                project,
-                "LookML Support requires an active license after the evaluation period. Use Help | Register to activate.",
-                "LookML Support",
-            )
+            ProUpsell.showDialog(project, "Code formatting")
             return
         }
 
@@ -46,8 +42,7 @@ class LookMLFormatAction : AnAction("Format LookML Code") {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = editor?.let { PsiDocumentManager.getInstance(project!!).getPsiFile(it.document) }
         
-        e.presentation.isEnabled =
-            psiFile?.language == LookMLLanguage && LicenseConditions.allowPaidPluginFeatures()
+        e.presentation.isEnabled = psiFile?.language == LookMLLanguage
     }
     
     private fun isYamlDashboard(text: String): Boolean {
