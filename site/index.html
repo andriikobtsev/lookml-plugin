@@ -43,6 +43,9 @@
     footer { color: var(--muted); text-align: center; padding: 40px 0 60px; font-size: 0.9rem; }
     .note { color: var(--muted); font-size: 0.92rem; }
     .badge { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 1px 6px; margin-right: 6px; vertical-align: middle; }
+    .shots figure { margin: 0 0 22px; }
+    .shots figcaption { color: var(--muted); font-size: 0.95rem; margin-bottom: 8px; }
+    .shots img { width: 100%; border: 1px solid var(--border); border-radius: 8px; display: block; }
   </style>
 </head>
 <body>
@@ -66,6 +69,22 @@
       </ul>
     </section>
 
+    <section class="shots">
+      <h2>See it in action</h2>
+      <figure>
+        <figcaption><b>Go to definition</b> - jump straight to a field or view across extended and refined views and YAML dashboards.</figcaption>
+        <img src="assets/go-to.gif" alt="LookML go-to-definition" loading="lazy">
+      </figure>
+      <figure>
+        <figcaption><b>Find usages</b> - see every reference to a view or field before you change anything.</figcaption>
+        <img src="assets/find-usage.gif" alt="LookML find usages" loading="lazy">
+      </figure>
+      <figure>
+        <figcaption><b>Code completion and auto-suggestions</b> - 150+ context-aware dashboard properties, plus field suggestions inside <code>sql:</code>.</figcaption>
+        <img src="assets/new_dim.gif" alt="LookML code completion" loading="lazy">
+      </figure>
+    </section>
+
     <section>
       <h2>Free vs Pro</h2>
       <p class="note">Free to install. Reading LookML and basic editing are free forever. The productivity features are Pro, with a free trial.</p>
@@ -78,10 +97,12 @@
           <tr><td>File type recognition (<code>.lkml</code>, <code>.lookml</code>)</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
           <tr><td>Folding, commenting, brace matching, quotes</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
           <tr><td>Color settings</td><td class="center yes">✓</td><td class="center yes">✓</td></tr>
-          <tr><td>Code navigation (go-to-definition, find usages, rename)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
-          <tr><td>Code completion (150+ dashboard properties)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Code navigation (go-to-definition, go-to-implementation/super)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Find usages (every reference to a view or field)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Refactoring (safe rename across the project)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Code completion &amp; auto-suggestions (150+ properties, in-<code>sql:</code> fields)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
           <tr><td>Dashboard validation (schema-backed)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
-          <tr><td>Code formatting (Reformat Code, YAML rewriter)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
+          <tr><td>Code formatting (Reformat Code + YAML rewriter)</td><td class="center no">-</td><td class="center yes">✓</td></tr>
         </tbody>
       </table>
       <p class="note">After the trial, activate Pro via <b>Help | Register</b> (JetBrains account + license). Free features keep working regardless.</p>
