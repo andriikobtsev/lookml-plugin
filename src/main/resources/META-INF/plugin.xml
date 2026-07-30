@@ -1,9 +1,10 @@
-<idea-plugin>
+<idea-plugin url="https://andriikobtsev.github.io/lookml-plugin/">
     <id>com.andriidev.lookml</id>
     <name>LookML Support</name>
     <vendor email="andrii.kobtsev@gmail.com" url="https://github.com/andriikobtsev/lookml-plugin">Andrii Kobtsev</vendor>
 
-    <!-- release-date = YYYYMMDD of the Marketplace release you upload; update when publishing. -->
+    <!-- release-date/release-version = the MAJOR release only. Minor updates (2026.2.1, 2026.2.2, ...)
+         must keep BOTH unchanged: altering them marks a new stable version and resets active trials. -->
     <!-- optional="true" = freemium: plugin loads without a license; only Pro features are gated. -->
     <product-descriptor code="PLOOKMLSUPPORT" release-date="20260717" release-version="20262" optional="true"/>
 
@@ -14,7 +15,6 @@
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="com.andriidev.lookml.license" displayType="STICKY_BALLOON" isLogByDefault="true"/>
 
-        <postStartupActivity implementation="com.yourcompany.lookml.license.LookMLLicenseStartupActivity"/>
         <!-- File Type -->
         <fileType 
             name="LookML" 
@@ -97,7 +97,13 @@
             language="LookML"
             implementationClass="com.yourcompany.lookml.yaml.YamlDashboardAnnotator"/>
     </extensions>
-    
+
+    <projectListeners>
+        <!-- Notices are driven by opening a LookML file, not by opening a project. -->
+        <listener class="com.yourcompany.lookml.license.LookMLFileOpenListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+    </projectListeners>
+
     <actions>
         <action id="LookML.ReformatYamlDashboard"
                 class="com.yourcompany.lookml.actions.ReformatYamlDashboardAction"

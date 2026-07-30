@@ -2,6 +2,28 @@
 
 All notable changes to the LookML Plugin will be documented in this file.
 
+## [2026.2.1] - 2026-07-30
+
+**A request for feedback.** This release deliberately adds almost no features. It stops the plugin
+interrupting users, and it asks them what to build next: reviews, GitHub issues, or email. No feature
+or licensing changes; ships to existing 2026.2.x users with the same `release-version`, so active
+trials are not reset.
+
+### Changed
+- The Pro notice no longer reappears on every project open. It is shown at most once per plugin
+  version, and only when a LookML file is opened, so it never interrupts unrelated work.
+- The Pro notice now names code navigation, find usages, and rename, which were missing from its
+  feature list even though they shipped in 2026.2.0.
+- The formatting Pro balloon is remembered across IDE restarts instead of reappearing each session.
+
+### Added
+- An optional one-time prompt to review the plugin on the Marketplace, shown only after sustained
+  real use (several separate days). It can be dismissed permanently and never repeats once used.
+
+### Fixed
+- The license dialog now opens the plugin's Marketplace page directly instead of a search results
+  page.
+
 ## [2026.2.0] - 2026-07-17
 
 Adds a **Pro code-navigation layer** for LookML fields and views, plus in-`sql:` field completion

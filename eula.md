@@ -109,3 +109,6 @@ consumer-protection laws of your country of residence in the EU also apply.
 
 Licensor: Andrii Kobtsev
 Email: andrii.kobtsev@gmail.com
+
+Full provider details: [Impressum](./impressum.html). How data is handled:
+[Privacy Policy](./privacy.html).

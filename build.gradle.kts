@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.andriidev"
-version = "2026.2.0"
+version = "2026.2.1"
 
 repositories {
     mavenCentral()
@@ -105,11 +105,43 @@ intellijPlatform {
 
         changeNotes = """
             <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
-            <p><b>Stay up to date.</b> New features, the roadmap, pricing, and any current discounts &amp; promos
-            are always posted on the <a href="https://andriikobtsev.github.io/lookml-plugin/">website</a> and the
-            <a href="https://plugins.jetbrains.com/plugin/28971-lookml-support">Freemium &amp; Roadmap page</a> -
-            check there so you never miss an update.</p>
+            <h2>This release is a request for your feedback</h2>
+            <p><b>2026.2.1 adds almost no features, on purpose.</b> It does two things: it stops the plugin
+            interrupting you, and it asks what you actually need next. I build this on my own, and right now
+            I have almost no signal about which features matter to LookML developers. So the roadmap is
+            genuinely decided by what you tell me.</p>
+            <p><b>Please take two minutes. Any one of these helps:</b></p>
+            <ul>
+                <li><b>Rate or review the plugin</b> -
+                    <a href="https://plugins.jetbrains.com/plugin/28971-lookml-support/reviews">write a review here</a>.
+                    Honest feedback is welcome, including what is missing or annoying. Reviews are also how
+                    other LookML developers find the plugin at all.</li>
+                <li><b>Request a feature or report a bug</b> -
+                    <a href="https://github.com/andriikobtsev/lookml-plugin/issues">GitHub issues</a>.
+                    Tell me what you tried to do and what got in the way.</li>
+                <li><b>Or just email me</b> - andrii.kobtsev@gmail.com. Every message is read and answered
+                    personally. Tell me what would make this worth paying for.</li>
+            </ul>
+            <p><b>What I am considering next:</b> <b>Looker API validation</b>, running Looker's own LookML
+            validator from inside the IDE so you catch real errors before you push. If that is what you want,
+            say so and it moves up. If something else matters more to you, say that instead.</p>
             <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+            <p><b>Discounts &amp; promos:</b> current offers are always posted at
+            <a href="https://andriikobtsev.github.io/lookml-plugin/#offer">andriikobtsev.github.io/lookml-plugin/#offer</a>
+            - check there before you buy. Features, the roadmap and pricing live on the
+            <a href="https://andriikobtsev.github.io/lookml-plugin/">website</a> and the
+            <a href="https://plugins.jetbrains.com/plugin/28971-lookml-support">Freemium &amp; Roadmap page</a>.</p>
+            <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+
+            <h3>2026.2.1 - what changed</h3>
+            <p><b>Fewer interruptions.</b> The Pro notice no longer returns on every project open: it appears
+            at most once per version, and only when you open a LookML file, so it never interrupts unrelated
+            work. It also now correctly lists <b>code navigation</b>, <b>find usages</b>, and <b>rename</b>
+            among the Pro features. The formatting notice is remembered across restarts instead of coming
+            back every session, and the license dialog opens the plugin's Marketplace page directly.</p>
+            <p><b>New:</b> a single, dismissible prompt asking you to review the plugin, shown only after you
+            have actually used it across several separate days. Dismiss it once and it never returns.</p>
+            <p>No feature or licensing changes. Nothing you rely on has moved.</p>
 
             <h3>2026.2.0 - Code navigation (Pro)</h3>
             <p><b>New Pro navigation for LookML fields and views</b>, across extended and refined views and
@@ -211,8 +243,8 @@ intellijPlatform {
     }
 
     pluginVerification {
-        // release-version 20262 matches plugin version 2026.2.0, so the Marketplace prefix rule is
-        // satisfied and no mute is needed. Bump release-version whenever the 2026.<major> changes.
+        // release-version 20262 shares the 2026.2 prefix with the plugin version, so the Marketplace
+        // prefix rule is satisfied and no mute is needed. Bump it only when 2026.<major> changes.
         ides {
             ide(IntelliJPlatformType.IntellijIdeaCommunity, "2025.1")
         }

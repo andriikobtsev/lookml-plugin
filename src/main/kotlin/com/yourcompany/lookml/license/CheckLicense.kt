@@ -30,9 +30,9 @@ import org.jetbrains.annotations.Nullable
 object CheckLicense {
     const val PRODUCT_CODE: String = "PLOOKMLSUPPORT"
 
-    /** Marketplace search; replace with your plugin’s public URL when known. */
-    const val MARKETPLACE_PLUGIN_SEARCH_URL: String =
-        "https://plugins.jetbrains.com/search?plugins=LookML%20Support&orderBy=relevance"
+    const val MARKETPLACE_PLUGIN_URL: String = "https://plugins.jetbrains.com/plugin/28971-lookml-support"
+
+    const val MARKETPLACE_REVIEWS_URL: String = "$MARKETPLACE_PLUGIN_URL/reviews"
 
     private const val KEY_PREFIX = "key:"
     private const val STAMP_PREFIX = "stamp:"
@@ -133,13 +133,13 @@ object CheckLicense {
         val result =
             Messages.showOkCancelDialog(
                 body,
-                "LookML Support — License",
+                "LookML Support - License",
                 "Open Marketplace page",
                 Messages.getCancelButton(),
                 Messages.getInformationIcon(),
             )
         if (result == Messages.OK) {
-            BrowserUtil.browse(MARKETPLACE_PLUGIN_SEARCH_URL)
+            BrowserUtil.browse(MARKETPLACE_PLUGIN_URL)
         }
     }
 
