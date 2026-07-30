@@ -1,11 +1,9 @@
 package com.yourcompany.lookml.license
 
 import com.intellij.ide.BrowserUtil
-import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 
 /**
@@ -15,7 +13,6 @@ import com.intellij.openapi.project.Project
 object LookMLNotices {
 
     private const val NOTIFICATION_GROUP_ID = "com.andriidev.lookml.license"
-    private const val PLUGIN_ID = "com.andriidev.lookml"
     private const val TITLE = "LookML Support"
 
     /**
@@ -26,7 +23,7 @@ object LookMLNotices {
         if (CheckLicense.isLicensed() != false) {
             return false
         }
-        val version = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))?.version ?: return false
+        val version = PluginVersion.current ?: return false
         if (!LookMLUsageState.claimProNoticeFor(version)) {
             return false
         }
